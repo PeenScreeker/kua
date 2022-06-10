@@ -2,8 +2,8 @@ List of changes applied over original jpegsrc.v9d.tar.gz distribution files
 
 ------
 
---- code/libjpeg-orig/jerror.c
-+++ code/libjpeg/jerror.c
+--- code/lib/jpeg-orig/jerror.c
++++ code/lib/jpeg/jerror.c
 @@ -25,14 +25,16 @@
  
  /* this is not a core library module, so it doesn't define JPEG_INTERNALS */

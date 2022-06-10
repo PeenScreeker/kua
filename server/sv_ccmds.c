@@ -200,11 +200,14 @@ static void SV_Map_f( void ) {
 			cheat = qfalse;
 		}
 
-		if ( !Q_stricmp( cmd, "cpm" ) || !Q_stricmp( cmd, "devcpm" ) ) {
-			Cvar_Set( "df_promode", "1" );
+		if ( !Q_stricmp( cmd, "cpm" )      || !Q_stricmp( cmd, "devcpm" ) ) {
+			Cvar_Set( "phy_movetype", "0" );
 		}
 		else if ( !Q_stricmp( cmd, "vq3" ) || !Q_stricmp( cmd, "devvq3" ) ) {
-			Cvar_Set( "df_promode", "0" );
+			Cvar_Set( "phy_movetype", "3" );
+		}
+		else if ( !Q_stricmp( cmd, "vq1" ) || !Q_stricmp( cmd, "devvq1" ) ) {
+			Cvar_Set( "phy_movetype", "1" );
 		}
 
 		if( sv_gametype->integer == GT_SINGLE_PLAYER ) {

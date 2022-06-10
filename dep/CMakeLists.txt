@@ -13,7 +13,7 @@ option(USE_RENDERER_DLOPEN "" OFF)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules)
 
-aux_source_directory(code/libjpeg JPEG_SRCS)
+aux_source_directory(code/lib/jpeg JPEG_SRCS)
 add_library(jpeg ${JPEG_SRCS})
 
 

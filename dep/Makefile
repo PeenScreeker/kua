@@ -196,7 +196,7 @@ UDIR=$(MOUNT_DIR)/unix
 W32DIR=$(MOUNT_DIR)/win32
 BLIBDIR=$(MOUNT_DIR)/botlib
 UIDIR=$(MOUNT_DIR)/ui
-JPDIR=$(MOUNT_DIR)/libjpeg
+JPDIR=$(MOUNT_DIR)/lib/jpeg
 
 bin_path=$(shell which $(1) 2> /dev/null)
 
