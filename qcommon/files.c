@@ -1085,7 +1085,7 @@ static void FS_RemoveFromHandleList( pack_t *pak )
 #ifdef _DEBUG
 		if ( hhead != pak )
 			Com_Error( ERR_DROP, "%s(): invalid head pointer", __func__ );
-#endif
+#endif//_DEBUG
 		hhead = NULL;
 	}
 
