@@ -6,8 +6,8 @@ let sMode= "v"    ; if sMode == "w": mode= Scriptmode.Whatif elif smode == "s": 
 import os
 import sequtils
 import strutils, strformat
-import lib/helper/build as b
-import lib/helper/bash as sh
+import src/lib/helper/build as b
+import src/lib/helper/bash as sh
 # ::::::::::::::::::::
 
 
@@ -16,20 +16,20 @@ import lib/helper/bash as sh
 # ::::::::::::::::::::
 # Mod
 const
-  modVers       = "0.3.0"
-  modName       = "osdf"
-  fullName      = "opensource-defrag"
+  modVers       = "0.30a"
+  modName       = "kmp"
+  fullName      = "kua-multiplayer"
 
 # Folders
 const
-  installBase   = "/app/vg/os-defrag" # installation folder
-  releaseBase   = "basepath" # releases subfolder name. Stored under each version folder (to avoid recursive zipping)
+  installBase   = "/app/vg/kua" # installation folder
+  releaseBase   = "basepath"    # releases subfolder name. Stored under each version folder (to avoid recursive zipping)
 ## Source folders
 const
-  devRoot       = getEnv"HOME"/"gd/osdf"
+  devRoot       = projectDir()  # This file's dir
   rlsDir        = devRoot/"bin/releases"
   srcRoot       = devRoot/"src"
-  gameDir       = srcRoot/"game"
+  gameDir       = srcRoot/modName
   engineDir     = srcRoot/"engine"
   cfgDir        = srcRoot/"cfg"
 ## Source files

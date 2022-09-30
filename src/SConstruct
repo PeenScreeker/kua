@@ -13,43 +13,10 @@
 #::::::::::::::::::::::::::::::::::::::
 # This file intends to be a multiplatform buildsystem.
 # Keep that in mind if you modify it.
-# SCons takes some learning, but its way more powerful than Makefiles
-#   TODO: Native support for win, macos
+# SCons takes some learning, but its way more powerful than make-based systems
+#   TODO: Native support for macos
 #::::::::::::::::::::::::::::::::::::::
 #
-# Naming Convention:
-# ::::::::::::::::::
-# cur___  : Current host
-# trg___  : Build target
-# rls___  : Release
-# dbg___  : Debug
-# win___  : Windows version
-# lnx___  : Linux version
-# env___  : Build environment
-# src___  : Source code
-# obj___  : Object built from source code
-# __Name  : Name of X (string)
-# __Dir   : Folder containing X
-# sc___   : Scons related variable
-# *tru*   : Related to Aliases for SCons expected values. i.e: truArch='w', scArch='win32'
-# *valid* : Supported by this build system. Not valid = support is not implemented
-#::::::::::::::::::::::::::::::::::::::
-# Word Order:
-#   Organization goes FIRST. Program organization, not idiomatic english.
-#     Category -> Thing -> Differentiating Exception 
-#     : catThing_excpt
-#     Example:
-#       English (wrong):     initialize_build_target
-#       Organization first:  trgBuild_init
-#::::::::::::::::::::::::::::::::::::::
-# Case styling:
-#   camelCase preferred 
-#   PascalCase for classes/constants only, and for SCons builtin methods
-#   snake_case discouraged, only for exception management
-#   All-caps for SCons environment variables -only- (CCFLAGS, etc)
-#     SCons variable -inputs- (defined here, passed to scons) SHOULD be named with snake case exception styling
-#::::::::::::::::::::::::::::::::::::::
-
 # Usage and Help
 # :::::::::::::::
 Help("""
@@ -95,7 +62,7 @@ Help("""
 # Helpers & imports
 # ::::::::::::::::::
 import lib.helper.scons as h
-from lib.helper.scons import getLocal, getCur, getCli, getGlob, getBits, isVerbose, BuildObject, BuildInfo
+from lib.helper.scons import getCur, getCli, getGlob, getBits, isVerbose, BuildObject, BuildInfo
 from lib.helper.scons import ARCH, PLAT, BITS, TRG, scPlatforms, validPlatforms, validArchs
 import sys; sys.dont_write_bytecode=True  # Do not create bytecode __pycache__ folder
 from os.path import sep
@@ -164,7 +131,7 @@ SConsignFile(scDir.File('scons-sign').abspath)
 ######################
 # Client 
 #::::::::
-# srcClient = getGlob(engineDir, os.path.join(clDir,'*.c' ))   # All of these are relative to the src folder. But they won't contain the folder in the string
+# srcClient = getGlob(engineDir, join(clDir,'*.c' ))   # All of these are relative to the src folder. But they won't contain the folder in the string
 srcClient = Glob(engineDir.Dir(clDir).path  +sep+ '*.c')
 srcServer = Glob(engineDir.Dir(svDir).path  +sep+ '*.c')   #   srcDir + clDir,'file.c'  ==    /absolute/to/src/cldir/file.c
 srcCommon = Glob(engineDir.Dir(qcmDir).path +sep+ '*.c')
@@ -407,7 +374,7 @@ lnx.arch = 'x86_64'
 lnx.libs    += ['dl']        # -ldl
 lnx.ldflags += ['-Wl,--hash-style=both']
 #### Include Paths
-lnx.ccpath   = [os.path.join('/usr','include'), os.path.join('/usr','local','include')]  #TODO: This shouldn't be needed, but.... is it?
+lnx.ccpath   = [join('/usr','include'), join('/usr','local','include')]  #TODO: This shouldn't be needed, but.... is it?
 
 
 # Windows: Build Data
@@ -482,11 +449,11 @@ if not use_local_jpeg: clWin.defines += ['USE_SYSTEM_JPEG']
 # CURL extras
 clWin.defines += ['CURL_STATICLIB']
 clWin.libs    += ['wldap32','crypt32'] # Curl support libs
-clWin.ccpath  += [os.path.join(engineDir.abspath,'lib','curl','windows','include')]
-clWin.libpath += [os.path.join(engineDir.abspath,'lib','curl','windows','mingw','lib64')]
+clWin.ccpath  += [join(engineDir.abspath,'lib','curl','windows','include')]
+clWin.libpath += [join(engineDir.abspath,'lib','curl','windows','mingw','lib64')]
 # PCRE extras
-clWin.ccpath  += [os.path.join(engineDir.abspath,'lib','pcre','windows','include')]
-clWin.libpath += [os.path.join(engineDir.abspath,'lib','pcre','windows','mingw','lib64')]
+clWin.ccpath  += [join(engineDir.abspath,'lib','pcre','windows','include')]
+clWin.libpath += [join(engineDir.abspath,'lib','pcre','windows','mingw','lib64')]
 ## Create BuildObjects: Release and Debug
 clWin_rls = clWin.merge(rls)
 clWin_dbg = clWin.merge(dbg)
@@ -498,8 +465,8 @@ clWin_sdl = clWin_rls.clone()
 clWin_sdl.binname += '-staticsdl'
 clWin_sdl.ssdir    = 'staticsdl'
 clWin_sdl.defines += ['USE_LOCAL_HEADERS=1']
-clWin_sdl.ccpath  += [os.path.join(engineDir.abspath,'lib','sdl','windows','include','SDL2')]
-clWin_sdl.libpath += [os.path.join(engineDir.abspath,'lib','sdl','windows','mingw','lib64')]
+clWin_sdl.ccpath  += [join(engineDir.abspath,'lib','sdl','windows','include','SDL2')]
+clWin_sdl.libpath += [join(engineDir.abspath,'lib','sdl','windows','mingw','lib64')]
 clWin_sdl.libs     = [lib for lib in clWin_sdl.libs if lib not in ['SDL2']] + ['SDL264']
 clWin_sdl.ldflags += ['-static']
 #todo Might be only for dynamic linking, and not need this file
@@ -728,7 +695,6 @@ Alias('all', trgAll)
 #  debug      = 1plat * 5target * 1perf   =  5obj   # For development locally  ** #2 
 #  game-dist  = 2plat * 3target * 1perf   =  6obj   # Mod only                 ** TOP priority
 #  release    = 1plat * 5target * 1perf   =  5obj   # For best performance
-#! install    = 1plat * 5target * 1perf   =  5obj   # Auto installing release
 #  engine     = 1plat * 1target * 1perf   =  1obj   # Release Engine locally
 #! server     = 1plat * 1target * 1perf   =  1obj   # Release Server locally
 #  distribute = 2plat * 5target * 1perf   = 10obj   # Engine+mod

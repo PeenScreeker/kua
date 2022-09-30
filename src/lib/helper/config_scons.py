@@ -1,4 +1,4 @@
-import os
+from os.path import join
 import sys; sys.dont_write_bytecode=True  # Do not create bytecode __pycache__ folder
 from lib.helper.scons import getVersion, isVerbose
 from SCons.Script import ARGUMENTS, Dir, File
@@ -10,19 +10,19 @@ trgArch     = None  # Only for overriding. `x86_64` or `x86` are assumed from pl
 # Set Defaults
 # :::::::::::::::: 
 # Output filename
-cName             = 'osdf'
+cName             = 'kua'
 dName             = cName+'.ded'
 render_prefix     = cName
 # Directories
 rootDir           = Dir('..')                       # Must be relative. Was Absolute
 srcDir            = Dir('.')                        # This MUST be relative to the SConstruct file.
 engineDir         = srcDir.Dir('engine')            # Repository for engine code
-gameDir           = srcDir.Dir('game')              # Repository for gamecode
+gameDir           = srcDir.Dir('kmp')               # Repository for gamecode
 binDir            = rootDir.Dir('bin')              # Output root folder where binaries will be compiled to
 instDir           = rootDir.Dir('install-'+cName)   # Default linux:  '/usr/local/games/quake3'
 baseDir           = None                            #TODO: what is this DEFAULT_BASEDIR value used for?
 # Select what to build
-build_default     = ['game']#['release','debug',]   # List of targets to build by default. Will use debug if empty
+build_default     = ['release'] #['game'] #['release','debug',]   # List of targets to build by default. Will use debug if empty
 # Select what systems to compile
 use_local_jpeg    = True   # Links to local jpeg (windows only). Binaries are hard to find
 use_local_pcre    = True   # Links to local pcre (windows only). Binaries are hard to find
@@ -51,7 +51,7 @@ version           = getVersion(verFile,verMacro)     # If this is changed, we ov
 scDir             = binDir.Dir('scons')  # Relative to the bin folder. Will be created when needed
 scDecider         = 'MD5-timestamp'  # First timestamp, then MD5. SCcons default = 'MD5' = 'content'. Makefile default = timestamp = 'make'
 cores             = 12   # Max Computer cores available. Set to 0 or None for default cli behavior
-coresPc           = 0.7  # Percentage of cpu that will be used for compiling jobs. Ignored if cores is 0, or `-j NUM` is set from CLI
+coresPc           = 0.8  # Percentage of cpu that will be used for compiling jobs. Ignored if cores is 0, or `-j NUM` is set from CLI
 ## Verbose
 scQuiet   = False # When True, make scons behave as if it was called with `scons -Q`
 verbose   = isVerbose()  #fixme: Use this when the SCons bug is fixed
@@ -75,25 +75,22 @@ winDir = 'win32'
 botDir = 'botlib'
 # Libraries
 libDir  = 'lib'
-jpgDir  = os.path.join(libDir,'jpeg')
-pcreDir = os.path.join(libDir,'pcre')
+jpgDir  = join(libDir,'jpeg')
+pcreDir = join(libDir,'pcre')
 # Gamecode src folders
 cgDir  = 'cgame'
 sgDir  = 'sgame'
 uiDir  = 'ui_q3'
-phyDir = os.path.join(sgDir,'phy')
-hudDir = os.path.join(cgDir,'hud')
-# LCC Compiler tools folder     #todo: Port from ioq3 Makefile 
-# toolDir= lnkDir +s+ 'tools'
-# lccDir = lnkDir+toolDir +s+ 'lcc'
+phyDir = join(sgDir,'phy')
+hudDir = join(cgDir,'hud')
 # Not used
 asmDir = 'asm'
 tuiDir = 'ui_ta'
 # New UI folders (WIP)
 nuiDir       = 'ui'
-nuiDir_menu  = os.path.join(nuiDir,'menu')
-nuiDir_fwork = os.path.join(nuiDir,'framework')
-nuiDir_color = os.path.join(nuiDir,'color')
+nuiDir_menu  = join(nuiDir,'menu')
+nuiDir_fwork = join(nuiDir,'framework')
+nuiDir_color = join(nuiDir,'color')
 
 ## Compiler Flags
 # ::::::::::::::::
@@ -111,4 +108,4 @@ PARSE_base   = [] # Commands to parse with ParseConfig('cmd arg1 arg2')
 
 
 # Import guard
-if __name__=='__main__': import sys; sys.exit(f'::MODULE-ERROR: {__file__} is not meant to be executed on its own')
+if __name__=='__main__': import sys; sys.exit(f'::MODULE-ERROR: {__file__} is only meant to be used as a module.')

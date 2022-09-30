@@ -26,15 +26,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // q_shared.h -- included first by ALL program modules.
 // A user mod should never modify this file
 
-#define Q3_VERSION            "Opensource Defrag: Engine 1.33a"
+#define Q3_VERSION            "Kua: Engine 1.33a"
 #ifndef SVN_VERSION
   #define SVN_VERSION Q3_VERSION
 #endif
-#define CLIENT_WINDOW_TITLE   "Opensource Defrag: Engine"
-#define CONSOLE_WINDOW_TITLE  "Opensource Defrag: Console"
+#define CLIENT_WINDOW_TITLE   "Kua: Engine"
+#define CONSOLE_WINDOW_TITLE  "Kua: Console"
 // 1.32 released 7-10-2002
 
-#define DEFAULT_GAME			"osdf"
+#define DEFAULT_GAME			"kmp"
 
 #define BASEGAME				"baseq3"
 #define BASEDEMO				"demoq3"
