@@ -526,7 +526,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		attacker->client->lastkilled_client = self->s.number;
 
 		if ( attacker == self || OnSameTeam (self, attacker ) ) {
-			SetScore( attacker, self->r.currentOrigin, 0 ); //::OSDF changed to SetScore 0, from AddScore -1
+			SetScore( attacker, self->r.currentOrigin, 0 ); //::KUA.chgd to SetScore 0, from AddScore -1
 		} else {
 			AddScore( attacker, self->r.currentOrigin, 1 );
 
@@ -559,7 +559,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 		}
 	} else {
-		SetScore( self, self->r.currentOrigin, 0 ); //::OSDF changed to SetScore 0, from AddScore -1
+		SetScore( self, self->r.currentOrigin, 0 ); //::KUA.chgd to SetScore 0, from AddScore -1
 	}
 
 	// Add team bonuses
@@ -581,7 +581,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		}
 	}
 
-	//TossClientItems( self ); //::OSDF modded. Removed
+	//TossClientItems( self ); //::KUA.chg. Removed
 #ifdef TEAMARENA
 	TossClientPersistantPowerups( self );
 	if( g_gametype.integer == GT_HARVESTER ) {
@@ -625,10 +625,10 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 	// don't allow respawn until the death anim is done
 	// g_forcerespawn may force spawning at some later time
-  //::OSDF modded
+  //::KUA.chg
 	self->client->respawnTime = level.time;// + 1700; // Allow Instant Respawn
   trap_SendServerCommand( self-g_entities, va("timerStop %i", self->client->ps.commandTime)); // Send server time at the time of respawn.
-  //::OSDF end
+  //::KUA.end
 
 	// remove powerups
 	memset( self->client->ps.powerups, 0, sizeof(self->client->ps.powerups) );
@@ -913,12 +913,12 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 	if ( knockback && targ->client ) {
 		vec3_t	kvel;
 		float	mass;
-        float scale = 1; //::OSDF added, for knockback scaling
-        float kvel_z;    //::OSDF added, for separate vertical knockback
+        float scale = 1; //::KUA.add, for knockback scaling
+        float kvel_z;    //::KUA.add, for separate vertical knockback
 
 		mass = 200;
 
-        //::OSDF modded. Different vq3/cpm knockback scaling
+        //::KUA.chg. Different vq3/cpm knockback scaling
         if ((targ == attacker) 
              && (mod == MOD_ROCKET_SPLASH || mod == MOD_ROCKET)
              && (phy_movetype.integer == 0)){
@@ -928,7 +928,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
         kvel_z = dir[2] * phy_knockback.value * (float)knockback / mass;  // Calculate vertical knockback without scale
         VectorScale (dir, scale * phy_knockback.value * (float)knockback / mass, kvel); // Scale knockback
         kvel[2] = kvel_z; // Apply vertical scale
-        //::OSDF end
+        //::KUA.end
 		VectorAdd (targ->client->ps.velocity, kvel, targ->client->ps.velocity);
 
 		// set the timer so that the other client can't cancel

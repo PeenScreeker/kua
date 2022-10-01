@@ -317,13 +317,13 @@ struct gclient_s {
 #endif
 
 	char		*areabits;
-	//::OSDF added
+	//::KUA.add
 	//::::::::::::::
 	//TODO: Switch to timerData_t struct. Will be needed for checkpoints
 	int			timer_start;	// servertime at the moment of hitting start trigger
 	int			timer_end;		// servertime at the moment of hitting end trigger
 	//::::::::::::::
-	//::OSDF end
+	//::KUA.end
 };
 
 
@@ -746,7 +746,7 @@ extern	vmCvar_t	g_singlePlayer;
 extern	vmCvar_t	g_proxMineTimeout;
 extern	vmCvar_t	g_localTeamPref;
 
-//::OSDF modded
+//::KUA.chg
 extern	vmCvar_t	phy_gravity;
 extern	vmCvar_t	phy_speed;
 extern	vmCvar_t	phy_knockback;
@@ -770,7 +770,7 @@ extern vmCvar_t		phy_rocket_speed;
 extern vmCvar_t		phy_rocket_damage;
 extern vmCvar_t		phy_rocket_splashDamage;
 extern vmCvar_t		phy_rocket_splashRadius;
-//::OSDF end
+//::KUA.end
 
 void	trap_Print( const char *text );
 void	trap_Error( const char *text ) __attribute__((noreturn));

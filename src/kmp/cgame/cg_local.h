@@ -641,7 +641,7 @@ typedef struct {
 	char			testModelName[MAX_QPATH];
 	qboolean		testGun;
 
-	//::OSDF added
+	//::KUA.add
 	//::::::::::::::
 	//TODO: Switch to timerData_t struct. Will be needed for checkpoints
   // Timer
@@ -652,7 +652,7 @@ typedef struct {
   // Hud
 	pmoveData_t pmd;			// Stores extracted pmove data needed outside of pmove
 	//::::::::::::::
-	//::OSDF end
+	//::KUA.end
 } cg_t;
 
 
@@ -1007,10 +1007,10 @@ typedef struct {
   float         screenXScale; // derived from glconfig
   float         screenYScale;
   float         screenXBias;
-  //::OSDF added. Hud support
+  //::KUA.add. Hud support
   float         screenWidth;  // normalized/virtual screen width  (always SCREEN_WIDTH, i.e. 640)
   float         screenHeight; // normalized/virtual screen height (depends on aspect ratio, e.g. 4:3 => 480, 16:9 => 360)
-  //::OSDF end
+  //::KUA.end
 	int				serverCommandSequence;  // reliable command stream counter
 	int				processedSnapshotNum;   // the number of snapshots cgame has requested
 
@@ -1107,7 +1107,7 @@ extern	vmCvar_t		cg_bobroll;
 extern	vmCvar_t		cg_swingSpeed;
 extern	vmCvar_t		cg_shadows;
 extern	vmCvar_t		cg_gibs;
-extern	vmCvar_t		cg_drawTimelimit;  //::OSDF modded name from timer to timelimit.
+extern	vmCvar_t		cg_drawTimelimit;  //::KUA.chg name from timer to timelimit.
 extern	vmCvar_t		cg_drawFPS;
 extern	vmCvar_t		cg_drawSnapshot;
 extern	vmCvar_t		cg_draw3dIcons;
@@ -1193,7 +1193,7 @@ extern	vmCvar_t		cg_oldRocket;
 extern	vmCvar_t		cg_oldPlasma;
 extern	vmCvar_t		cg_trueLightning;
 
-//::OSDF modded
+//::KUA.chg
 //::::::::::::::::
 extern	vmCvar_t		hud_speed_x;
 extern	vmCvar_t		hud_speed_y;
@@ -1206,7 +1206,7 @@ extern  vmCvar_t    hud_projection;
 //::::::::::::::::
 extern	vmCvar_t		phy_movetype;
 //::::::::::::::::
-//::OSDF end
+//::KUA.end
 
 #ifdef TEAMARENA
 extern	vmCvar_t		cg_redTeamName;
@@ -1292,9 +1292,9 @@ void CG_DrawRect( float x, float y, float width, float height, float size, const
 void CG_DrawSides(float x, float y, float w, float h, float size);
 void CG_DrawTopBottom(float x, float y, float w, float h, float size);
 
-//::OSDF added
+//::KUA.add
 void CG_FillAngleYaw(float start, float end, float yaw, float y, float h, vec4_t const color);
-//::OSDF end
+//::KUA.end
 
 //
 // cg_draw.c, cg_newDraw.c
@@ -1720,7 +1720,7 @@ extern qboolean		initparticles;
 int CG_NewParticleArea ( int num );
 
 
-//::OSDF added. Cvar extra functionality support
+//::KUA.add. Cvar extra functionality support
 //
 // cg_utils.c
 //TODO: Are these needed
@@ -1775,6 +1775,6 @@ static void cvar_help_prep(cvarKind_t kind, char const* defaultString);
 static void cvar_help_post(cvarKind_t kind);
 void cvar_help(char const* cvarName);
 void cvartable_with_help(void);
-//::OSDF end
+//::KUA.end
 
 #endif   // CG_LOCAL_H

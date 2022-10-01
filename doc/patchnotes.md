@@ -8,15 +8,33 @@
 > ... : Part of the feature listed above it
 
 # Unreleased
-2022.08.04
+## 0.35a
+2022.09.30  
 ```
-fix : Fixed a buildsystem bug. After changing to SCons nodes, the engine wasn't being built
+chg : Changed all OSDF code change keys to KUA
+```
+2022.09.30  
+```
+chg : Updated roadmap, to better reflect Kua goals
+chg : Engine -> map_restart default delay changed from 5sec to 0
+fix : Config files restored. Were being wiped out by the automated packing script
+new : Resources folder. Autopacked with the buildscript
+new : Added script to run the game from the root folder. For easier access and file updating on version change
+new : Automated buildscript changed to python
+dep : Automated nimscript buildscript moved to root. Will be removed eventually
+chg : Jumped version to 0.35a, to indicate the shift from osdf-gpl to Kua
+chg : Changed versioning system from X.X.X to X.XXa
+chg : Engine and Game repositories merged into Core. Modules sounded good on paper, but were really clumsy to work with
 ```
 ... :  
 
 # History
 ## 0.3.0
 _v0.3.0-r0_  
+2022.08.04  
+```
+fix : Fixed a buildsystem bug. After changing to SCons nodes, the engine wasn't being built
+```
 
 2022.07.18  
 ```
@@ -26,10 +44,10 @@ new : Initial accel hud code has been added to the buildsystem. Currently inacti
 2022.07.15  
 ```
 new : (VJK) New Mechanic: Jump Holdboost  
-   ::  While holding jump, and moving at +375ups, you get extra jumpvel on each jump (375 is 1.5x of 250basespeed)  
-   ::  It will reach the same heigh than vq3 in 8jumps, but will keep growing  
-   ::  Starts at 225 base jumpvel, and increases by 5u each jump  
-   ::  5u is 12% of 45. Which is the difference between vq3 and vjk jumpvel (270-225)  
+   ..  While holding jump, and moving at +375ups, you get extra jumpvel on each jump (375 is 1.5x of 250basespeed)  
+   ..  It will reach the same heigh than vq3 in 8jumps, but will keep growing  
+   ..  Starts at 225 base jumpvel, and increases by 5u each jump  
+   ..  5u is 12% of 45. Which is the difference between vq3 and vjk jumpvel (270-225)  
 new : (VJK) HoldBoost hud element  
 ```
 
@@ -60,11 +78,11 @@ chg : (VJK) Reverted jumpvel back to 225 (in preparation for a new jump height m
 ```
 ```
 new : (VQ4) New physics : Quake 4 Inspired.  Activate with `/exec phy_vq4`  
-   ::       Will have crouchsliding, rampslides (from q2/q4) and vq3 aircontrol  
+   ..       Will have crouchsliding, rampslides (from q2/q4) and vq3 aircontrol  
 new : (VQ4) Set groundaccel to 15 (same as original Q4 and cpm)  
 new : (VQ4) New mechanic: Crouchslide  
-   ::       Earns 2x frames of crouchslide per 1x frame spent in the air, capped at 2000ms   
-   ::       Has 0 friction, and a separate accel value of 20  (could change after testing)  
+   ..       Earns 2x frames of crouchslide per 1x frame spent in the air, capped at 2000ms   
+   ..       Has 0 friction, and a separate accel value of 20  (could change after testing)  
 ```
 
 ## 0.2.0
@@ -150,7 +168,7 @@ new : CPM weapon behavior
 chg : Q1-qw deactivated. Q1 physics default to AG-style  
 new : Q1 AD movement, balanced similarly to QW (77fps/32as/100aa)  
 new : Q1 AD movement, balanced similarly to AG (125fps/35as/100aa)  
-new : Physics type Selection (phy_movetype NUMBER :: 0=CPM, 3=VQ3, 1:Q1-ag)  
+new : Physics type Selection (phy_movetype NUMBER .. 0=CPM, 3=VQ3, 1:Q1-ag)  
 ```
 ```
 new : Initial Main Menu UI layout, background and theme
@@ -180,7 +198,7 @@ new : Initial setup & compilation (manual)
 ... : Changes to the code actually affect gameplay through `.qvm` files  
 ```
 ```
-:: Worked by default  
+.. Worked by default  
 : Surface flags (uses shader properties)  
 : Vq3 movement (`pmove_fixed 1`)  
 : Vq3 Weapons  
@@ -191,60 +209,21 @@ new : Initial setup & compilation (manual)
 ```
 
 # TODO
-#::::::::::::::
+#..............
 _Urgent    : Cause us to react. We stop what we're currently doing and work on the urgent task instead._
 _Important : Lead us towards our mission/goals. Require planning, organization and initiative._
-#::::::::::::::
+#..............
 # 1 : IMP.URG : Critical
-#::::::::::::::
-fix : double-ramp-boost bug on `r7-climbworld` (found on VQ1, check on other physics)
-fix : Wall-stop bug
-chg : `g_synchronousClients 1` by default for offline
+#.............:
 
-#:::::::::::::::
+#...............
 # 2 : IMP.notU : Planned Goals
-#:::::::::::::::
-new : Velocity pads  
-new : Proxymod support  
-new : Hud element: Current map & Internal version  
-new : Map loader UI  
-new : Launcher / Updater / Downloader
-new : New hud for Player state configuration (health, ammo, powerups, etc)  
+#..............:
 
-fix : Mappers/visual cfg gets wiped out by the build script
-??? : wsw hud system . how does it work?
-
-port github.com/Jelvan1/cgame_proxymod#examples
-
-port Warp entities
-
-#SP
-new : Font support
-new : UI q3ui
-new : UI revamp
-new : W based physics (WW)
-... : W turning affected by phy_ground_accel and phy_speed (aka also by haste)
-... : W accelerate (how to balance)
-... : AirJump by default
-... : Dash by default (ground and air)
-... : Blink by default (MC-EoE style?)
-... : Wallkick by default
-
-
-#:::::::::::::::
+#...............
 # 3 : notI.URG : Non-critical Fixes
-#:::::::::::::::
-fix : sound bug on some systems (potentially SDL non-static linking or version)  
-new : Pre-run balance for q1. Pure vs Pro runs from AG (maybe also cpm?)
-fix : map_restart doesn't reset timer
+#..............:
 
-#::::::::::::::::
+#................
 # 4 : notI.notU : Implement when possible
-#::::::::::::::::
-new : Q1 barrel entity
-new : USE buttons
-new : Unlock 1000 maxfps. Possible?
-new : /varcommand
-chg : (CPM) Correct deceleration values
-fix : 1ups overbounce fix
-
+#...............:

@@ -614,11 +614,11 @@ static ID_INLINE vec_t VectorLength( const vec3_t v ) {
 	return (vec_t)sqrt (v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
 }
 
-//::OSDF modded
+//::KUA.chg
 static ID_INLINE vec_t VectorLength2D( const vec3_t v ) {
     return (vec_t)sqrt (v[0]*v[0] + v[1]*v[1]);
 }
-//::OSDF end
+//::KUA.end
 
 static ID_INLINE vec_t VectorLengthSquared( const vec3_t v ) {
 	return (v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
@@ -1442,13 +1442,13 @@ typedef enum _flag_status {
 #define LERP( a, b, w ) ( ( a ) * ( 1.0f - ( w ) ) + ( b ) * ( w ) )
 #define LUMA( red, green, blue ) ( 0.2126f * ( red ) + 0.7152f * ( green ) + 0.0722f * ( blue ) )
 
-//::OSDF modded
+//::KUA.chg
 //:::::::::::::::::
 // Math 
 float Q_pown(float base, int exp);
 // VectorMAM: taken from mmod. ::? Not in q3a. Where does it come from originally? :thinking:
 void VectorMAM(float scale1, vec3_t b1, float scale2, vec3_t b2, vec3_t c);
 //:::::::::::::::::
-//::OSDF end
+//::KUA.end
 
 #endif	// __Q_SHARED_H

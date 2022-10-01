@@ -8,7 +8,7 @@
 #  define vsnprintf _vsnprintf
 #endif
 
-//::OSDF ported to qcommon/q_shared.h
+//::KUA.port to qcommon/q_shared.h
 // static inline char* vaf(char const* format, ...)
 // {
 //   va_list     argptr;
@@ -20,7 +20,7 @@
 
 //   return str;
 // }
-//::OSDF end
+//::KUA.end
 
 #ifdef WIN32
 #  include <windows.h>
@@ -210,12 +210,12 @@ static inline vec_t VectorLengthSquared(vec3_t const v)
   return (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 }
 
-//::OSDF ported
+//::KUA.port
 // static inline vec_t VectorLengthSquared2(vec2_t const v)
 // {
 //   return (v[0] * v[0] + v[1] * v[1]);
 // }
-//::OSDF end
+//::KUA.end
 
 static inline vec_t Distance(vec3_t const p1, vec3_t const p2)
 {
@@ -332,12 +332,12 @@ default values.
 #define CVAR_VM_CREATED     0x1000 // cvar was created exclusively in one of the VMs.
 #define CVAR_PROTECTED      0x2000 // prevent modifying this var from VMs or the server
 
-//::OSDF ported
+//::KUA.port
 // #define CVAR_NODEFAULT 0x4000 // do not write to config if matching with default value
 // #define CVAR_PRIVATE 0x8000 // can't be read from VM
 // #define CVAR_DEVELOPER 0x10000 // can be set only in developer mode
 // #define CVAR_ARCHIVE_ND (CVAR_ARCHIVE | CVAR_NODEFAULT)
-//::OSDF end
+//::KUA.end
 
 // These flags are only returned by the Cvar_Flags() function
 #define CVAR_MODIFIED    0x40000000 // Cvar was modified

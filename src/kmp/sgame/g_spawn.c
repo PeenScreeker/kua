@@ -152,10 +152,10 @@ void SP_target_kill (gentity_t *ent);
 void SP_target_position (gentity_t *ent);
 void SP_target_location (gentity_t *ent);
 void SP_target_push (gentity_t *ent);
-//::OSDF added
+//::KUA.add
 void SP_target_startTimer (gentity_t *ent);
 void SP_target_stopTimer (gentity_t *ent);
-//::OSDF end
+//::KUA.end
 
 void SP_light (gentity_t *self);
 void SP_info_null (gentity_t *self);
@@ -232,10 +232,10 @@ spawn_t	spawns[] = {
 	{"target_position", SP_target_position},
 	{"target_location", SP_target_location},
 	{"target_push", SP_target_push},
-	//::OSDF added
+	//::KUA.add
 	{"target_startTimer", SP_target_startTimer}, 
 	{"target_stopTimer", SP_target_stopTimer}, 
-	//::OSDF end
+	//::KUA.end
 
 	{"light", SP_light},
 	{"path_corner", SP_path_corner},

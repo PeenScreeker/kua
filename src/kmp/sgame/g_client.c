@@ -1184,11 +1184,11 @@ void ClientSpawn(gentity_t *ent) {
 	client->ps.pm_flags |= PMF_TIME_KNOCKBACK;
 	client->ps.pm_time = 100;
 
-	//::OSDF added
+	//::KUA.add
 	//::::::::::::
 	client->timer_start = -1;
 	//::::::::::::
-	//::OSDF end
+	//::KUA.end
 
 	client->respawnTime = level.time;
 	client->inactivityTime = level.time + g_inactivity.integer * 1000;
@@ -1221,9 +1221,9 @@ void ClientSpawn(gentity_t *ent) {
 			tent = G_TempEntity(ent->client->ps.origin, EV_PLAYER_TELEPORT_IN);
 			tent->s.clientNum = ent->s.clientNum;
 
-			//::OSDF modded
+			//::KUA.chg
 			ent->client->ps.persistant[PERS_SCORE] = 0; // Resets score on every spawn (for fragfilters)
-			//::OSDF end
+			//::KUA.end
 
 			trap_LinkEntity (ent);
 		}

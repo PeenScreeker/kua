@@ -1008,7 +1008,7 @@ Items can be picked up without actually touching their physical bounds to make
 grabbing them easier
 ============
 */
-//::OSDF modded for item pickup size
+//::KUA.chg for item pickup size
 qboolean	BG_PlayerTouchesItem( playerState_t *ps, entityState_t *item, int atTime, int movetype ) {
 	vec3_t		origin;
 	int			zMargin; // Used for above the item. See Explanation

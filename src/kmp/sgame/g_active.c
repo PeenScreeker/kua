@@ -849,7 +849,7 @@ void ClientThink_real( gentity_t *ent ) {
 	else
 #endif
 	if ( client->ps.powerups[PW_HASTE] ) {
-		client->ps.speed *= phy_haste_factor.value; //::OSDF modded  Added haste cvar
+		client->ps.speed *= phy_haste_factor.value; //::KUA.chg  Added haste cvar
 	}
 
 	// Let go of the hook if we aren't firing
@@ -920,11 +920,11 @@ void ClientThink_real( gentity_t *ent ) {
 
 	pm.pmove_fixed = pmove_fixed.integer | client->pers.pmoveFixed;
 	pm.pmove_msec = pmove_msec.integer;
-	//::OSDF modded
+	//::KUA.chg
 	// Pass cvar data through pm->
 	pm.movetype = phy_movetype.integer;
 	// pm.ps->stats[STAT_OVERBOUNCE_SCALE] = phy_overbounce_scale.value;
-	//::OSDF end
+	//::KUA.end
 
 	VectorCopy( client->ps.origin, client->oldOrigin );
 
@@ -1005,7 +1005,7 @@ void ClientThink_real( gentity_t *ent ) {
 		if ( level.time > client->respawnTime ) {
 			// forcerespawn is to prevent users from waiting out powerups
 			if ( g_forcerespawn.integer > 0 && 
-				( level.time - client->respawnTime ) > g_forcerespawn.integer * 1 ) { //::OSDF modded  Convert g_forcerespawn into ms, for instant respawn
+				( level.time - client->respawnTime ) > g_forcerespawn.integer * 1 ) { //::KUA.chg  Convert g_forcerespawn into ms, for instant respawn
 				ClientRespawn( ent );
 				return;
 			}

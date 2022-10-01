@@ -317,7 +317,7 @@ void *memmove(void *dest, const void *src, size_t count)
 }
 
 
-//::OSDF modded
+//::KUA.chg
 float acostable[] = {
 3.14159265,3.07908248,3.05317551,3.03328655,3.01651113,3.00172442,2.98834964,2.97604422,
 2.96458497,2.95381690,2.94362719,2.93393068,2.92466119,2.91576615,2.90720289,2.89893629,
@@ -459,7 +459,7 @@ double acos_alt( double x ) {
 	index = (float) (1.0 + x) * 511.9;
 	return acostable[index];
 }
-//::OSDF end
+//::KUA.end
 
 
 #if 0
@@ -712,11 +712,11 @@ void create_acostable( void ) {
 }
 */
 
-//::OSDF modded
+//::KUA.chg
 // moved acos out of preprocessor if 0 lock
 // renamed from acos() to acos_alt(), to avoid conflicting declarations
 //FIXME: Check if this change is ok, or if its actually bad
-//::OSDF end
+//::KUA.end
 
 double atan2( double y, double x ) {
 	float	base;
@@ -2124,7 +2124,7 @@ int sscanf( const char *buffer, const char *fmt, ... ) {
 	va_end (ap);
 	return count;
 }
-//::OSDF modded
+//::KUA.chg
 //:::::::::::::::::
 // Math 
 // Only for VM. bg_lib is not included on native builds
@@ -2176,6 +2176,6 @@ float logf( float a ){
 float powf( float x, float y ) { return expf(logf(x) * y); }
 
 //:::::::::::::::::
-//::OSDF end
+//::KUA.end
 
 #endif

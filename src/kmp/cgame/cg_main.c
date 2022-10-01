@@ -99,7 +99,7 @@ vmCvar_t	cg_bobroll;
 vmCvar_t	cg_swingSpeed;
 vmCvar_t	cg_shadows;
 vmCvar_t	cg_gibs;
-vmCvar_t	cg_drawTimelimit;  //::OSDF modded name from timer to timelimit.
+vmCvar_t	cg_drawTimelimit;  //::KUA.chg name from timer to timelimit.
 vmCvar_t	cg_drawFPS;
 vmCvar_t	cg_drawSnapshot;
 vmCvar_t	cg_draw3dIcons;
@@ -186,7 +186,7 @@ vmCvar_t	cg_oldRocket;
 vmCvar_t	cg_oldPlasma;
 vmCvar_t	cg_trueLightning;
 
-//::OSDF modded
+//::KUA.chg
 vmCvar_t	hud_speed_x;
 vmCvar_t	hud_speed_y;
 vmCvar_t	hud_timerActive_x;
@@ -195,7 +195,7 @@ vmCvar_t	hud_timerBest_x;
 vmCvar_t	hud_timerBest_y;
 
 vmCvar_t	phy_movetype;
-//::OSDF end
+//::KUA.end
 
 #ifdef TEAMARENA
 vmCvar_t 	cg_redTeamName;
@@ -211,14 +211,14 @@ vmCvar_t	cg_recordSPDemoName;
 vmCvar_t	cg_obeliskRespawnDelay;
 #endif
 
-//::OSDF changed. Declared in local, for use in whole client
+//::KUA.chgd. Declared in local, for use in whole client
 // typedef struct {
 // 	vmCvar_t	*vmCvar;
 // 	char		*cvarName;
 // 	char		*defaultString;
 // 	int			cvarFlags;
 // } cvarTable_t;
-//::OSDF end
+//::KUA.end
 
 static cvarTable_t cvarTable[] = {
 	{ &cg_ignore, "cg_ignore", "0", 0 },	// used for debugging
@@ -336,7 +336,7 @@ static cvarTable_t cvarTable[] = {
 	{ &cg_trueLightning, "cg_trueLightning", "0.0", CVAR_ARCHIVE},
 //	{ &cg_pmove_fixed, "cg_pmove_fixed", "0", CVAR_USERINFO | CVAR_ARCHIVE }
 
-	//::OSDF modded
+	//::KUA.chg
 	{&hud_speed_x, "hud_speed_x", "0.66666", CVAR_USERINFO},
 	{&hud_speed_y, "hud_speed_y", "0.4", CVAR_USERINFO},
 	{&hud_timerActive_x, "hud_timerActive_x", "0.66666", CVAR_USERINFO},
@@ -345,7 +345,7 @@ static cvarTable_t cvarTable[] = {
 	{&hud_timerBest_y, "hud_timerBest_y", "0.0", CVAR_USERINFO},
 
 	{&phy_movetype, "phy_movetype", "0", CVAR_SYSTEMINFO},
-	//::OSDF end
+	//::KUA.end
 };
 
 static int  cvarTableSize = ARRAY_LEN( cvarTable );

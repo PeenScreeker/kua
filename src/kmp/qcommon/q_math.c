@@ -607,7 +607,7 @@ float AngleNormalize180 ( float angle ) {
 	return angle;
 }
 
-//::OSDF added
+//::KUA.add
 //::::::::::::::::
 // AngleNormalizePI
 //   returns angle normalized to the range [-PI <= angle < PI]
@@ -617,7 +617,7 @@ float AngleNormalizePI(float angle) {
   return angle < 0 ? angle + (float)M_PI : angle - (float)M_PI;
 }
 //::::::::::::::::
-//::OSDF end
+//::KUA.end
 
 
 /*

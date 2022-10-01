@@ -427,7 +427,7 @@ void CG_ColorForHealth( vec4_t hcolor ) {
 }
 
 //:::::::::::::::::
-//::OSDF added. Used for HUD
+//::KUA.add. Used for HUD
 typedef struct {
   float    x1;
   float    x2;
@@ -497,7 +497,7 @@ void CG_FillAngleYaw(float start, float end, float yaw, float y, float h, vec4_t
     CG_FillRect(range.x2, y, cgs.screenWidth - range.x2, h, color);
   }
 }
-//::OSDF end
+//::KUA.end
 //:::::::::::::::::
 
 

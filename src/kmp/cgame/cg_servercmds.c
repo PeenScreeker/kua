@@ -475,7 +475,7 @@ static void CG_MapRestart( void ) {
 	// play the "fight" sound if this is a restart without warmup
 	if ( cg.warmup == 0 /* && cgs.gametype == GT_TOURNAMENT */) {
 		trap_S_StartLocalSound( cgs.media.countFightSound, CHAN_ANNOUNCER );
-		//CG_CenterPrint( "FIGHT!", 120, GIANTCHAR_WIDTH*2 ); //::OSDF removed giant FIGHT! message
+		//CG_CenterPrint( "FIGHT!", 120, GIANTCHAR_WIDTH*2 ); //::KUA.rmv giant FIGHT! message
 	}
 #ifdef TEAMARENA
 	if (cg_singlePlayerActive.integer) {
@@ -974,7 +974,7 @@ static void CG_RemoveChatEscapeChar( char *text ) {
 	text[l] = '\0';
 }
 
-//::OSDF added
+//::KUA.add
 //::::::::::::
 //TODO: Condense them together into a timerUpdate method 
 static void CG_TimerStart( int timer ) {
@@ -1000,7 +1000,7 @@ static void CG_TimerCheckpoint( int timer ) {
   // do timer cp here
 }
 //::::::::::::
-//::OSDF end
+//::KUA.end
 
 /*
 =================
@@ -1129,7 +1129,7 @@ static void CG_ServerCommand( void ) {
 		return;
 	}
 
-  //::OSDF added
+  //::KUA.add
   //::::::::::::
  	if (!Q_stricmp( cmd, "timerStart" )) {
     CG_TimerStart( atoi(CG_Argv(1)) );
@@ -1148,7 +1148,7 @@ static void CG_ServerCommand( void ) {
 		return;
 	}
   //::::::::::::
-  //::OSDF end
+  //::KUA.end
 
 
 	CG_Printf( "Unknown client game command: %s\n", cmd );

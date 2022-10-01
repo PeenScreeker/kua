@@ -644,12 +644,12 @@ fire_rocket
 */
 gentity_t *fire_rocket (gentity_t *self, vec3_t start, vec3_t dir) {
 	gentity_t	*bolt;
-	//::OSDF modded
+	//::KUA.chg
 	int rocket_speed 		= (phy_movetype.integer == CPM) ? 1000 : 900;
 	int rocket_dmg			= 100;
 	int rocket_splashdmg	= 100;
 	int rocket_splashrad	= 120;
-	//::OSDF end 
+	//::KUA.end 
 
 	VectorNormalize (dir);
   // Create the rocket entity
@@ -665,9 +665,9 @@ gentity_t *fire_rocket (gentity_t *self, vec3_t start, vec3_t dir) {
 	bolt->r.ownerNum = self->s.number;
 	bolt->parent = self;
   // Damage and method of death
-	bolt->damage = rocket_dmg; 				//::OSDF changed to variable rocket_dmg
-	bolt->splashDamage = rocket_splashdmg;	//::OSDF changed to variable rocket_splashdmg
-	bolt->splashRadius = rocket_splashrad;	//::OSDF changed to variable rocket_splashrad
+	bolt->damage = rocket_dmg; 				//::KUA.chgd to variable rocket_dmg
+	bolt->splashDamage = rocket_splashdmg;	//::KUA.chgd to variable rocket_splashdmg
+	bolt->splashRadius = rocket_splashrad;	//::KUA.chgd to variable rocket_splashrad
 	bolt->methodOfDeath = MOD_ROCKET;
 	bolt->splashMethodOfDeath = MOD_ROCKET_SPLASH;
   // Collision
@@ -677,7 +677,7 @@ gentity_t *fire_rocket (gentity_t *self, vec3_t start, vec3_t dir) {
 	bolt->s.pos.trType = TR_LINEAR;
 	bolt->s.pos.trTime = level.time - MISSILE_PRESTEP_TIME;		// move a bit on the very first frame
 	VectorCopy( start, bolt->s.pos.trBase );
-	VectorScale( dir, rocket_speed, bolt->s.pos.trDelta ); //::OSDF changed to variable rocket_speed
+	VectorScale( dir, rocket_speed, bolt->s.pos.trDelta ); //::KUA.chgd to variable rocket_speed
 	SnapVector( bolt->s.pos.trDelta );			// save net bandwidth
 	VectorCopy( start, bolt->r.currentOrigin);
 

@@ -1,11 +1,36 @@
-# Roadmap:
-## Strafehud and velocity pads (0.3.0)
-- [ ] Proxymod strafehud
-- [ ] Velocity pads  
+# Roadmap
 
-## Proxymod port (0.4.0) 
-_// Requires a non-qvm environment (depends on <stdlib.h> for math)_
-- [ ] Complete proxymod port
+# Code
+PlayerState rework to generic rpg
+
+# Standalone Freedom
+## UI
+## Game: Client
+## Game: Server
+
+# UX
+- [ ] Launcher & Autoupdater app (probably with nuklear ui)
+- [ ] Steam integration (requires Standalone game)
+
+# GUI
+## UI
+- [ ] Font support
+- [ ] UI q3ui
+- [ ] UI revamp
+- [ ] Map loader UI  
+- [ ] Improved Loading screen:
+  - [ ] Better map info distribution
+  - [ ] Add map description text field
+- [ ] `/varcommand`
+
+## HUD
+- [ ] Hud element: Current map & Internal version  
+- [ ] ... wsw hud system (how does it work? can it be ported?)
+
+
+## Racing HUD
+- [ ] New hud for Player state configuration (health, ammo, powerups, etc)  
+- [ ] Proxymod support  
   - [ ] strafehud
     - [ ] accel
     - [ ] snaps
@@ -15,28 +40,31 @@ _// Requires a non-qvm environment (depends on <stdlib.h> for math)_
   - [ ] RL
   - [ ] GL
   - [ ] bbox
+  - [ ] Port [examples](github.com/Jelvan1/cgame_proxymod#examples)
 
+---
 
-## 0.5.0 and over
-- [ ] Crouch doesn't remove +left/+right
-- [ ] Menus
-- [ ] cg_drawgun 2
-- [ ] cg_nodamagekick
-- [ ] ...
-  - [ ] Complete the list of TODO features
-- [ ] Auto demo recording on timerStart, stop on timerEnd, and cancel on playerdie
+# Gameplay
+## Entities
+### New
+- [ ] Velocity pads  
+- [ ] Q1 barrel
+- [ ] USE buttons
+- [ ] Port Warp entities
 
-
-
-## Entities (0.6.0)
+### Change
+- [ ] Teleport
+  - [ ] 0ups SpawnFlag
+  - [ ] No reset speed SpawnFlag
 - [ ] Map entities reset on `ClientSpawn()`
-- [ ] No reset speed Teleporter SpawnFlag
-- [ ] Support for all Entities
+- [ ] Support for all defrag Entities
+  - [ ] trigger_ entities
+    - [ ] trigger_push_velocity
   - [ ] target_ entities
+    - [ ] target_speed
     - [x] target_startTimer
     - [x] target_stopTimer
     - [ ] target_checkpoint
-    - [ ] target_speed
     - [ ] target_fragsFilter
     - [ ] target_init
     - [ ] target_smallprint
@@ -47,8 +75,6 @@ _// Requires a non-qvm environment (depends on <stdlib.h> for math)_
     - [ ] shooter_plasma_targetplayer
     - [ ] shooter_rocket_targetplayer
     - [ ] shooter_bfg
-  - [ ] trigger_ entities
-    - [ ] trigger_push_velocity
   - [ ] weapon_grapplinghook_types (support for all df hook types)
 - [ ] Entity filters:
   - [ ] notcpm
@@ -60,13 +86,59 @@ _// Requires a non-qvm environment (depends on <stdlib.h> for math)_
   - [ ] notfc
   - [ ] notdefrag
 
-## Gamemodes (0.7.0)
-- [ ] Run (complete)
-- [ ] Tricks Mode
-- [ ] FastCap
-- [ ] Hooks
+## Physics
+- [ ] CPM rework (speed)
+  - [ ] New name
+  - [ ] Autojump
+    - [ ] no-boost on hold
+    - [ ] boost on manual
+  - [ ] Halfjump
+  - [ ] SBJ
+  - [ ] No W-turn
+  - [ ] Crouchslide
 
-## Multiplayer (0.8.0)
+- [ ] VQ2 rework (tech)
+  - [ ] Autojump
+    - [ ] no-boost on hold
+    - [ ] boost on manual
+  - [ ] Crouchslide with vq3 slick turnrate
+  - [ ] Additive multijumps
+  - [ ] Rampslides
+  - [ ] Rampjumps (even during rampslide, if below dj-time)
+
+- [x] vq1 movement (qw/ag)
+  - [x] AD movement
+    - [x] QW balanced
+    - [x] AG balanced
+  - [x] Half Jumps (aka Duckroll)
+  - [ ] Feetraise (SBJ)
+    - [x] Basic implementation
+    - [ ] Fix crouch-jumping
+  - [ ] Q1 rocket launcher
+  - [ ] Gaus (needs new name)
+  - [ ] ...
+- [x] vq4 movement
+- [x] vjk movement
+  - [x] holdboost mechanic
+- [ ] New mechanics
+  - [ ] Airjump (Powerup and WW passive)
+  - [ ] Walljumps (urt insp) (optional wsw-like powerup, to boost its power)
+  - [ ] Dash
+  - [ ] Blink
+  - [ ] Charge
+  - [ ] Bow
+  - [ ] ...
+- [ ] W based physics (WW)
+  - [ ] W turning affected by phy_ground_accel and phy_speed (aka also by haste)
+  - [ ] W accelerate (how to balance)
+  - [ ] AirJump by default
+  - [ ] Dash by default (ground and air)
+  - [ ] Blink by default (MC-EoE style?)
+  - [ ] Wallkick by default
+- [ ] Vortex weapons (implosion/pull instead of explosion/knockback)
+- [ ] Portals
+
+## Multiplayer
 - [ ] Multiplayer
   - [ ] Remove player interaction (`df_mp_interferenceOff`)
   - [ ] Per client entity state (timers, weapons, etc)
@@ -77,68 +149,30 @@ _// Requires a non-qvm environment (depends on <stdlib.h> for math)_
   - [ ] Per-client activation of triggers
   - [ ] Checkpoints and comparison to best times
 
-## Ghosts and Records (0.9.0)
-- [ ] Records saving to disk 
-- [ ] Automatic replay recording
-- [ ] Ghosts
+---
 
-## Complete functionality (1.0.0)
-- [ ] Entity compatibility for existing maps
-- [ ] HUD customization
-- [ ] HUD cvar compatibility
-- [ ] Server leaderboards
-- [ ] Web access to leaderboards data
+# Bug fixes
+- [ ] `/map_restart` doesn't reset timer
+- [ ] (CPM) Correct deceleration values
+- [ ] double-ramp-boost bug on `r7-climbworld` (found on VQ1, check on other physics)
+- [ ] Wall-stop bug
+- [ ] sound bug on some systems (potentially SDL non-static linking or version)  
+- [ ] 1ups overbounce fix
+- [ ] `g_synchronousClients 1` by default for offline
 
-## Expand (+1.0.0)
-_[this section is not a todo, but more like a wishlist of sorts]_
-- [ ] Airjump Powerup
-- [ ] Physics selection Powerups (cpm and vq3 sections in the same map)
-- [ ] Client sided logic (EntityPlus and SourceEngine-I/O inspired)
-- [ ] Gamemodes:
-  - [ ] Native race mode (like AG, first to finish wins. also FFA race, standings based on finish order)
-  - [ ] PVP race mode (can interact with other players, and do things to change their movement)
-  - [ ] Timed Duel maps : Pick all key items to set a time (like ctf, but for duel maps instead)
-- [ ] Look-behind command (map-based, not global)
-- [ ] Improved replay tools (q3mme inspired, using the new UI tools)
-- [ ] New data and stats:
-  - [ ] Persistent stats per map.
-  - [ ] Checkpoints: player vs wr, p vs pb (spec or own), p vs own pb
-  - [ ] Getting data from leaderboards server to compare
-- [ ] Ghosts expand:
-  - [ ] Multiple ghosts (example: own & spec'ed player)
-- [ ] Conditional binds (bind X if cvar cvarvalue actionTrue actionFalse)
-- [ ] Improved Loading screen:
-  - [ ] Adjust thumbnail based on resolution
-  - [ ] Better map info distribution
-  - [ ] Add map description text field
-- [ ] Separate respawn command
-- [ ] 0ups Teleport property
+---
 
+### Postponed, but wanted as Core 
+_(Features delayed due to scope control. Could take too long, shipping is priority)_  
+_(All of them are very wanted, and will become Core eventually)_  
+- [ ] CGLTF library integration
+- [ ] Refactored engine
+  - [ ] OpenGL3 renderer
+  - [ ] GLFW, remove SDL
+  - [ ] Nuklear UI integration
+- [ ] Unlock 1000 maxfps. Possible with opengl1?
 
-### New physics
-- [x] vq1 movement (qw/ag)
-  - [x] AD movement
-    - [x] QW balanced
-    - [x] AG balanced
-  - [x] Baby Jumps (aka Duckroll)
-  - [x] SBJ
-  - [ ] Q1 rocket launcher
-  - [ ] Gaus (needs new name)
-  - [ ] ...
-- [ ] vq2 movement
-- [x] vq4 movement
-- [ ] New mechanics
-  - [ ] Walljumps (urt insp) (optional wsw-like powerup, to boost its power)
-  - [ ] ...
-
-## Wishlist
-- [ ] Vortex weapons (implosion/pull instead of explosion/knockback)
-- [ ] Portals
-- [ ] Steam integration (requires Standalone game, since we are not modding baseq3 but gpl code)
-
-## Fixes
-- [ ] Make target_speaker loop globally (currently can either loop or global, but not both)
-- [ ] Solve issues with clip/slick/trigger brush rendering. transparency, render limit, impossible to hide some brushes from gameplay
+---
 
 # Done:
 ## Works in default q3a
@@ -190,4 +224,3 @@ _[this section is not a todo, but more like a wishlist of sorts]_
 - [x] no-ob
   - [x] Rough implementation (cvar phy_overbounce_scale = 1.000f) //TODO Code is created. cvar is currently disconnected
   - [x] Robust fix for random overbounces only, while keeping the good ones.
-

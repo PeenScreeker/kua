@@ -74,7 +74,7 @@ vmCvar_t	g_smoothClients;
 vmCvar_t	g_rankings;
 vmCvar_t	g_listEntity;
 vmCvar_t	g_localTeamPref;
-//::OSDF modded
+//::KUA.chg
 vmCvar_t	phy_speed;
 vmCvar_t	phy_gravity;
 vmCvar_t	phy_knockback;
@@ -94,7 +94,7 @@ vmCvar_t	phy_rocket_speed;
 vmCvar_t	phy_rocket_damage;
 vmCvar_t	phy_rocket_splashDamage;
 vmCvar_t	phy_rocket_splashRadius;
-//::OSDF end
+//::KUA.end
 
 #ifdef TEAMARENA
 vmCvar_t	g_obeliskHealth;
@@ -149,13 +149,13 @@ static cvarTable_t		gameCvarTable[] = {
 
 	{ &g_weaponRespawn, "g_weaponrespawn", "5", 0, 0, qtrue  },
 	{ &g_weaponTeamRespawn, "g_weaponTeamRespawn", "30", 0, 0, qtrue },
-	{ &g_forcerespawn, "g_forcerespawn", "1", 0, 0, qtrue }, //::OSDF changed to 1, from 20
+	{ &g_forcerespawn, "g_forcerespawn", "1", 0, 0, qtrue }, //::KUA.chgd to 1, from 20
 	{ &g_inactivity, "g_inactivity", "0", 0, 0, qtrue },
 	{ &g_debugMove, "g_debugMove", "0", 0, 0, qfalse },
 	{ &g_debugDamage, "g_debugDamage", "0", 0, 0, qfalse },
 	{ &g_debugAlloc, "g_debugAlloc", "0", 0, 0, qfalse },
 	{ &g_motd, "g_motd", "", 0, 0, qfalse },
-	{ &g_blood, "com_blood", "0", 0, 0, qfalse }, //::OSDF changed to 0, from 1
+	{ &g_blood, "com_blood", "0", 0, 0, qfalse }, //::KUA.chgd to 0, from 1
 
 	{ &g_podiumDist, "g_podiumDist", "80", 0, 0, qfalse },
 	{ &g_podiumDrop, "g_podiumDrop", "70", 0, 0, qfalse },
@@ -182,7 +182,7 @@ static cvarTable_t		gameCvarTable[] = {
 	{ &g_rankings, "g_rankings", "0", 0, 0, qfalse},
 	{ &g_localTeamPref, "g_localTeamPref", "", 0, 0, qfalse },
 
-	//::OSDF modded
+	//::KUA.chg
 	{ &phy_speed, "phy_speed", "320", 0, 0, qtrue  },
 	{ &phy_gravity, "phy_gravity", "800", 0, 0, qtrue  },
 	{ &phy_knockback, "phy_knockback", "1000", 0, 0, qtrue  },
@@ -506,7 +506,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 
 	// parse the key/value pairs and spawn gentities
 	G_SpawnEntitiesFromString();
-  //::OSDF TEMP hack
+  //::KUA TEMP hack
   //::::::::::::::::
   // Search for trigger_multiple in the map, with wait -1, and hardcode its wait to 0.5
   //FIXME: This shouldn't exist. Needs to be changed to reset wait time individually per client on ClientRespawn()
@@ -521,7 +521,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
     }
   }
   //::::::::::::::::
-  //::OSDF end
+  //::KUA.end
 
 	// general initialization
 	G_FindTeams();

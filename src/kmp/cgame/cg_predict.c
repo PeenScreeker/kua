@@ -382,7 +382,7 @@ static void CG_TouchTriggerPrediction( void ) {
 }
 
 
-//::OSDF added
+//::KUA.add
 //:::::::::::::::
 // hud_StoreData
 //   Extracts pmove data needed in other parts of cg
@@ -393,7 +393,7 @@ void hud_StoreData(const pmove_t* pmove) {
   cg.pmd = pmove->pmd;                 // Make a copy of it
 }
 //:::::::::::::::
-//::OSDF end
+//::KUA.end
 
 
 /*
@@ -594,14 +594,14 @@ void CG_PredictPlayerState( void ) {
 			cg_pmove.cmd.serverTime = ((cg_pmove.cmd.serverTime + pmove_msec.integer-1) / pmove_msec.integer) * pmove_msec.integer;
 		}
 		
-		//::OSDF modded
+		//::KUA.chg
 		cg_pmove.movetype = phy_movetype.integer;  // Set movetype based on the Cvar
     memset(&cg.pmd, 0, sizeof(cg.pmd));        // Zero out (external) pmoveData before Pmove happens
-		//::OSDF end
+		//::KUA.end
 
 		Pmove (&cg_pmove);
 
-    cg.pmd = cg_pmove.pmd;  //::OSDF added.  Extract pmd data out of cg_pmove (copy internal to external)
+    cg.pmd = cg_pmove.pmd;  //::KUA.add.  Extract pmd data out of cg_pmove (copy internal to external)
 		moved = qtrue;
 
 		// add push trigger movement effects

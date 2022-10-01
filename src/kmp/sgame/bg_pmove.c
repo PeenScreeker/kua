@@ -2024,10 +2024,10 @@ void Pmove(pmove_t *pmove) {
       }
     }
     pmove->cmd.serverTime = pmove->ps->commandTime + msec;
-    //::OSDF modded
+    //::KUA.chg
     if (0){     PmoveSingle(pmove); }           // Uses all ioq3 default PM_ functions
     else  { phy_PmoveSingle(pmove); }           // Uses move code inside  ./phy/*   folder
-    //::OSDF end
+    //::KUA.end
 
     if (pmove->ps->pm_flags & PMF_JUMP_HELD) {
       pmove->cmd.upmove = 20;

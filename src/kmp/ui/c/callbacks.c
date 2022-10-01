@@ -7,7 +7,7 @@
 #  error "Do not use in VM build"
 #endif
 
-//::OSDF change
+//::KUA.chg
 //:::::::::::::::::
 //  Removed function pointer syntax mindfuck
 //  Renamed `syscall` to the more modern day `callback`
@@ -26,7 +26,7 @@ static dllCallback_t callback = (dllCallback_t)-1;
 //    and will assign to the library local variable (static function pointer)
 Q_EXPORT void dllEntry(dllCallback_t callbackptr) { callback = callbackptr; }
 //:::::::::::::::::
-//::OSDF end
+//::KUA.end
 
 //:::::::::::::::::
 // General utility

@@ -252,7 +252,7 @@ static void SV_MapRestart_f( void ) {
 		delay = atoi( Cmd_Argv(1) );
 	}
 	else {
-		delay = 5;
+		delay = 0; // sk->chg : default to 0 with no parameters
 	}
 	if( delay && !Cvar_VariableValue("g_doWarmup") ) {
 		sv.restartTime = sv.time + delay * 1000;

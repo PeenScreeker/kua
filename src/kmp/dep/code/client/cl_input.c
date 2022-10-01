@@ -159,10 +159,7 @@ Returns the fraction of the frame that the key was down
 ===============
 */
 float CL_KeyState( kbutton_t *key ) {
-	float		val;
-	int			msec;
-
-	msec = key->msec;
+	int msec = key->msec;
 	key->msec = 0;
 
 	if ( key->active ) {
@@ -176,96 +173,91 @@ float CL_KeyState( kbutton_t *key ) {
 	}
 
 #if 0
-	if (msec) {
-		Com_Printf ("%i ", msec);
-	}
+	if (msec) { Com_Printf ("%i ", msec); }
 #endif
 
-	val = (float)msec / frame_msec;
-	if ( val < 0 ) {
-		val = 0;
-	}
-	if ( val > 1 ) {
-		val = 1;
-	}
+	float val = (float)msec / frame_msec;
+	if ( val < 0 ) { val = 0; }
+	if ( val > 1 ) { val = 1; }
 
 	return val;
 }
 
 
 
-void IN_UpDown(void) {IN_KeyDown(&in_up);}
-void IN_UpUp(void) {IN_KeyUp(&in_up);}
-void IN_DownDown(void) {IN_KeyDown(&in_down);}
-void IN_DownUp(void) {IN_KeyUp(&in_down);}
-void IN_LeftDown(void) {IN_KeyDown(&in_left);}
-void IN_LeftUp(void) {IN_KeyUp(&in_left);}
-void IN_RightDown(void) {IN_KeyDown(&in_right);}
-void IN_RightUp(void) {IN_KeyUp(&in_right);}
-void IN_ForwardDown(void) {IN_KeyDown(&in_forward);}
-void IN_ForwardUp(void) {IN_KeyUp(&in_forward);}
-void IN_BackDown(void) {IN_KeyDown(&in_back);}
-void IN_BackUp(void) {IN_KeyUp(&in_back);}
-void IN_LookupDown(void) {IN_KeyDown(&in_lookup);}
-void IN_LookupUp(void) {IN_KeyUp(&in_lookup);}
-void IN_LookdownDown(void) {IN_KeyDown(&in_lookdown);}
-void IN_LookdownUp(void) {IN_KeyUp(&in_lookdown);}
-void IN_MoveleftDown(void) {IN_KeyDown(&in_moveleft);}
-void IN_MoveleftUp(void) {IN_KeyUp(&in_moveleft);}
-void IN_MoverightDown(void) {IN_KeyDown(&in_moveright);}
-void IN_MoverightUp(void) {IN_KeyUp(&in_moveright);}
+// clang-format off
+void IN_UpDown(void)        { IN_KeyDown(&in_up); }
+void IN_UpUp(void)          { IN_KeyUp  (&in_up); }
+void IN_DownDown(void)      { IN_KeyDown(&in_down); }
+void IN_DownUp(void)        { IN_KeyUp  (&in_down); }
+void IN_LeftDown(void)      { IN_KeyDown(&in_left); }
+void IN_LeftUp(void)        { IN_KeyUp  (&in_left); }
+void IN_RightDown(void)     { IN_KeyDown(&in_right); }
+void IN_RightUp(void)       { IN_KeyUp  (&in_right); }
+void IN_ForwardDown(void)   { IN_KeyDown(&in_forward); }
+void IN_ForwardUp(void)     { IN_KeyUp  (&in_forward); }
+void IN_BackDown(void)      { IN_KeyDown(&in_back); }
+void IN_BackUp(void)        { IN_KeyUp  (&in_back); }
+void IN_LookupDown(void)    { IN_KeyDown(&in_lookup); }
+void IN_LookupUp(void)      { IN_KeyUp  (&in_lookup); }
+void IN_LookdownDown(void)  { IN_KeyDown(&in_lookdown); }
+void IN_LookdownUp(void)    { IN_KeyUp  (&in_lookdown); }
+void IN_MoveleftDown(void)  { IN_KeyDown(&in_moveleft); }
+void IN_MoveleftUp(void)    { IN_KeyUp  (&in_moveleft); }
+void IN_MoverightDown(void) { IN_KeyDown(&in_moveright); }
+void IN_MoverightUp(void)   { IN_KeyUp  (&in_moveright); }
 
-void IN_SpeedDown(void) {IN_KeyDown(&in_speed);}
-void IN_SpeedUp(void) {IN_KeyUp(&in_speed);}
-void IN_StrafeDown(void) {IN_KeyDown(&in_strafe);}
-void IN_StrafeUp(void) {IN_KeyUp(&in_strafe);}
+void IN_SpeedDown(void)     { IN_KeyDown(&in_speed); }
+void IN_SpeedUp(void)       { IN_KeyUp  (&in_speed); }
+void IN_StrafeDown(void)    { IN_KeyDown(&in_strafe); }
+void IN_StrafeUp(void)      { IN_KeyUp  (&in_strafe); }
+// clang-format on
 
 #ifdef USE_VOIP
-void IN_VoipRecordDown(void)
-{
+void IN_VoipRecordDown(void) {
 	IN_KeyDown(&in_voiprecord);
 	Cvar_Set("cl_voipSend", "1");
 }
-
-void IN_VoipRecordUp(void)
-{
+void IN_VoipRecordUp(void) {
 	IN_KeyUp(&in_voiprecord);
 	Cvar_Set("cl_voipSend", "0");
 }
 #endif
 
-void IN_Button0Down(void) {IN_KeyDown(&in_buttons[0]);}
-void IN_Button0Up(void) {IN_KeyUp(&in_buttons[0]);}
-void IN_Button1Down(void) {IN_KeyDown(&in_buttons[1]);}
-void IN_Button1Up(void) {IN_KeyUp(&in_buttons[1]);}
-void IN_Button2Down(void) {IN_KeyDown(&in_buttons[2]);}
-void IN_Button2Up(void) {IN_KeyUp(&in_buttons[2]);}
-void IN_Button3Down(void) {IN_KeyDown(&in_buttons[3]);}
-void IN_Button3Up(void) {IN_KeyUp(&in_buttons[3]);}
-void IN_Button4Down(void) {IN_KeyDown(&in_buttons[4]);}
-void IN_Button4Up(void) {IN_KeyUp(&in_buttons[4]);}
-void IN_Button5Down(void) {IN_KeyDown(&in_buttons[5]);}
-void IN_Button5Up(void) {IN_KeyUp(&in_buttons[5]);}
-void IN_Button6Down(void) {IN_KeyDown(&in_buttons[6]);}
-void IN_Button6Up(void) {IN_KeyUp(&in_buttons[6]);}
-void IN_Button7Down(void) {IN_KeyDown(&in_buttons[7]);}
-void IN_Button7Up(void) {IN_KeyUp(&in_buttons[7]);}
-void IN_Button8Down(void) {IN_KeyDown(&in_buttons[8]);}
-void IN_Button8Up(void) {IN_KeyUp(&in_buttons[8]);}
-void IN_Button9Down(void) {IN_KeyDown(&in_buttons[9]);}
-void IN_Button9Up(void) {IN_KeyUp(&in_buttons[9]);}
-void IN_Button10Down(void) {IN_KeyDown(&in_buttons[10]);}
-void IN_Button10Up(void) {IN_KeyUp(&in_buttons[10]);}
-void IN_Button11Down(void) {IN_KeyDown(&in_buttons[11]);}
-void IN_Button11Up(void) {IN_KeyUp(&in_buttons[11]);}
-void IN_Button12Down(void) {IN_KeyDown(&in_buttons[12]);}
-void IN_Button12Up(void) {IN_KeyUp(&in_buttons[12]);}
-void IN_Button13Down(void) {IN_KeyDown(&in_buttons[13]);}
-void IN_Button13Up(void) {IN_KeyUp(&in_buttons[13]);}
-void IN_Button14Down(void) {IN_KeyDown(&in_buttons[14]);}
-void IN_Button14Up(void) {IN_KeyUp(&in_buttons[14]);}
-void IN_Button15Down(void) {IN_KeyDown(&in_buttons[15]);}
-void IN_Button15Up(void) {IN_KeyUp(&in_buttons[15]);}
+// clang-format off
+void IN_Button0Down(void)  { IN_KeyDown(&in_buttons[0]);}
+void IN_Button0Up(void)    { IN_KeyUp  (&in_buttons[0]);}
+void IN_Button1Down(void)  { IN_KeyDown(&in_buttons[1]);}
+void IN_Button1Up(void)    { IN_KeyUp  (&in_buttons[1]);}
+void IN_Button2Down(void)  { IN_KeyDown(&in_buttons[2]);}
+void IN_Button2Up(void)    { IN_KeyUp  (&in_buttons[2]);}
+void IN_Button3Down(void)  { IN_KeyDown(&in_buttons[3]);}
+void IN_Button3Up(void)    { IN_KeyUp  (&in_buttons[3]);}
+void IN_Button4Down(void)  { IN_KeyDown(&in_buttons[4]);}
+void IN_Button4Up(void)    { IN_KeyUp  (&in_buttons[4]);}
+void IN_Button5Down(void)  { IN_KeyDown(&in_buttons[5]);}
+void IN_Button5Up(void)    { IN_KeyUp  (&in_buttons[5]);}
+void IN_Button6Down(void)  { IN_KeyDown(&in_buttons[6]);}
+void IN_Button6Up(void)    { IN_KeyUp  (&in_buttons[6]);}
+void IN_Button7Down(void)  { IN_KeyDown(&in_buttons[7]);}
+void IN_Button7Up(void)    { IN_KeyUp  (&in_buttons[7]);}
+void IN_Button8Down(void)  { IN_KeyDown(&in_buttons[8]);}
+void IN_Button8Up(void)    { IN_KeyUp  (&in_buttons[8]);}
+void IN_Button9Down(void)  { IN_KeyDown(&in_buttons[9]);}
+void IN_Button9Up(void)    { IN_KeyUp  (&in_buttons[9]);}
+void IN_Button10Down(void) { IN_KeyDown(&in_buttons[10]);}
+void IN_Button10Up(void)   { IN_KeyUp  (&in_buttons[10]);}
+void IN_Button11Down(void) { IN_KeyDown(&in_buttons[11]);}
+void IN_Button11Up(void)   { IN_KeyUp  (&in_buttons[11]);}
+void IN_Button12Down(void) { IN_KeyDown(&in_buttons[12]);}
+void IN_Button12Up(void)   { IN_KeyUp  (&in_buttons[12]);}
+void IN_Button13Down(void) { IN_KeyDown(&in_buttons[13]);}
+void IN_Button13Up(void)   { IN_KeyUp  (&in_buttons[13]);}
+void IN_Button14Down(void) { IN_KeyDown(&in_buttons[14]);}
+void IN_Button14Up(void)   { IN_KeyUp  (&in_buttons[14]);}
+void IN_Button15Down(void) { IN_KeyDown(&in_buttons[15]);}
+void IN_Button15Up(void)   { IN_KeyUp  (&in_buttons[15]);}
+// clang-format on
 
 void IN_CenterView (void) {
 	cl.viewangles[PITCH] = -SHORT2ANGLE(cl.snap.ps.delta_angles[PITCH]);

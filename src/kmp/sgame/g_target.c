@@ -465,7 +465,7 @@ void SP_target_location( gentity_t *self ){
 	G_SetOrigin( self, self->s.origin );
 }
 
-//::OSDF added
+//::KUA.add
 //::::::::::::::
 void Use_target_startTimer( gentity_t *self, gentity_t *other, gentity_t *activator ) {
   int clNum = activator - g_entities;
@@ -506,5 +506,5 @@ void SP_target_stopTimer( gentity_t *self ) {
 	self->use = Use_target_stopTimer;
 }
 //::::::::::::::
-//::OSDF end
+//::KUA.end
 

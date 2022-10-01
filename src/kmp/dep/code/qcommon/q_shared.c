@@ -1461,7 +1461,7 @@ char *Com_SkipTokens( char *s, int numTokens, char *sep )
 		return s;
 }
 
-//::OSDF modded
+//::KUA.chg
 //:::::::::::::::::
 // VectorMAM: taken from mmod. :: Not in q3a. May come from xonotic originally
 //#define VectorMAM(scale1, b1, scale2, b2, c) (c.x = scale1 * b1.x + scale2 * b2.x, c.y = scale1 * b1.y + scale2 * b2.y, c.z = scale1 * b1.z + scale2 * b2.z);
@@ -1471,5 +1471,5 @@ void VectorMAM(float scale1, vec3_t b1, float scale2, vec3_t b2, vec3_t c){
     c[2] = scale1 * b1[2] + scale2 * b2[2];
 };
 //:::::::::::::::::
-//::OSDF end
+//::KUA.end
 

@@ -29,7 +29,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #endif
 
 
-//::OSDF change
+//::KUA.chg
 //  Removed syntax mindfuck
 //:::::::::::::::::
 // dllSyscall_t
@@ -53,7 +53,7 @@ Q_EXPORT void dllEntry( dllSyscall_t syscallptr ) {
   syscall = syscallptr;
 }
 //:::::::::::::::::
-//::OSDF end
+//::KUA.end
 
 int PASSFLOAT( float x ) {
 	floatint_t fi;

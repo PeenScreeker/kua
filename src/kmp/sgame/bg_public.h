@@ -191,11 +191,11 @@ typedef struct {
 	// these will be different functions during game and cgame
 	void		(*trace)( trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentMask );
 	int			(*pointcontents)( const vec3_t point, int passEntityNum );
-	//::OSDF modded
+	//::KUA.chg
 	int			movetype;			// Physics type selection from cvar. Latch protected
 	float		overbounce_scale;	// Amount of overbounce scale to apply. Default OVERCLIP = 1.001f
   pmoveData_t pmd;  // Stores extracted pmove data needed outside of pmove
-	//::OSDF end
+	//::KUA.end
 } pmove_t;
 
 // if a full pmove isn't done on the client, you can just update the angles
@@ -218,13 +218,13 @@ typedef enum {
 	STAT_DEAD_YAW,					// look this direction when dead (FIXME: get rid of?)
 	STAT_CLIENTS_READY,				// bit mask of clients wishing to exit the intermission (FIXME: configstring?)
 	STAT_MAX_HEALTH,				// health / armor limit, changeable by handicap
-	//::OSDF modded
+	//::KUA.chg
 	STAT_TIME_LASTJUMP,				// level.time when the last jump happened
 	STAT_TIME_START,				// level.time when the start trigger was hit. NULL means timer is disabled
   STAT_TIME_CROUCHSLIDE,  // Amount of msec left for crouchsliding
   STAT_RAMPSLIDE,         // Active when rampsliding
   STAT_JUMP_HOLDBOOST,    // Stores current amount of jumphold boost (VJK)
-	//::OSDF end
+	//::KUA.end
 } statIndex_t;
 
 
@@ -717,7 +717,7 @@ void	BG_TouchJumpPad( playerState_t *ps, entityState_t *jumppad );
 void	BG_PlayerStateToEntityState( playerState_t *ps, entityState_t *s, qboolean snap );
 void	BG_PlayerStateToEntityStateExtraPolate( playerState_t *ps, entityState_t *s, int time, qboolean snap );
 
-qboolean	BG_PlayerTouchesItem( playerState_t *ps, entityState_t *item, int atTime, int movetype ); //::OSDF modded for item pickup size
+qboolean	BG_PlayerTouchesItem( playerState_t *ps, entityState_t *item, int atTime, int movetype ); //::KUA.chg for item pickup size
 
 
 #define ARENAS_PER_TIER		4

@@ -120,7 +120,7 @@ static void CG_Obituary( entityState_t *ent ) {
 
 	switch( mod ) {
 	case MOD_SUICIDE:
-		//message = "suicides"; //::OSDF removed respawn spam
+		//message = "suicides"; //::KUA.rmv respawn spam
 		break;
 	case MOD_FALLING:
 		message = "cratered";
@@ -327,13 +327,13 @@ static void CG_Obituary( entityState_t *ent ) {
 		}
 
 		if (message) {
-			//::OSDF modded. Removed respawn spam
+			//::KUA.chg. Removed respawn spam
 			switch (mod) {
 			case MOD_SUICIDE: 	
 				return;
 			default:			CG_Printf( "%s %s %s%s\n", targetName, message, attackerName, message2);
 			}
-			//::OSDF end
+			//::KUA.end
 			return;
 		}
 	}
@@ -517,7 +517,7 @@ void CG_PainEvent( centity_t *cent, int health ) {
 }
 
 
-//::OSDF Added : Sound event limits
+//::KUA.add : Sound event limits
 typedef struct {
   int      event;       // Event index the limit is tied to
   int      limit;       // Time (in ms) to wait for playing the sound again
@@ -572,7 +572,7 @@ static void CG_PlaySound(int event, entityState_t* es, clientInfo_t* ci) {
   limit->lastPlayed   = cg.snap->serverTime;
   limit->canPlay      = qfalse;
 }
-//::OSDF end
+//::KUA.end
 
 
 /*
@@ -617,13 +617,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_FOOTSTEP:
 		DEBUGNAME("EV_FOOTSTEP");
 		if (cg_footsteps.integer) {
-      if (CG_CanPlaySound(event)) {CG_PlaySound(event, es, ci);}  //::OSDF modded. Changed to time-limited sound
+      if (CG_CanPlaySound(event)) {CG_PlaySound(event, es, ci);}  //::KUA.chg. Changed to time-limited sound
 		}
 		break;
 	case EV_FOOTSTEP_METAL:
 		DEBUGNAME("EV_FOOTSTEP_METAL");
 		if (cg_footsteps.integer) {
-      if (CG_CanPlaySound(event)) {CG_PlaySound(event, es, ci);}  //::OSDF modded. Changed to time-limited sound
+      if (CG_CanPlaySound(event)) {CG_PlaySound(event, es, ci);}  //::KUA.chg. Changed to time-limited sound
 		}
 		break;
 	case EV_FOOTSPLASH:
@@ -650,7 +650,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_FALL_SHORT:
 		DEBUGNAME("EV_FALL_SHORT");
-    if (CG_CanPlaySound(event)) {CG_PlaySound(event, es, ci);}  //::OSDF modded. Changed to time-limited sound
+    if (CG_CanPlaySound(event)) {CG_PlaySound(event, es, ci);}  //::KUA.chg. Changed to time-limited sound
 		if ( clientNum == cg.predictedPlayerState.clientNum ) {
 			// smooth landing z changes
 			cg.landChange = -8;
@@ -737,7 +737,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_JUMP:
 		DEBUGNAME("EV_JUMP");
-    if (CG_CanPlaySound(event)) {CG_PlaySound(event, es, ci);}  //::OSDF modded. Changed to time-limited sound
+    if (CG_CanPlaySound(event)) {CG_PlaySound(event, es, ci);}  //::KUA.chg. Changed to time-limited sound
 		break;
 	case EV_TAUNT:
 		DEBUGNAME("EV_TAUNT");

@@ -43,11 +43,11 @@ char teamChat1[256];
 char teamChat2[256];
 
 
-//::OSDF modded
+//::KUA.chg
 //TODO: Switch to Cvars
 qboolean hud_speed = qtrue;
 qboolean ui_Vspeed = qtrue;
-//::OSDF end
+//::KUA.end
 
 
 #ifdef TEAMARENA
@@ -778,7 +778,7 @@ static float CG_DrawFPS( float y ) {
 /*
 =================
 CG_DrawTimelimit
-//::OSDF modded name from timer to timelimit.
+//::KUA.chg name from timer to timelimit.
 =================
 */
 static float CG_DrawTimelimit( float y ) {
@@ -1000,7 +1000,7 @@ static void CG_DrawUpperRight(stereoFrame_t stereoFrame)
 		y = CG_DrawFPS( y );
 	}
 	if ( cg_drawTimelimit.integer ) {
-		y = CG_DrawTimelimit( y );  //::OSDF modded name from timer to timelimit.
+		y = CG_DrawTimelimit( y );  //::KUA.chg name from timer to timelimit.
 	}
 	if ( cg_drawAttacker.integer ) {
 		CG_DrawAttacker( y );
@@ -2525,7 +2525,7 @@ void CG_DrawTimedMenus( void ) {
 #endif
 
 
-//::OSDF modded
+//::KUA.chg
 //:::::::::::::::::
 // Speedometer
 //
@@ -2625,7 +2625,7 @@ static void CG_DrawHoldboost(float x, float y, float alpha){
   CG_DrawSmallIntCentered(cg.snap->ps.stats[STAT_JUMP_HOLDBOOST], x, y, alpha);
 }
 //::::::::::::::
-//::OSDF end
+//::KUA.end
 
 
 
@@ -2729,7 +2729,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame)
 		CG_DrawCenterString();
 	}
 	
-    //::OSDF modded
+    //::KUA.chg
     //::::::::::::::
     if ( !cg.scoreBoardShowing) {    //FIXME: Segmentation fault when drawing the scoreboard while speed is being drawn
       //TODO: Proper screen allignment
@@ -2741,7 +2741,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame)
       if (cg.snap->ps.pm_time)                      { CG_DrawPMTime         (0.66666, 0.50, 1.0F); }
     }
     //::::::::::::::
-    //::OSDF end
+    //::KUA.end
 }
 
 
