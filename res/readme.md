@@ -15,4 +15,4 @@ Distributing a file called `y.ourmod.example.pk3`:
 - The resulting `.pk3` file will contain a folder and sub-file named `ui/bg.jpg` at its root
 
 **Automation:**  
-The [build.py](`../build.py) script does this process automatically for all existing folders when the `-p` switch is active
+The [build.py](../build.py) script does this process automatically for all existing folders when the `-p` switch is active

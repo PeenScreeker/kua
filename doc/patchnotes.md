@@ -11,8 +11,17 @@
 ## 0.35a
 2022.09.30  
 ```
+fix : Several bug fixes to the build.py and run.py scripts
+new : build.py script now accepts cleaning option
+new : New confy.python utility functions. rm, toPath, isPath, etc
+chg : confy.python tools now always use pathlib.Path objects
+new : (VQ4) Crouch-jumping is now possible
+new : (VQ1) Crouch-jumping is now possible
+new : Engine -> Support for independent jump-crouch inputs
+chg : Updated roadmap. All osdf goals ported to the new file. Needs prioritization and version planning.
 chg : Changed all OSDF code change keys to KUA
 ```
+
 2022.09.30  
 ```
 chg : Updated roadmap, to better reflect Kua goals

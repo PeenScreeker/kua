@@ -99,7 +99,7 @@ static void vq4_Friction( void ) {
 static qboolean vq4_CheckJump(void) {
   // Can't jump cases. Cannot jump again under these conditions
   if (pm->ps->pm_flags & PMF_RESPAWNED) { return qfalse; } // don't allow jump until all buttons are up
-  if (pm->cmd.upmove < 10) { return qfalse; } // not holding jump
+  if (!(pm->cmd.buttons & BUTTON_JUMP)) { return qfalse; } // Jumpcrouch support // not holding jump
   if ((pm->ps->pm_flags & PMF_JUMP_HELD && !phy_jump_auto)) { // must wait for jump to be released
     pm->cmd.upmove = 0; // clear upmove so cmdscale doesn't lower running speed
     return qfalse;

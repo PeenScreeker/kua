@@ -18,35 +18,60 @@ def thisFile(type='abspath'):
     case 'dir'  | 'folder': return dirname(src)
     case _: err(f"Incorrect type keyword in function {__file__}.thisFile(): {type}")
 # def thisDir(): from os.path import dirname; from inspect import getsourcefile; return dirname(str(getsourcefile(lambda:0)))
-def thisDir(): return thisFile("dir")
+def thisDir(): import pathlib, os; return pathlib.Path(os.path.dirname(__file__))
 def thisPkg(): from os.path import dirname, relpath; return relpath(thisDir(), start=dirname(__file__))
 #.....................................
+def isStr(trg): return isinstance(trg, str)
+def isPath(trg):
+  import pathlib
+  return isinstance(trg, pathlib.Path)
 def isUnk(trg): 
   from os.path import exists
   return True if not trg or not exists(trg) else False
 def isDir(trg):
-  from os.path import isdir
+  from pathlib import Path
+  if isStr(trg): return Path(trg).is_dir()
+  if not isPath(trg): return False
   if isUnk(trg): return False
-  return isdir(trg) or trg.is_dir()
+  return trg.is_dir()
 def isFile(trg):
-  from os.path import isfile
+  from pathlib import Path
+  if isStr(trg): return Path(trg).is_file()
+  if not isPath(trg): return False
   if isUnk(trg): return False
-  return isfile(trg) or trg.is_file()
+  return trg.is_file()
+def isExec(trg):
+  if not isFile(trg): return False
+  import stat
+  return bool(trg.stat().st_mode & stat.S_IEXEC)
 def isEmpty(trg):
+  from pathlib import Path
+  if isStr(trg): trg = Path(trg)
   from os.path import getsize
   from os import listdir
   unkn = isUnk(trg)
   dir  = isDir(trg)
   file = isFile(trg)
   if dir:
-    empty = not listdir(trg)
+    empty = not listdir(str(trg))
     return True if empty or unkn else False
   elif file:
-    try:    empty = getsize(trg)
+    try:    empty = getsize(str(trg))
     except: empty = True  # If file does not exist, getsize will raise an exception
     return True if empty or unkn else False
   else:  # Input is not a dir or a file. Treat it as a python variable
     return True if not trg else False
+#.....................................
+def toPath(trg):
+  if isPath(trg): return trg
+  from pathlib import Path
+  if isStr(trg): return Path(trg)
+  else: err(f"Cannot convert {str(trg)} to pathlib.Path()")
+def toExec(trg):
+  if not isPath(trg): trg = toPath(trg)
+  if isExec(trg): return
+  import stat
+  return trg.chmod(trg.stat().st_mode | stat.S_IEXEC)
 #.....................................
 from optparse import OptionParser
 _parser = OptionParser()
@@ -71,9 +96,9 @@ def getArg(idx):
 def getSys():  from platform import system;  return system()
 def getArch(): from platform import machine; return machine()
 #.....................................
-def echo(msg): print(msg)
-def echos(msg, v:str|None=None): v="v" if not v else v; print(msg) if getOpt(v) else nothing()
-echo(f"confy: Importing {__name__} module")  # TODO: How to silence this by default?
+def echo(msg): print("confy:",msg)
+def echos(msg, v:str|None=None): v="v" if not v else v; echo(msg) if getOpt(v) else nothing()
+echo(f"Importing {__name__} module")  # TODO: How to silence this by default?
 #.....................................
 def glob(path, pattern): 
   from pathlib import Path
@@ -92,15 +117,17 @@ def StrToFile(string, file, mode='w'):
   f.close()
 #.....................................
 def FileToFile(src, trg):
-  if not isFile(src): err(f"Tried to copy {src} to {trg}, but source is not a file.")
+  if not isPath(src) or not isPath(trg): err("FileToFile() only accepts Path objects")
+  if not isFile(src): err(f"Tried to copy {str(src)} to {str(trg)}, but source is not a file.")
   # if not isFile(trg): err(f"Tried to copy {src} to {trg}, but target is not a file.")
-  echos(f"confy: Copying {src} to {trg}")
+  echos(f"Copying {str(src)} to {str(trg)}")
   from shutil import copyfile
   copyfile(src, trg)
 def FileToDir(src, trg):
-  if not isFile(src): err(f"Tried to copy {src} to {trg}, but source is not a file.")
-  if not isDir(trg):  err(f"Tried to copy {src} to {trg}, but target is not a dir.")
-  echos(f"confy: Copying {src} to {trg}")
+  if not isPath(src) or not isPath(trg): err("FileToDir() only accepts Path objects")
+  if not isFile(src): err(f"Tried to copy {str(src)} to {str(trg)}, but source is not a file.")
+  if not isDir(trg):  err(f"Tried to copy {str(src)} to {str(trg)}, but target is not a dir.")
+  echos(f"Copying {src} to {trg}")
   from shutil import copyfile
   from os.path import join, basename
   copyfile(src, join(trg, basename(src)))
@@ -119,21 +146,28 @@ def FileReplaceWords(file, table, trg=None):
   StrToFile(src, trg, "w")
 #.....................................
 def DirToDir(src, trg):
+  if not isPath(src) or not isPath(trg): err("DirToDir() only accepts Path objects")
   if not isDir(src): err(f"Tried to copy {src} to {trg}, but source is not a dir.")
   if not isDir(trg): err(f"Tried to copy {src} to {trg}, but target is not a dir.")
-  echos(f"confy: Copying {src} to {trg}")
+  echos(f"Copying {src} to {trg}")
   from shutil import copytree
   copytree(src, trg)
 #.....................................
+def rm(trg):
+  from shutil import rmtree
+  trg = toPath(trg)
+  if isDir(trg): rmtree(trg)
+  else: trg.unlink(missing_ok=True)  # Remove symlink OR file
+#.....................................
 def cp(src,trg):
-  from os.path import isdir
-  from pathlib import Path
-  srcT = 'd' if isdir(src) or Path(src).is_dir() else 'f'
-  trgT = 'd' if isdir(trg) or Path(trg).is_dir() else 'f'
+  srcT = 'd' if isDir(src) else 'f'
+  trgT = 'd' if isDir(trg) else 'f'
   ftod = srcT in 'f' and trgT in 'd'
   ftof = srcT in 'f' and trgT in 'f'
   dtod = srcT in 'd' and trgT in 'd'
   dtof = srcT in 'd' and trgT in 'f'
+  src = toPath(src)
+  trg = toPath(trg)
   if ftod: FileToDir(src, trg)
   if ftof: FileToFile(src, trg)
   if dtod: DirToDir(src, trg)
@@ -141,12 +175,12 @@ def cp(src,trg):
 #.....................................
 def cd(trg):
   if not isDir(trg): err(f"Tried to change dir to {trg}, but it is not a folder")
-  echos(f"confy: Changing folder to {trg}")
+  echos(f"Changing folder to {trg}")
   from os import chdir
   chdir(trg)
 #.....................................
 def mv(src,trg): 
-  echos(f"confy: Moving {src} to {trg}")
+  echos(f"Moving {src} to {trg}")
   import shutil; shutil.move(src,trg)
 #.....................................
 def md(trg): 
@@ -182,6 +216,9 @@ def bash(cmd, dir="", type='print'):
   return result
 #.....................................
 def Zip(src,trg,rel=None):
+  if isPath(src): src = str(src)
+  if isPath(trg): trg = str(trg)
+  if isPath(rel): rel = str(rel)
   from os.path import join, relpath, basename, dirname, isfile, isdir
   from os import walk
   if not rel: rel = str(dirname(trg))
@@ -204,6 +241,8 @@ def Zip(src,trg,rel=None):
   z.close()
 
 def Pk3(list, trg, rel=None):
+  if isPath(trg): trg = str(trg)
+  if isPath(rel): rel = str(rel)
   from os.path import splitext
   z = splitext(trg)[0]+".zip" 
   p = splitext(trg)[0]+".pk3" 
@@ -211,6 +250,9 @@ def Pk3(list, trg, rel=None):
   mv(z,p)
 #.....................................
 def ZipDir(src,trg,rel=None):
+  if isPath(src): src = str(src)
+  if isPath(trg): trg = str(trg)
+  if isPath(rel): rel = str(rel)
   from os.path import relpath, join; from os import walk
   from zipfile import ZipFile, ZIP_DEFLATED
   if not rel: rel = src
@@ -222,6 +264,9 @@ def ZipDir(src,trg,rel=None):
   z.close()
 
 def Pk3Dir(src, trg, rel=None):
+  if isPath(src): src = str(src)
+  if isPath(trg): trg = str(trg)
+  if isPath(rel): rel = str(rel)
   from os.path import basename, splitext, dirname, join
   z = splitext(basename(trg))[0]+".zip"
   p = splitext(basename(trg))[0]+".pk3"
@@ -229,6 +274,8 @@ def Pk3Dir(src, trg, rel=None):
   mv(z, join(dirname(trg), p))
 #.....................................
 def Pk3CreateAll(src, trg, prefix=None, exclude=None):
+  if isPath(src): src = str(src)
+  if isPath(trg): trg = str(trg)
   from os.path import join, basename, isdir 
   if prefix is None: prefix = "y.custom."
   dirs = [d for d in glob(src, "*") if d.is_dir() or isdir(d)]
@@ -242,5 +289,5 @@ def Pk3CreateAll(src, trg, prefix=None, exclude=None):
 
 #....................................................................
 # Import guard
-if __name__=='__main__': import sys; sys.exit(f'::MODULE-ERROR: {__file__} is only meant to be executed as a module')
+if __name__=='__main__': import sys; sys.exit(f'::MODULE-ERROR: {__file__} is only meant to be used as a module')
 #....................................................................

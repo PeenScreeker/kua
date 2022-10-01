@@ -1276,11 +1276,11 @@ typedef struct playerState_s {
 #define BUTTON_PATROL       (1<<9)
 #define BUTTON_FOLLOWME     (1<<10)
 
-#define BUTTON_JUMP         (1<<11)
-#define BUTTON_CROUCH       (1<<12)
-#define BUTTON_ONE          (1<<13)
-#define BUTTON_TWO          (1<<14)
-#define BUTTON_THREE        (1<<15)
+#define BUTTON_JUMP         (1<<11)  // Jump key is pressed. Default uses combined upmove
+#define BUTTON_CROUCH       (1<<12)  // Crouch key is pressed. Default uses combined upmove
+#define BUTTON_GNR1         (1<<13)  // Generic button 1
+#define BUTTON_GNR2         (1<<14)  // Generic button 2
+#define BUTTON_GNR3         (1<<15)  // Generic button 3
 #define BUTTON_ANY          (1<<16)  // any key whatsoever
 
 #define MOVE_RUN            120      // if forwardmove or rightmove are >= MOVE_RUN, then BUTTON_WALKING should be set

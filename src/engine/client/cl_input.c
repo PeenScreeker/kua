@@ -351,8 +351,15 @@ static void CL_KeyMove( usercmd_t *cmd ) {
 	side -= movespeed * CL_KeyState (&in_moveleft);
 
 
-	up += movespeed * CL_KeyState (&in_up);
-	up -= movespeed * CL_KeyState (&in_down);
+	//::KUA.add -> separate jump/crouch button press detection
+	//     .chg -> call CL_KeyState only once, and use that value for detection. Breaks if called multiple times
+	float upState   = CL_KeyState (&in_up);
+	float downState = CL_KeyState (&in_down);
+	up += movespeed * upState;
+	up -= movespeed * downState;
+	if (upState)   { cmd->buttons |= BUTTON_JUMP; }
+	if (downState) { cmd->buttons |= BUTTON_CROUCH; }
+	//::KUA.end
 
 	forward += movespeed * CL_KeyState (&in_forward);
 	forward -= movespeed * CL_KeyState (&in_back);

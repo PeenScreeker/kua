@@ -9,15 +9,22 @@ PlayerState rework to generic rpg
 ## Game: Server
 
 # UX
+## New Users
 - [ ] Launcher & Autoupdater app (probably with nuklear ui)
 - [ ] Steam integration (requires Standalone game)
+## QoL
+- [ ] cg_drawgun 2
+- [ ] cg_nodamagekick
+- [ ] Separate respawn command
 
 # GUI
 ## UI
 - [ ] Font support
 - [ ] UI q3ui
 - [ ] UI revamp
-- [ ] Map loader UI  
+- [ ] Menus
+  - [ ] Map loader UI  
+  - [ ] Setup
 - [ ] Improved Loading screen:
   - [ ] Better map info distribution
   - [ ] Add map description text field
@@ -26,6 +33,7 @@ PlayerState rework to generic rpg
 ## HUD
 - [ ] Hud element: Current map & Internal version  
 - [ ] ... wsw hud system (how does it work? can it be ported?)
+- [ ] HUD customization
 
 
 ## Racing HUD
@@ -111,9 +119,9 @@ PlayerState rework to generic rpg
     - [x] QW balanced
     - [x] AG balanced
   - [x] Half Jumps (aka Duckroll)
-  - [ ] Feetraise (SBJ)
+  - [x] Feetraise (SBJ)
     - [x] Basic implementation
-    - [ ] Fix crouch-jumping
+    - [x] Fix crouch-jumping
   - [ ] Q1 rocket launcher
   - [ ] Gaus (needs new name)
   - [ ] ...
@@ -135,8 +143,12 @@ PlayerState rework to generic rpg
   - [ ] Dash by default (ground and air)
   - [ ] Blink by default (MC-EoE style?)
   - [ ] Wallkick by default
+- [ ] Hooks
 - [ ] Vortex weapons (implosion/pull instead of explosion/knockback)
 - [ ] Portals
+- [ ] Powerups: Physics selection (cpm and vq3 sections in the same map)
+- [ ] Look-behind command (map-based, not global)
+- [ ] Client sided logic (EntityPlus and SourceEngine-I/O inspired)
 
 ## Multiplayer
 - [ ] Multiplayer
@@ -148,17 +160,45 @@ PlayerState rework to generic rpg
   - [ ] Revert hack for `trigger_multiple->wait -1` being hardcoded to `0.5`
   - [ ] Per-client activation of triggers
   - [ ] Checkpoints and comparison to best times
+  - [ ] Auto demo recording on timerStart, stop on timerEnd, and cancel on playerdie
+- [ ] Ghosts and Records
+  - [ ] Records saving to disk 
+  - [ ] Automatic replay recording
+  - [ ] Ghosts
+    - [ ] new : Multiple ghosts (example: own & spec'ed player)
+- [ ] Improved replay tools (q3mme inspired, using the new UI tools)
+- [ ] Gamemodes
+  - [ ] Run (complete)
+  - [ ] Freestyle Mode
+  - [ ] FastCap
+  - [ ] New:
+    - [ ] 1v1 Race
+    - [ ] Native race mode (like AG, first to finish wins. also FFA race, standings based on finish order)
+    - [ ] PVP race mode (can interact with other players, and do things to change their movement)
+    - [ ] Timed Duel maps : Pick all key items to set a time (like ctf, but for duel maps instead)
+    - [ ] First To Finish: Group and 1v1
+- [ ] Leaderboards
+  - [ ] Server leaderboards
+  - [ ] Web access to leaderboards data
+- [ ] New data and stats:
+  - [ ] Persistent stats per map.
+  - [ ] Checkpoints: player vs wr, p vs pb (spec or own), p vs own pb
+  - [ ] Getting data from leaderboards server to compare
 
 ---
 
 # Bug fixes
+## New
 - [ ] `/map_restart` doesn't reset timer
 - [ ] (CPM) Correct deceleration values
 - [ ] double-ramp-boost bug on `r7-climbworld` (found on VQ1, check on other physics)
 - [ ] Wall-stop bug
 - [ ] sound bug on some systems (potentially SDL non-static linking or version)  
-- [ ] 1ups overbounce fix
+## Pre-existing
 - [ ] `g_synchronousClients 1` by default for offline
+- [ ] 1ups overbounce fix
+- [ ] Make target_speaker loop globally (currently can either loop or global, but not both)
+- [ ] Solve issues with clip/slick/trigger brush rendering. Transparency, render limit, impossible to hide some brushes from gameplay
 
 ---
 
