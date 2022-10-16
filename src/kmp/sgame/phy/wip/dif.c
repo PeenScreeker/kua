@@ -255,7 +255,6 @@ void q3a_AirMove(void) {
   // Do the movement
   switch (phy_slidemove_type) {
   case Q3A:  core_StepSlideMove(qtrue); break;
-  //case OSDF: osdf_StepSlideMove(qtrue); break;
   default:   PM_StepSlideMove(qtrue); break;
   }
 }

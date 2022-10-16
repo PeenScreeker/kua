@@ -122,7 +122,7 @@ int abs( int n );
 double fabs( double x );
 double acos( double x );
 
-//:: OSDF modded
+//::KUA modded
 #define M_E            2.7182818284590452354   /* e */
 #define M_LOG2E        1.4426950408889634074   /* log_2 e */
 #define M_LOG10E       0.43429448190325182765  /* log_10 e */
@@ -148,6 +148,6 @@ float roundf( float x );
 float expf( float x );
 float logf( float a );
 float powf( float x, float y );
-//:: OSDF end
+//::KUA end
 
 #endif // BG_LIB_H

@@ -3,7 +3,7 @@
 Default configuration files for the mod.
 
 ## engine
-Stores a fork of oDFe, to support further development of the osdf project.
+Stores a fork of oDFe, to support further development of the project.
 
 ## game
 Contains a modified version of ioquake3's gamecode, used as a base for the mod.  

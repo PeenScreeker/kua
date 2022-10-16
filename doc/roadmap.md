@@ -1,7 +1,9 @@
+- [ ] Default to good visual config
+
 # Roadmap
 
 # Code
-PlayerState rework to generic rpg
+- [ ] PlayerState rework to generic rpg
 
 # Standalone Freedom
 ## UI

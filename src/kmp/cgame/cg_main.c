@@ -1930,15 +1930,12 @@ void CG_Init( int serverMessageNum, int serverCommandSequence, int clientNum ) {
 	cg.loading = qtrue;		// force players to load instead of defer
 
 	CG_LoadingString( "sounds" );
-
 	CG_RegisterSounds();
 
 	CG_LoadingString( "graphics" );
-
 	CG_RegisterGraphics();
 
 	CG_LoadingString( "clients" );
-
 	CG_RegisterClients();		// if low on memory, some clients will be deferred
 
 #ifdef TEAMARENA

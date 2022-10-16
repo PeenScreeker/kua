@@ -2,6 +2,8 @@
 import sys; sys.dont_write_bytecode = True;
 #.....................................
 
+from pathlib import Path
+
 #.....................................
 def nothing(): pass
 def discard(x): x = x
@@ -21,13 +23,15 @@ def thisFile(type='abspath'):
 def thisDir(): import pathlib, os; return pathlib.Path(os.path.dirname(__file__))
 def thisPkg(): from os.path import dirname, relpath; return relpath(thisDir(), start=dirname(__file__))
 #.....................................
+def currDir(): from os import getcwd; return getcwd()
+#.....................................
 def isStr(trg): return isinstance(trg, str)
 def isPath(trg):
   import pathlib
   return isinstance(trg, pathlib.Path)
 def isUnk(trg): 
   from os.path import exists
-  return True if not trg or not exists(trg) else False
+  return True if not trg or not exists(str(trg)) else False
 def isDir(trg):
   from pathlib import Path
   if isStr(trg): return Path(trg).is_dir()
@@ -62,7 +66,7 @@ def isEmpty(trg):
   else:  # Input is not a dir or a file. Treat it as a python variable
     return True if not trg else False
 #.....................................
-def toPath(trg):
+def toPath(trg) ->Path:
   if isPath(trg): return trg
   from pathlib import Path
   if isStr(trg): return Path(trg)
@@ -90,15 +94,26 @@ def getArgs():
   try:    return args
   except: return None
 def getArg(idx):
-  try:    return getArgs()[idx] 
-  except: return None
+  try:    return str(getArgs()[idx])
+  except: return ""
 #.....................................
 def getSys():  from platform import system;  return system()
 def getArch(): from platform import machine; return machine()
 #.....................................
-def echo(msg): print("confy:",msg)
-def echos(msg, v:str|None=None): v="v" if not v else v; echo(msg) if getOpt(v) else nothing()
+def echo(msg, pfx:str|None=None): 
+  print(("confy:" if not pfx else pfx), msg)
+def echos(msg, v:str|None=None, pfx:str|None=None): 
+  v = "v" if not v else v
+  echo(msg, pfx) if getOpt(v) else nothing()
 echo(f"Importing {__name__} module")  # TODO: How to silence this by default?
+#.....................................
+def notify(msg, pfx:str|None=None): 
+  msg = ("confy:" if not pfx else pfx)+" "+msg
+  print(msg)
+  bash(f'notify-send {str(msg)}', type='return')
+def notifys(msg, v:str|None=None, pfx:str|None=None): 
+  v = "v" if not v else v
+  notify(msg, pfx) if getOpt(v) else nothing()
 #.....................................
 def glob(path, pattern): 
   from pathlib import Path
@@ -115,6 +130,12 @@ def StrToFile(string, file, mode='w'):
     case _: err("Incorrect type keyword in function StrToFile: {type}")
   f.write(string)
   f.close()
+def FileToStr(src):
+  with open(src, "r") as f:
+    return f.read()
+def StrInFile(string, file):
+  text = FileToStr(file)
+  return string in text
 #.....................................
 def FileToFile(src, trg):
   if not isPath(src) or not isPath(trg): err("FileToFile() only accepts Path objects")
@@ -131,10 +152,7 @@ def FileToDir(src, trg):
   from shutil import copyfile
   from os.path import join, basename
   copyfile(src, join(trg, basename(src)))
-def FileToStr(src):
-  with open(src, "r") as f:
-    return f.read()
-def FileReplaceWords(file, table, trg=None):
+def FileReplaceWords(file, table:dict, trg=None):
   from re import sub
   src = FileToStr(file)
   trg = file if trg is None else trg
@@ -144,7 +162,17 @@ def FileReplaceWords(file, table, trg=None):
     src = src.replace(old, new)
     # sub(old, new, src)
   StrToFile(src, trg, "w")
-#.....................................
+#......................................
+def FileToFileBkp(src, trg, bkp=True, bkpDir=None):
+  if not isPath(src) or not isPath(trg): err("FileToFileBkp() only accepts Path objects")
+  if not bkpDir: bkpDir = trg.parent
+  if bkp and trg.exists():
+    bkpList = glob(bkpDir, f"{src.stem}.*")
+    bkpNum  = max(0, len([f for f in bkpList])-1)  # Clamp to 0, in case glob is 0 (-1 will make it negative)
+    bkpFile = trg.with_suffix(f"{trg.suffix}.~{bkpNum}~")
+    mv(trg, bkpFile)
+  FileToFile(src, trg)
+#......................................
 def DirToDir(src, trg):
   if not isPath(src) or not isPath(trg): err("DirToDir() only accepts Path objects")
   if not isDir(src): err(f"Tried to copy {src} to {trg}, but source is not a dir.")
@@ -159,7 +187,7 @@ def rm(trg):
   if isDir(trg): rmtree(trg)
   else: trg.unlink(missing_ok=True)  # Remove symlink OR file
 #.....................................
-def cp(src,trg):
+def cp(src:str|Path, trg:str|Path, overwrite=True):
   srcT = 'd' if isDir(src) else 'f'
   trgT = 'd' if isDir(trg) else 'f'
   ftod = srcT in 'f' and trgT in 'd'
@@ -168,10 +196,13 @@ def cp(src,trg):
   dtof = srcT in 'd' and trgT in 'f'
   src = toPath(src)
   trg = toPath(trg)
+  if not overwrite and trg.exists(): echos(f"Didn't copy {src} to {trg}. Target already exists."); return
   if ftod: FileToDir(src, trg)
   if ftof: FileToFile(src, trg)
   if dtod: DirToDir(src, trg)
   if dtof: err(f"Cannot copy folder to file:  {src}  to  {trg}")
+#.....................................
+def ln(src:Path, trg:Path): trg.symlink_to(src)
 #.....................................
 def cd(trg):
   if not isDir(trg): err(f"Tried to change dir to {trg}, but it is not a folder")
@@ -183,10 +214,11 @@ def mv(src,trg):
   echos(f"Moving {src} to {trg}")
   import shutil; shutil.move(src,trg)
 #.....................................
-def md(trg): 
+def md(trg, parents=True): trg = toPath(trg); trg.mkdir(exist_ok=True, parents=parents)
+def mdOld(trg): from pathlib import Path; Path(trg).mkdir(exist_ok=True)
+def mdOld2(trg): 
   import os
   if not os.path.exists(trg): os.makedirs(trg)
-def mdOld(trg): from pathlib import Path; Path(trg).mkdir(exist_ok=True)
 #.....................................
 def ListToFile(lst, file, mode="w+"):
   with open(file, mode) as f: f.writelines(lst)
@@ -194,12 +226,14 @@ def ListFromFile(file):
   with open(file, "r") as f: return f.readlines()
 #.....................................
 def LineInFile(string, file):
+  from os import linesep
   lines = ListFromFile(file)
   for it in lines:
-    if it == string: return True
+    if it == string or it == string+linesep: return True
   return False
-def LineToFile(line, file, mode="w+"):
-  with open(file, mode) as f: f.write(line)
+def LineToFile(line, file, mode="a+"):
+  from os import linesep
+  with open(file, mode) as f: f.write(line+linesep)
 def LineFromFile(file, pos):
   lines = ListFromFile(file)
   return lines[pos]
@@ -210,10 +244,15 @@ def bash(cmd, dir="", type='print'):
   com = " ".join(list(filter(None, cmd.split(";")))).split(" ")
   import subprocess
   match type:
-    case 'pipe':  result = subprocess.run(com, cwd=dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    case 'print': result = subprocess.run(com, cwd=dir)
+    case 'pipe':   result = subprocess.run(com, cwd=dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    case 'print':  result = subprocess.run(com, cwd=dir)
+    case 'return': 
+      result = subprocess.run(com, cwd=dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+      return result.stdout.decode('ascii')
     case _: err(f"Incorrect type keyword in function bash(): {type}")
   return result
+#.....................................
+def GuiToStr(title, msg) ->str: return bash(f'zenity --entry --width 200 --title "{title}" --text "{msg}"', type='return')
 #.....................................
 def Zip(src,trg,rel=None):
   if isPath(src): src = str(src)

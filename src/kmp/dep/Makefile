@@ -141,7 +141,7 @@ TEAMARENA_CFLAGS=-DTEAMARENA
 endif
 
 ifndef COPYDIR
-COPYDIR="/usr/local/games/osdf"
+COPYDIR="/usr/local/games/kua"
 endif
 
 ifndef COPYBINDIR

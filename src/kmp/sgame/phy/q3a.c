@@ -155,7 +155,7 @@ static qboolean q3a_CheckJump(void) {
   if (canDoubleJump) { pm->ps->velocity[2] += phy_jump_velocity; } // ADD velocity, without resetting current
   else               { pm->ps->velocity[2]  = phy_jump_velocity; } // SET velocity, resets current
   //
-  // Timer check.   ::This is only a check. The values are set in osdf_cpm (aka PmoveSingle)
+  // Timer check.   ::Only check. Values are set in cpm function (aka PmoveSingle)
   if (pm->movetype == CPM || pm->movetype == CQ3) {
     int      djtimer   = pm->cmd.serverTime - pm->ps->stats[STAT_TIME_LASTJUMP];
     qboolean djtimerOn = ((djtimer <= phy_jump_timebuffer) && (djtimer > 0)) ? qtrue:qfalse; // We can dj when this is true.

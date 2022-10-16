@@ -26,11 +26,6 @@
 #include "../bg_pmove.h"
 #include "../bg_local.h"
 
-// Flow Macros. For quickly selecting differently named functions (if OSDF: thing; else if IOQ3: otherThing; ... etc)
-#define   IOQ3 0 // Select Default named functions (PM_ etc) come from IoQuake3 gamecode
-#define   Q3A  1 // Select q3a named functions (q3a_ etc). (Includes cpm mod). They also revert IoQuake3 gamecode changes back to q3a-1.32
-#define   OSDF 2 // Select Modded name functions (osdf_ etc). They include the new physics in them.
-
 // Physics variables
 extern qboolean phy_initialized;
 // TODO: Change to cvars

@@ -15,4 +15,4 @@ Base Gameplay code, where possible
 Most accurate non-id3-engine implementation of quake movement
 
 - oDFe: https://github.com/JBustos22/oDFe.git  
-Base engine that was forked to start osdf-engine
+Base engine that was forked to start the custom engine
