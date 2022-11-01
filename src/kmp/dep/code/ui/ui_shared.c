@@ -1203,14 +1203,14 @@ void Script_SetFocus(itemDef_t *item, char **args) {
 void Script_SetPlayerModel(itemDef_t *item, char **args) {
   const char *name;
   if (String_Parse(args, &name)) {
-    DC->setCVar("team_model", name);
+    DC->setCVar("model_team", name);
   }
 }
 
 void Script_SetPlayerHead(itemDef_t *item, char **args) {
   const char *name;
   if (String_Parse(args, &name)) {
-    DC->setCVar("team_headmodel", name);
+    DC->setCVar("model_teamheadmodel", name);
   }
 }
 

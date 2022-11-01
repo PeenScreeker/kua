@@ -88,10 +88,10 @@ def CleanAll():
 # Building
 #...........
 def BuildAll():
-  if build:                 bash(f"{scCmd}", dir=str(srcDir))
-  if debug:                 bash(f"{scCmd} debug", dir=str(srcDir))
-  if release or distribute: bash(f"{scCmd} release", dir=str(srcDir))
-  if distribute:            bash(f"{scCmd} release p=win32", dir=str(srcDir))
+  if build or not distribute: bash(f"{scCmd}", dir=str(srcDir))
+  if debug:                   bash(f"{scCmd} debug", dir=str(srcDir))
+  if release or distribute:   bash(f"{scCmd} release", dir=str(srcDir))
+  # if distribute:              bash(f"{scCmd} release p=win32", dir=str(srcDir))
 
 #.....................................
 # Packing

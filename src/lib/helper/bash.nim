@@ -7,7 +7,7 @@ proc findLatest*(f:string,d:string):string=
     for it in walkDirRec(d, checkDir=true):
       if f in it: files.add(it)
   except OSError: quit &"::ERR Tried to find latest version of {f}, but folder {d} doesn't exist"
-  result = files[files.len-1] 
+  result = files[files.high] 
 
 # Make Directories (md)
 proc md*(d:string)=  #alias md="mkdir -v "

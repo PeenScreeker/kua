@@ -13,8 +13,6 @@
 #::::::::::::::::::::::::::::::::::::::
 # This file intends to be a multiplatform buildsystem.
 # Keep that in mind if you modify it.
-# SCons takes some learning, but its way more powerful than make-based systems
-#   TODO: Native support for macos
 #::::::::::::::::::::::::::::::::::::::
 #
 # Usage and Help
@@ -138,7 +136,7 @@ srcCommon = Glob(engineDir.Dir(qcmDir).path +sep+ '*.c')
 srcBot    = Glob(engineDir.Dir(botDir).path +sep+ '*.c')
 # Renderer
 srcRendC  = Glob(engineDir.Dir(rcDir).path  +sep+ '*.c')
-srcRend1  = Glob(engineDir.Dir(r1Dir).path  +sep+ '*.c') + srcRendC
+srcRend1  = Glob(engineDir.Dir(r1Dir).path  +sep+ '*.c') + [f for f in srcRendC if f not in [engineDir.Dir(rcDir).File('tr_font.c')]]
 srcRendV  = Glob(engineDir.Dir(rvDir).path  +sep+ '*.c') + [f for f in srcRendC if f not in [engineDir.Dir(rcDir).File('tr_image.c')]]  #rendv = rendv + rendc - rendc_image (rc/tr_image.c)
 # Unsupported renderer
 srcRend2  = Glob(engineDir.Dir(r2Dir).path  +sep+ '*.c') + srcRendC   # Disabled. Renderer2 is not used
@@ -428,7 +426,9 @@ clLnx.binname = f'{cName}{"."+clLnx.arch if clLnx.arch in ["x86"] else ".x64"}'
 clLnx.defines += ['USE_ICON']
 clLnx.defines += ['USE_SYSTEM_JPEG']
 ### Include Paths
-if posix:      clLnx.parse += ['pkg-config --silence-errors --cflags-only-I sdl2']
+if posix:
+  clLnx.parse += ['pkg-config --silence-errors --cflags-only-I sdl2']
+  clLnx.parse += ['pkg-config --silence-errors -cflags -libs freetype2']
 # clLnx.defines += [f'ARCH_STRING="{clLnx.arch}"']
 ## Create BuildObjects: Release and Debug
 clLnx_rls = clLnx.merge(rls)

@@ -176,8 +176,8 @@ vmCvar_t	cg_timescaleFadeEnd;
 vmCvar_t	cg_timescaleFadeSpeed;
 vmCvar_t	cg_timescale;
 #ifdef TEAMARENA
-vmCvar_t	cg_smallFont;
-vmCvar_t	cg_bigFont;
+vmCvar_t	cg_fontSmall;
+vmCvar_t	cg_fontBig;
 vmCvar_t	cg_noTaunt;
 #endif
 vmCvar_t	cg_noProjectileTrail;
@@ -193,13 +193,19 @@ vmCvar_t	hud_timerActive_x;
 vmCvar_t	hud_timerActive_y;
 vmCvar_t	hud_timerBest_x;
 vmCvar_t	hud_timerBest_y;
+// Font support
+// TODO: Convert to merged cvar: `hud_font file size`
+vmCvar_t	hud_fontFile;  // Path of the standard font. Will use FONT_DEFAULT_FILE if empty
+vmCvar_t	hud_fontSize;  // Size of the standard font. 0=FONT_DEFAULT_SIZE; negative=12pt
+vmCvar_t	hud_fontSmall;
+vmCvar_t	hud_fontBig;
 
 vmCvar_t	phy_movetype;
 //::KUA.end
 
 #ifdef TEAMARENA
-vmCvar_t 	cg_redTeamName;
-vmCvar_t 	cg_blueTeamName;
+vmCvar_t	cg_redTeamName;
+vmCvar_t	cg_blueTeamName;
 vmCvar_t	cg_currentSelectedPlayer;
 vmCvar_t	cg_currentSelectedPlayerName;
 vmCvar_t	cg_singlePlayer;
@@ -211,7 +217,7 @@ vmCvar_t	cg_recordSPDemoName;
 vmCvar_t	cg_obeliskRespawnDelay;
 #endif
 
-//::KUA.chgd. Declared in local, for use in whole client
+//::KUA.chg : Moved to local, to allow access in other files of the module
 // typedef struct {
 // 	vmCvar_t	*vmCvar;
 // 	char		*cvarName;
@@ -232,9 +238,9 @@ static cvarTable_t cvarTable[] = {
 	{ &cg_draw2D, "cg_draw2D", "1", CVAR_ARCHIVE  },
 	{ &cg_drawStatus, "cg_drawStatus", "1", CVAR_ARCHIVE  },
 	{ &cg_drawTimelimit, "cg_drawTimelimit", "0", CVAR_ARCHIVE  },
-	{ &cg_drawFPS, "cg_drawFPS", "0", CVAR_ARCHIVE  },
+	{ &cg_drawFPS, "cg_drawFPS", "1", CVAR_ARCHIVE  },
 	{ &cg_drawSnapshot, "cg_drawSnapshot", "0", CVAR_ARCHIVE  },
-	{ &cg_draw3dIcons, "cg_draw3dIcons", "1", CVAR_ARCHIVE  },
+	{ &cg_draw3dIcons, "cg_draw3dIcons", "0", CVAR_ARCHIVE  },
 	{ &cg_drawIcons, "cg_drawIcons", "1", CVAR_ARCHIVE  },
 	{ &cg_drawAmmoWarning, "cg_drawAmmoWarning", "1", CVAR_ARCHIVE  },
 	{ &cg_drawAttacker, "cg_drawAttacker", "1", CVAR_ARCHIVE  },
@@ -250,9 +256,9 @@ static cvarTable_t cvarTable[] = {
 	{ &cg_addMarks, "cg_marks", "1", CVAR_ARCHIVE },
 	{ &cg_lagometer, "cg_lagometer", "1", CVAR_ARCHIVE },
 	{ &cg_railTrailTime, "cg_railTrailTime", "400", CVAR_ARCHIVE  },
-	{ &cg_gun_x, "cg_gunX", "0", CVAR_CHEAT },
-	{ &cg_gun_y, "cg_gunY", "0", CVAR_CHEAT },
-	{ &cg_gun_z, "cg_gunZ", "0", CVAR_CHEAT },
+	{ &cg_gun_x, "cg_gunX", "7", CVAR_ARCHIVE }, //::KUA.chg -> archive and 7
+	{ &cg_gun_y, "cg_gunY", "0", CVAR_ARCHIVE }, //::KUA.chg -> archive
+	{ &cg_gun_z, "cg_gunZ", "0", CVAR_ARCHIVE }, //::KUA.chg -> archive
 	{ &cg_centertime, "cg_centertime", "3", CVAR_CHEAT },
 	{ &cg_runpitch, "cg_runpitch", "0.002", CVAR_ARCHIVE},
 	{ &cg_runroll, "cg_runroll", "0.005", CVAR_ARCHIVE },
@@ -325,8 +331,8 @@ static cvarTable_t cvarTable[] = {
 	{ &pmove_fixed, "pmove_fixed", "1", CVAR_SYSTEMINFO},
 	{ &pmove_msec, "pmove_msec", "8", CVAR_SYSTEMINFO},
 #ifdef TEAMARENA
-	{ &cg_smallFont, "ui_smallFont", "0.25", CVAR_ARCHIVE},
-	{ &cg_bigFont, "ui_bigFont", "0.4", CVAR_ARCHIVE},
+	{ &cg_fontSmall, "ui_fontSmall", "0.25", CVAR_ARCHIVE},
+	{ &cg_fontBig, "ui_fontBig", "0.4", CVAR_ARCHIVE},
 	{ &cg_noTaunt, "cg_noTaunt", "0", CVAR_ARCHIVE},
 #endif
 	{ &cg_noProjectileTrail, "cg_noProjectileTrail", "0", CVAR_ARCHIVE},
@@ -334,17 +340,21 @@ static cvarTable_t cvarTable[] = {
 	{ &cg_oldRocket, "cg_oldRocket", "1", CVAR_ARCHIVE},
 	{ &cg_oldPlasma, "cg_oldPlasma", "1", CVAR_ARCHIVE},
 	{ &cg_trueLightning, "cg_trueLightning", "0.0", CVAR_ARCHIVE},
-//	{ &cg_pmove_fixed, "cg_pmove_fixed", "0", CVAR_USERINFO | CVAR_ARCHIVE }
 
-	//::KUA.chg
-	{&hud_speed_x, "hud_speed_x", "0.66666", CVAR_USERINFO},
-	{&hud_speed_y, "hud_speed_y", "0.4", CVAR_USERINFO},
-	{&hud_timerActive_x, "hud_timerActive_x", "0.66666", CVAR_USERINFO},
-	{&hud_timerActive_y, "hud_timerActive_y", "0.0", CVAR_USERINFO},
-	{&hud_timerBest_x, "hud_timerBest_x", "1.0", CVAR_USERINFO},
-	{&hud_timerBest_y, "hud_timerBest_y", "0.0", CVAR_USERINFO},
-
-	{&phy_movetype, "phy_movetype", "0", CVAR_SYSTEMINFO},
+	//::KUA.add
+	{ &hud_speed_x, "hud_speed_x", "0.5", CVAR_ARCHIVE },
+	{ &hud_speed_y, "hud_speed_y", "0.4", CVAR_ARCHIVE },
+	{ &hud_timerActive_x, "hud_timerActive_x", "0.5", CVAR_ARCHIVE },
+	{ &hud_timerActive_y, "hud_timerActive_y", "0.0", CVAR_ARCHIVE },
+	{ &hud_timerBest_x, "hud_timerBest_x", "0.8", CVAR_ARCHIVE },
+	{ &hud_timerBest_y, "hud_timerBest_y", "0.0", CVAR_ARCHIVE },
+  // Font support
+	{ &hud_fontFile, "hud_fontFile", "default.ttf", CVAR_ARCHIVE },
+	{ &hud_fontSize, "hud_fontSize", "0", CVAR_ARCHIVE },
+	{ &hud_fontSmall, "hud_fontSmall", "0.25", CVAR_ARCHIVE },
+	{ &hud_fontBig, "hud_fontBig", "0.4", CVAR_ARCHIVE },
+  // Physics
+	{ &phy_movetype, "phy_movetype", "0", CVAR_SYSTEMINFO },
 	//::KUA.end
 };
 
@@ -371,10 +381,10 @@ void CG_RegisterCvars( void ) {
 
 	forceModelModificationCount = cg_forceModel.modificationCount;
 
-	trap_Cvar_Register(NULL, "model", DEFAULT_MODEL, CVAR_USERINFO | CVAR_ARCHIVE );
-	trap_Cvar_Register(NULL, "headmodel", DEFAULT_MODEL, CVAR_USERINFO | CVAR_ARCHIVE );
-	trap_Cvar_Register(NULL, "team_model", DEFAULT_TEAM_MODEL, CVAR_USERINFO | CVAR_ARCHIVE );
-	trap_Cvar_Register(NULL, "team_headmodel", DEFAULT_TEAM_HEAD, CVAR_USERINFO | CVAR_ARCHIVE );
+	trap_Cvar_Register(NULL, "model", MODEL_DEFAULT, CVAR_USERINFO | CVAR_ARCHIVE );
+	trap_Cvar_Register(NULL, "model_playerhead", MODEL_DEFAULT, CVAR_USERINFO | CVAR_ARCHIVE );
+	trap_Cvar_Register(NULL, "model_team", MODEL_TEAM_DEFAULT, CVAR_USERINFO | CVAR_ARCHIVE );
+	trap_Cvar_Register(NULL, "model_teamhead", MODEL_TEAM_HEAD_DEFAULT, CVAR_USERINFO | CVAR_ARCHIVE );
 }
 
 /*																																			
@@ -1232,7 +1242,7 @@ char *CG_GetMenuBuffer(const char *filename) {
 
 //
 // ==============================
-// new hud stuff ( mission pack )
+// new hud stuff ( Team Arena )
 // ==============================
 //
 qboolean CG_Asset_Parse(int handle) {
@@ -1263,13 +1273,13 @@ qboolean CG_Asset_Parse(int handle) {
 			continue;
 		}
 
-		// smallFont
-		if (Q_stricmp(token.string, "smallFont") == 0) {
+		// fontSmall
+		if (Q_stricmp(token.string, "fontSmall") == 0) {
 			int pointSize;
 			if (!PC_String_Parse(handle, &tempStr) || !PC_Int_Parse(handle, &pointSize)) {
 				return qfalse;
 			}
-			cgDC.registerFont(tempStr, pointSize, &cgDC.Assets.smallFont);
+			cgDC.registerFont(tempStr, pointSize, &cgDC.Assets.fontSmall);
 			continue;
 		}
 
@@ -1279,7 +1289,7 @@ qboolean CG_Asset_Parse(int handle) {
 			if (!PC_String_Parse(handle, &tempStr) || !PC_Int_Parse(handle, &pointSize)) {
 				return qfalse;
 			}
-			cgDC.registerFont(tempStr, pointSize, &cgDC.Assets.bigFont);
+			cgDC.registerFont(tempStr, pointSize, &cgDC.Assets.fontBig);
 			continue;
 		}
 
@@ -1867,6 +1877,8 @@ Called after every level change or subsystem restart
 Will perform callbacks to make the loading info screen update.
 =================
 */
+#define FONT_DEFAULT_FILE "ui/fonts/default.ttf"
+#define FONT_DEFAULT_SIZE 16
 void CG_Init( int serverMessageNum, int serverCommandSequence, int clientNum ) {
 	const char	*s;
 
@@ -1890,6 +1902,11 @@ void CG_Init( int serverMessageNum, int serverCommandSequence, int clientNum ) {
 	cgs.media.charsetPropB		= trap_R_RegisterShaderNoMip( "menu/art/font2_prop.tga" );
 
 	CG_RegisterCvars();
+
+  // Load fonts
+  char* fontFile = !Q_stricmp(hud_fontFile.string, "") ? hud_fontFile.string  : FONT_DEFAULT_FILE;
+  int   fontSize = hud_fontSize.integer ? hud_fontSize.integer : FONT_DEFAULT_SIZE;
+	trap_R_RegisterFont(fontFile, fontSize, &cgs.media.font);
 
 	CG_InitConsoleCommands();
 

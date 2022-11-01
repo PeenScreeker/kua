@@ -43,7 +43,16 @@ void CG_AdjustFrom640( float *x, float *y, float *w, float *h ) {
 	*w *= cgs.screenXScale;
 	*h *= cgs.screenYScale;
 }
-
+//:::::::::::::::::
+// CG_ToScreenSize
+//   Convert 0-1 range to Screen-relative sizes
+//:::::::::::::::::
+void CG_ToScreenSize(float*x, float* y, float* w, float* h) {
+  *x *= cgs.glconfig.vidWidth;
+  *y *= cgs.glconfig.vidHeight;
+  // *w *= 1;
+  // *h *= 1;
+}
 //:::::::::::::::::
 // CG_FillRect
 //   Coordinates are 640*480 virtual values
@@ -51,7 +60,7 @@ void CG_AdjustFrom640( float *x, float *y, float *w, float *h ) {
 void CG_FillRect(float x, float y, float w, float h, const float* color) {
   if (!w || !h)        {return;}
   trap_R_SetColor      (color);
-  CG_AdjustFrom640     (&x, &y, &w, &h);
+  // CG_AdjustFrom640     (&x, &y, &w, &h);
   trap_R_DrawStretchPic(x, y, w, h, 0, 0, 0, 0, cgs.media.whiteShader);
   trap_R_SetColor      (NULL);
 }
@@ -97,12 +106,12 @@ void CG_DrawRect( float x, float y, float width, float height, float size, const
 /*
 ================
 CG_DrawPic
-
-Coordinates are 640*480 virtual values
+~~Coordinates are 640*480 virtual values~~
 =================
 */
 void CG_DrawPic( float x, float y, float width, float height, qhandle_t hShader ) {
-	CG_AdjustFrom640( &x, &y, &width, &height );
+	// CG_AdjustFrom640( &x, &y, &width, &height );
+  // CG_ToScreenSize(&x, &y, &width, &height);
 	trap_R_DrawStretchPic( x, y, width, height, 0, 0, 1, 1, hShader );
 }
 
@@ -158,14 +167,13 @@ Coordinates are at 640 by 480 virtual resolution
 ==================
 */
 void CG_DrawStringExt( int x, int y, const char *string, const float *setColor, 
-		qboolean forceColor, qboolean shadow, int charWidth, int charHeight, int maxChars ) {
+	qboolean forceColor, qboolean shadow, int charWidth, int charHeight, int maxChars ) {
 	vec4_t		color;
 	const char	*s;
 	int			xx;
 	int			cnt;
 
-	if (maxChars <= 0)
-		maxChars = 32767; // do them all!
+	if (maxChars <= 0) maxChars = 32767; // do them all!
 
 	// draw the drop shadow
 	if (shadow) {
@@ -211,8 +219,7 @@ void CG_DrawStringExt( int x, int y, const char *string, const float *setColor,
 }
 
 void CG_DrawBigString( int x, int y, const char *s, float alpha ) {
-	float	color[4];
-
+	float color[4];
 	color[0] = color[1] = color[2] = 1.0;
 	color[3] = alpha;
 	CG_DrawStringExt( x, y, s, color, qfalse, qtrue, BIGCHAR_WIDTH, BIGCHAR_HEIGHT, 0 );
@@ -223,8 +230,7 @@ void CG_DrawBigStringColor( int x, int y, const char *s, vec4_t color ) {
 }
 
 void CG_DrawSmallString( int x, int y, const char *s, float alpha ) {
-	float	color[4];
-
+	float color[4];
 	color[0] = color[1] = color[2] = 1.0;
 	color[3] = alpha;
 	CG_DrawStringExt( x, y, s, color, qfalse, qfalse, SMALLCHAR_WIDTH, SMALLCHAR_HEIGHT, 0 );
@@ -237,15 +243,13 @@ void CG_DrawSmallStringColor( int x, int y, const char *s, vec4_t color ) {
 /*
 =================
 CG_DrawStrlen
-
 Returns character count, skiping color escape codes
 =================
 */
 int CG_DrawStrlen( const char *str ) {
 	const char *s = str;
 	int count = 0;
-
-	while ( *s ) {
+	while (*s) {
 		if ( Q_IsColorString( s ) ) {
 			s += 2;
 		} else {
@@ -253,7 +257,6 @@ int CG_DrawStrlen( const char *str ) {
 			s++;
 		}
 	}
-
 	return count;
 }
 
@@ -261,17 +264,14 @@ int CG_DrawStrlen( const char *str ) {
 =============
 CG_TileClearBox
 
-This repeats a 64*64 tile graphic to fill the screen around a sized down
-refresh window.
+This repeats a 64*64 tile graphic to fill the screen around a sized down refresh window.
 =============
 */
 static void CG_TileClearBox( int x, int y, int w, int h, qhandle_t hShader ) {
-	float	s1, t1, s2, t2;
-
-	s1 = x/64.0;
-	t1 = y/64.0;
-	s2 = (x+w)/64.0;
-	t2 = (y+h)/64.0;
+	float s1 = x/64.0;
+	float t1 = y/64.0;
+	float s2 = (x+w)/64.0;
+	float t2 = (y+h)/64.0;
 	trap_R_DrawStretchPic( x, y, w, h, s1, t1, s2, t2, hShader );
 }
 
@@ -280,36 +280,29 @@ static void CG_TileClearBox( int x, int y, int w, int h, qhandle_t hShader ) {
 /*
 ==============
 CG_TileClear
-
 Clear around a sized down screen
 ==============
 */
 void CG_TileClear( void ) {
-	int		top, bottom, left, right;
-	int		w, h;
-
-	w = cgs.glconfig.vidWidth;
-	h = cgs.glconfig.vidHeight;
+	int w = GL_W;
+	int h = GL_H;
 
 	if ( cg.refdef.x == 0 && cg.refdef.y == 0 && 
 		cg.refdef.width == w && cg.refdef.height == h ) {
 		return;		// full screen rendering
 	}
 
-	top = cg.refdef.y;
-	bottom = top + cg.refdef.height-1;
-	left = cg.refdef.x;
-	right = left + cg.refdef.width-1;
+	int top = cg.refdef.y;
+	int bottom = top + cg.refdef.height-1;
+	int left = cg.refdef.x;
+	int right = left + cg.refdef.width-1;
 
 	// clear above view screen
 	CG_TileClearBox( 0, 0, w, top, cgs.media.backTileShader );
-
 	// clear below view screen
 	CG_TileClearBox( 0, bottom, w, h - bottom, cgs.media.backTileShader );
-
 	// clear left of view screen
 	CG_TileClearBox( 0, top, left, bottom - top + 1, cgs.media.backTileShader );
-
 	// clear right of view screen
 	CG_TileClearBox( right, top, w - right, bottom - top + 1, cgs.media.backTileShader );
 }
@@ -322,27 +315,19 @@ CG_FadeColor
 ================
 */
 float *CG_FadeColor( int startMsec, int totalMsec ) {
-	static vec4_t		color;
-	int			t;
+	if (startMsec == 0) { return NULL; }
 
-	if ( startMsec == 0 ) {
-		return NULL;
-	}
-
-	t = cg.time - startMsec;
-
-	if ( t >= totalMsec ) {
-		return NULL;
-	}
+	int t = cg.time - startMsec;
+	if (t >= totalMsec) { return NULL; }
 
 	// fade out
+	static vec4_t		color;
 	if ( totalMsec - t < FADE_TIME ) {
 		color[3] = ( totalMsec - t ) * 1.0/FADE_TIME;
 	} else {
 		color[3] = 1.0;
 	}
 	color[0] = color[1] = color[2] = 1;
-
 	return color;
 }
 

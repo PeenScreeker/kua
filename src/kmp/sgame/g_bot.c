@@ -683,16 +683,16 @@ static void G_AddBot( const char *name, float skill, const char *team, int delay
 		model = "visor/default";
 	}
 	Info_SetValueForKey( userinfo, key, model );
-	key = "team_model";
+	key = "model_team";
 	Info_SetValueForKey( userinfo, key, model );
 
-	key = "headmodel";
+	key = "model_playerhead";
 	headmodel = Info_ValueForKey( botinfo, key );
 	if ( !*headmodel ) {
 		headmodel = model;
 	}
 	Info_SetValueForKey( userinfo, key, headmodel );
-	key = "team_headmodel";
+	key = "model_teamheadmodel";
 	Info_SetValueForKey( userinfo, key, headmodel );
 
 	key = "gender";

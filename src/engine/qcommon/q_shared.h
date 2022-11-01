@@ -1361,8 +1361,8 @@ typedef struct {
   int imageHeight;  // height of actual image
   float s;          // x offset in image where glyph starts
   float t;          // y offset in image where glyph starts
-  float s2;
-  float t2;
+  float s2;         // x offset in image where glyph ends
+  float t2;         // y offset in image where glyph ends
   qhandle_t glyph;  // handle to the shader with the glyph
   char shaderName[32];
 } glyphInfo_t;

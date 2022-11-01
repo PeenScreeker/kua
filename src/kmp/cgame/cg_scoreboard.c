@@ -263,7 +263,7 @@ CG_DrawScoreboard
 Draw the normal in-game scoreboard
 =================
 */
-qboolean CG_DrawOldScoreboard( void ) {
+qboolean CG_DrawOldScoreboard(void) {
 	int		x, y, w, i, n1, n2;
 	float	fade;
 	float	*fadeColor;
@@ -272,7 +272,7 @@ qboolean CG_DrawOldScoreboard( void ) {
 	int lineHeight;
 	int topBorderSize, bottomBorderSize;
 
-	// don't draw amuthing if the menu or console is up
+	// don't draw anything if the menu or console is up
 	if ( cg_paused.integer ) {
 		cg.deferredPlayerLoading = 0;
 		return qfalse;
@@ -315,7 +315,9 @@ qboolean CG_DrawOldScoreboard( void ) {
 	}
 
 	// current rank
-	if ( cgs.gametype < GT_TEAM) {
+  if (cgs.gametype == GT_RUN) {
+
+  } else if ( cgs.gametype < GT_TEAM) {
 		if (cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR ) {
 			s = va("%s place with %i",
 				CG_PlaceString( cg.snap->ps.persistant[PERS_RANK] + 1 ),
@@ -343,10 +345,10 @@ qboolean CG_DrawOldScoreboard( void ) {
 	// scoreboard
 	y = SB_HEADER;
 
-	CG_DrawPic( SB_SCORE_X + (SB_RATING_WIDTH / 2), y, 64, 32, cgs.media.scoreboardScore );
-	CG_DrawPic( SB_PING_X - (SB_RATING_WIDTH / 2), y, 64, 32, cgs.media.scoreboardPing );
-	CG_DrawPic( SB_TIME_X - (SB_RATING_WIDTH / 2), y, 64, 32, cgs.media.scoreboardTime );
-	CG_DrawPic( SB_NAME_X - (SB_RATING_WIDTH / 2), y, 64, 32, cgs.media.scoreboardName );
+	// CG_DrawPic( SB_SCORE_X + (SB_RATING_WIDTH / 2), y, 64, 32, cgs.media.scoreboardScore );
+	// CG_DrawPic( SB_PING_X - (SB_RATING_WIDTH / 2), y, 64, 32, cgs.media.scoreboardPing );
+	// CG_DrawPic( SB_TIME_X - (SB_RATING_WIDTH / 2), y, 64, 32, cgs.media.scoreboardTime );
+	// CG_DrawPic( SB_NAME_X - (SB_RATING_WIDTH / 2), y, 64, 32, cgs.media.scoreboardName );
 
 	y = SB_TOP;
 
@@ -365,10 +367,8 @@ qboolean CG_DrawOldScoreboard( void ) {
 
 	localClient = qfalse;
 
+	// teamplay scoreboard
 	if ( cgs.gametype >= GT_TEAM ) {
-		//
-		// teamplay scoreboard
-		//
 		y += lineHeight/2;
 
 		if ( cg.teamScores[0] >= cg.teamScores[1] ) {
@@ -393,13 +393,11 @@ qboolean CG_DrawOldScoreboard( void ) {
 		n1 = CG_TeamScoreboard( y, TEAM_SPECTATOR, fade, maxClients, lineHeight );
 		y += (n1 * lineHeight) + BIGCHAR_HEIGHT;
 
+	// Run scoreboard
 	} else {
-		//
-		// Run scoreboard
-		//
-		n1 = CG_TeamScoreboard( y, TEAM_FREE, fade, maxClients, lineHeight );
+		// n1 = CG_TeamScoreboard( y, TEAM_FREE, fade, maxClients, lineHeight );
 		y += (n1 * lineHeight) + BIGCHAR_HEIGHT;
-		n2 = CG_TeamScoreboard( y, TEAM_SPECTATOR, fade, maxClients - n1, lineHeight );
+		// n2 = CG_TeamScoreboard( y, TEAM_SPECTATOR, fade, maxClients - n1, lineHeight );
 		y += (n2 * lineHeight) + BIGCHAR_HEIGHT;
 	}
 
@@ -407,7 +405,7 @@ qboolean CG_DrawOldScoreboard( void ) {
 		// draw local client at the bottom
 		for ( i = 0 ; i < cg.numScores ; i++ ) {
 			if ( cg.scores[i].client == cg.snap->ps.clientNum ) {
-				CG_DrawClientScore( y, &cg.scores[i], fadeColor, fade, lineHeight == SB_NORMAL_HEIGHT );
+				// CG_DrawClientScore( y, &cg.scores[i], fadeColor, fade, lineHeight == SB_NORMAL_HEIGHT );
 				break;
 			}
 		}

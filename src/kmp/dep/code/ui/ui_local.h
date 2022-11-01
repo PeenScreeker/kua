@@ -126,8 +126,8 @@ extern vmCvar_t	ui_scoreTimeBonus;
 extern vmCvar_t	ui_scoreSkillBonus;
 extern vmCvar_t	ui_scoreShutoutBonus;
 extern vmCvar_t	ui_scoreTime;
-extern vmCvar_t	ui_smallFont;
-extern vmCvar_t	ui_bigFont;
+extern vmCvar_t	ui_fontSmall;
+extern vmCvar_t	ui_fontBig;
 extern vmCvar_t ui_serverStatusTimeOut;
 
 

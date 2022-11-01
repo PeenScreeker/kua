@@ -1449,44 +1449,29 @@ WEAPON SELECTION
 CG_DrawWeaponSelect
 ===================
 */
-void CG_DrawWeaponSelect( void ) {
-	int		i;
-	int		bits;
-	int		count;
-	int		x, y, w;
-	char	*name;
-	float	*color;
-
+void CG_DrawWeaponSelect(void) {
 	// don't display if dead
-	if ( cg.predictedPlayerState.stats[STAT_HEALTH] <= 0 ) {
-		return;
-	}
+	if (cg.predictedPlayerState.stats[STAT_HEALTH] <= 0) { return; }
 
-	color = CG_FadeColor( cg.weaponSelectTime, WEAPON_SELECT_TIME );
-	if ( !color ) {
-		return;
-	}
-	trap_R_SetColor( color );
+	float* color = CG_FadeColor(cg.weaponSelectTime, WEAPON_SELECT_TIME);
+	if (!color) { return; }
+	trap_R_SetColor(color);
 
 	// showing weapon select clears pickup item display, but not the blend blob
 	cg.itemPickupTime = 0;
 
 	// count the number of weapons owned
-	bits = cg.snap->ps.stats[ STAT_WEAPONS ];
-	count = 0;
-	for ( i = 1 ; i < MAX_WEAPONS ; i++ ) {
-		if ( bits & ( 1 << i ) ) {
-			count++;
-		}
+	int owned = cg.snap->ps.stats[ STAT_WEAPONS ];
+	int count = 0;
+	for (int wp = 1 ; wp < MAX_WEAPONS ; wp++) {
+		if (owned & (1 << wp)) { count++; }
 	}
 
-	x = 320 - count * 20;
-	y = 380;
+	int x = (int)GL_W*0.5 - count * 20;  //::KUA.chg -> Was 320, for half of the 640 screen
+	int y = (int)GL_H*0.8;               //::KUA.chg -> Was 380, for ~80% of the 480 screen
 
-	for ( i = 1 ; i < MAX_WEAPONS ; i++ ) {
-		if ( !( bits & ( 1 << i ) ) ) {
-			continue;
-		}
+	for (int i = 1 ; i < MAX_WEAPONS ; i++) {
+		if (!(owned & (1 << i))) { continue; }
 
 		CG_RegisterWeapon( i );
 
@@ -1499,7 +1484,7 @@ void CG_DrawWeaponSelect( void ) {
 		}
 
 		// no ammo cross on top
-		if ( !cg.snap->ps.ammo[ i ] ) {
+		if (!cg.snap->ps.ammo[ i ]) {
 			CG_DrawPic( x, y, 32, 32, cgs.media.noammoShader );
 		}
 
@@ -1507,15 +1492,15 @@ void CG_DrawWeaponSelect( void ) {
 	}
 
 	// draw the selected name
-	if ( cg_weapons[ cg.weaponSelect ].item ) {
-		name = cg_weapons[ cg.weaponSelect ].item->pickup_name;
-		if ( name ) {
-			w = CG_DrawStrlen( name ) * BIGCHAR_WIDTH;
-			x = ( SCREEN_WIDTH - w ) / 2;
-			CG_DrawBigStringColor(x, y - 22, name, color);
+	if (cg_weapons[ cg.weaponSelect ].item) {
+		char* name = cg_weapons[ cg.weaponSelect ].item->pickup_name;
+		if (name) {
+			// int w = CG_DrawStrlen(name) * BIGCHAR_WIDTH;
+			// x = (SCREEN_WIDTH - w) / 2;
+			// CG_DrawBigStringColor(x, y - 22, name, color);
+			CG_TextDraw(name, &cgs.media.font, 0.5, 0.87, 0.7, colorWhite, 0, 3, strlen(name), TEXT_ALIGN_CENTER);
 		}
 	}
-
 	trap_R_SetColor( NULL );
 }
 

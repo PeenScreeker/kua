@@ -3478,7 +3478,7 @@ static void CL_SetModel_f( void ) {
 	arg = Cmd_Argv( 1 );
 	if ( arg[0] ) {
 		Cvar_Set( "model", arg );
-		Cvar_Set( "headmodel", arg );
+		Cvar_Set( "model_playerhead", arg );
 	} else {
 		Cvar_VariableStringBuffer( "model", name, sizeof( name ) );
 		Com_Printf( "model is set to %s\n", name );
@@ -3925,9 +3925,9 @@ void CL_Init( void ) {
 	Cvar_Get ("rate", "25000", CVAR_USERINFO | CVAR_ARCHIVE );
 	Cvar_Get ("snaps", "125", CVAR_USERINFO | CVAR_ARCHIVE );
 	Cvar_Get ("model", "ranger", CVAR_USERINFO | CVAR_ARCHIVE_ND );
-	Cvar_Get ("headmodel", "ranger", CVAR_USERINFO | CVAR_ARCHIVE_ND );
- 	Cvar_Get ("team_model", "ranger", CVAR_USERINFO | CVAR_ARCHIVE_ND );
-	Cvar_Get ("team_headmodel", "ranger", CVAR_USERINFO | CVAR_ARCHIVE_ND );
+	Cvar_Get ("model_playerhead", "ranger", CVAR_USERINFO | CVAR_ARCHIVE_ND );
+ 	Cvar_Get ("model_team", "ranger", CVAR_USERINFO | CVAR_ARCHIVE_ND );
+	Cvar_Get ("model_teamheadmodel", "ranger", CVAR_USERINFO | CVAR_ARCHIVE_ND );
 //	Cvar_Get ("g_redTeam", "Stroggs", CVAR_SERVERINFO | CVAR_ARCHIVE);
 //	Cvar_Get ("g_blueTeam", "Pagans", CVAR_SERVERINFO | CVAR_ARCHIVE);
 	Cvar_Get ("color1", "4", CVAR_USERINFO | CVAR_ARCHIVE );

@@ -276,8 +276,8 @@ typedef struct {
   const char *cursorStr;
   const char *gradientStr;
   fontInfo_t textFont;
-  fontInfo_t smallFont;
-  fontInfo_t bigFont;
+  fontInfo_t fontSmall;
+  fontInfo_t fontBig;
   qhandle_t cursor;
   qhandle_t gradientBar;
   qhandle_t scrollBarArrowUp;

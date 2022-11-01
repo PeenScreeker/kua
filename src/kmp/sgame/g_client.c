@@ -774,11 +774,11 @@ void ClientUserinfoChanged( int clientNum ) {
 
 	// set model
 	if( g_gametype.integer >= GT_TEAM ) {
-		Q_strncpyz( model, Info_ValueForKey (userinfo, "team_model"), sizeof( model ) );
-		Q_strncpyz( headModel, Info_ValueForKey (userinfo, "team_headmodel"), sizeof( headModel ) );
+		Q_strncpyz( model, Info_ValueForKey (userinfo, "model_team"), sizeof( model ) );
+		Q_strncpyz( headModel, Info_ValueForKey (userinfo, "model_teamheadmodel"), sizeof( headModel ) );
 	} else {
 		Q_strncpyz( model, Info_ValueForKey (userinfo, "model"), sizeof( model ) );
-		Q_strncpyz( headModel, Info_ValueForKey (userinfo, "headmodel"), sizeof( headModel ) );
+		Q_strncpyz( headModel, Info_ValueForKey (userinfo, "model_playerhead"), sizeof( headModel ) );
 	}
 
 /*	NOTE: all client side now
@@ -1202,14 +1202,14 @@ void ClientSpawn(gentity_t *ent) {
 		if (ent->client->sess.sessionTeam != TEAM_SPECTATOR) {
 			G_KillBox(ent);
 			// force the base weapon up
-			client->ps.weapon = WP_MACHINEGUN;
+			client->ps.weapon      = WP_GAUNTLET;
 			client->ps.weaponstate = WEAPON_READY;
 			// fire the targets of the spawn point
 			G_UseTargets(spawnPoint, ent);
 			// select the highest weapon number available, after any spawn given items have fired
 			client->ps.weapon = 1;
-
 			for (i = WP_NUM_WEAPONS - 1 ; i > 0 ; i--) {
+        if (i == WP_MACHINEGUN) {continue;}
 				if (client->ps.stats[STAT_WEAPONS] & (1 << i)) {
 					client->ps.weapon = i;
 					break;

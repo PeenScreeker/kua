@@ -25,38 +25,23 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 // q_shared.h -- included first by ALL program modules.
 // A user mod should never modify this file
+#include "game-info.h"
 
-#ifdef STANDALONE
-  #define PRODUCT_NAME				"iofoo3"
-  #define BASEGAME					"foobar"
-  #define CLIENT_WINDOW_TITLE		"changeme"
-  #define CLIENT_WINDOW_MIN_TITLE	"changeme2"
-  #define HOMEPATH_NAME_UNIX		".foo"
-  #define HOMEPATH_NAME_WIN			"FooBar"
-  #define HOMEPATH_NAME_MACOSX		HOMEPATH_NAME_WIN
-//  #define STEAMPATH_NAME			"Foo Bar"
-//  #define STEAMPATH_APPID         ""
-  #define GAMENAME_FOR_MASTER		"foobar"	// must NOT contain whitespace
-  #define CINEMATICS_LOGO		"foologo.roq"
-  #define CINEMATICS_INTRO		"intro.roq"
-//  #define LEGACY_PROTOCOL	// You probably don't need this for your standalone game
-#else
-  #define PRODUCT_NAME				"ioq3"
-  #define BASEGAME					"baseq3"
-  #define CLIENT_WINDOW_TITLE		"ioquake3"
-  #define CLIENT_WINDOW_MIN_TITLE	"ioq3"
-  #define HOMEPATH_NAME_UNIX		".q3a"
-  #define HOMEPATH_NAME_WIN			"Quake3"
-  #define HOMEPATH_NAME_MACOSX		HOMEPATH_NAME_WIN
-  #define STEAMPATH_NAME			"Quake 3 Arena"
-  #define STEAMPATH_APPID			"2200"
-  #define GOGPATH_ID				"1441704920"
-  #define MSSTORE_PATH				"Quake 3"
-  #define GAMENAME_FOR_MASTER		"Quake3Arena"
-  #define CINEMATICS_LOGO		"idlogo.RoQ"
-  #define CINEMATICS_INTRO		"intro.RoQ"
-  #define LEGACY_PROTOCOL
-#endif
+#define PRODUCT_NAME            "ioq3"
+#define BASEGAME                "baseq3"
+#define CLIENT_WINDOW_TITLE     "ioquake3"
+#define CLIENT_WINDOW_MIN_TITLE "ioq3"
+#define HOMEPATH_NAME_UNIX      ".q3a"
+#define HOMEPATH_NAME_WIN       "Quake3"
+#define HOMEPATH_NAME_MACOSX    HOMEPATH_NAME_WIN
+#define STEAMPATH_NAME          "Quake 3 Arena"
+#define STEAMPATH_APPID         "2200"
+#define GOGPATH_ID              "1441704920"
+#define MSSTORE_PATH            "Quake 3"
+#define GAMENAME_FOR_MASTER     "Quake3Arena"
+#define CINEMATICS_LOGO         "idlogo.RoQ"
+#define CINEMATICS_INTRO        "intro.RoQ"
+#define LEGACY_PROTOCOL
 
 // Heartbeat for dpmaster protocol. You shouldn't change this unless you know what you're doing
 #define HEARTBEAT_FOR_MASTER		"DarkPlaces"
@@ -949,7 +934,7 @@ default values.
 #define CVAR_VM_CREATED		0x1000	// cvar was created exclusively in one of the VMs.
 #define CVAR_PROTECTED		0x2000	// prevent modifying this var from VMs or the server
 
-//::KUA.add. For compatibility with proxymod hud
+//::KUA.add : Compatibility with proxymod hud
 #define CVAR_NODEFAULT 0x4000 // do not write to config if matching with default value
 #define CVAR_PRIVATE 0x8000 // can't be read from VM
 #define CVAR_DEVELOPER 0x10000 // can be set only in developer mode

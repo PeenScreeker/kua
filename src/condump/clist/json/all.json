@@ -896,7 +896,7 @@ ttycon = [
 {"name":"ttycon_ansicolor", "value": "0"}
 ]
 ui = [
-{"name":"ui_bigFont", "value": "0.4"}
+{"name":"ui_fontBig", "value": "0.4"}
 {"name":"ui_browserGameType", "value": "0"}
 {"name":"ui_browserMaster", "value": "1"}
 {"name":"ui_browserShowEmpty", "value": "0"}
@@ -909,7 +909,7 @@ ui = [
 {"name":"ui_ffa_fraglimit", "value": "20"}
 {"name":"ui_ffa_timelimit", "value": "0"}
 {"name":"ui_singlePlayerActive", "value": "0"}
-{"name":"ui_smallFont", "value": "0.25"}
+{"name":"ui_fontSmall", "value": "0.25"}
 {"name":"ui_spSelection", "value": ""}
 {"name":"ui_team_fraglimit", "value": "0"}
 {"name":"ui_team_friendly", "value": "1"}

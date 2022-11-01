@@ -9,7 +9,52 @@
 
 # Unreleased
 ## 0.35a
+2022.10.31  
+```
+new : Automatic updater/downloader app. Simple version, will be upgraded over time. Made with nim/raygui
+```
+
 2022.09.30  
+```
+chg : Recent item pickups now draw in the middle-bottom third of the screen, and use the default font for their text.
+chg : Score points now show on the top left third of the screen when active, and use the default font.
+chg : Scoreboard drawing has been temporarily disabled (drawing is requested, but nothing is shown. Requires an entirely new scoreboard)
+```
+
+2022.10.18
+```
+chg : Powerups now draw in the bottom-center of the screen. They don't show a timer if they have > 99s left
+chg : Default model changed from "sarge" to "ranger/blue"
+chg : Changed Hud icons to be 2D by default (temporary until new models). Can be reverted with `cg_draw3Dicons 1`
+chg : Gauntlet is now the default weapon on first spawn. Doesn't change behavior on /kill (aka. preserves previous weapon)
+chg : Changed status and powerup colored numbers to something more reasonable than the default in-your-face yellow/red.
+chg : Most HUD elements have been fixed to draw with aspect correct ratio
+chg : cg_gun* cvars no longer locked as cheats. cg_gunX default changed from 0 to 7
+```
+
+2022.10.17
+```
+chg : Speedometer, fps meter, skim, holdboost, crouchslide and run timers, all now use font to draw
+new : Game+Engine Version text drawing on the bottom right of the screen
+new : Default Font: Roboto Bold 16pt
+new : New function in cg_draw to draw Text using fonts. TODO: vertical alignment and font size improvements.
+fix : Run mode: Fraglimit set to 0 in some places that was missing
+chg : Model cvars renamed: (headmodel, team_model, team_headmodel) = (model_playerhead, model_team, model_teamhead);  (TODO: model to model_player)
+new : Cvar hud_fontFile : Path of the standard font. Will use FONT_DEFAULT_FILE if empty
+new : Cvar hud_fontSize : Size of the standard font. 0=FONT_DEFAULT_SIZE; negative=12pt
+new : Created CG_Text* drawing functions, based on TeamArena code. They expect a valid fontInfo and do not hardcode any fonts
+```
+
+2022.10.16
+```
+bld : Several bug changes and fixes to python/tools
+chg : r_saveFontData default changed from 0 to 1
+chg : Renderer1 font system now stores data files to cache/fonts/ instead of just fonts/
+bld : Added a pkg-config parse entry for Freetype2 to the Linux Engine. Will need revision for windows support
+new : Renderer1 Freetype2 font support now enabled by default (needs compiler key to disable, instead of the opposite like before)
+```
+
+2022.10.01  
 ```
 fix : Several bug fixes to the build.py and run.py scripts
 new : build.py script now accepts cleaning option

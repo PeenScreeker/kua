@@ -82,13 +82,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define TEAM_OVERLAY_MAXNAME_WIDTH	12
 #define TEAM_OVERLAY_MAXLOCATION_WIDTH	16
 
-#define	DEFAULT_MODEL			"sarge"
+#define	MODEL_DEFAULT			"ranger/blue"
 #ifdef TEAMARENA
-#define	DEFAULT_TEAM_MODEL		"james"
-#define	DEFAULT_TEAM_HEAD		"*james"
+#define	MODEL_TEAM_DEFAULT		"james"
+#define	MODEL_TEAM_HEAD_DEFAULT		"*james"
 #else
-#define	DEFAULT_TEAM_MODEL		"sarge"
-#define	DEFAULT_TEAM_HEAD		"sarge"
+#define	MODEL_TEAM_DEFAULT		"ranger"
+#define	MODEL_TEAM_HEAD_DEFAULT		"ranger"
 #endif
 
 #define DEFAULT_REDTEAM_NAME		"Stroggs"
@@ -996,6 +996,9 @@ typedef struct {
 	sfxHandle_t	wstbimpdSound;
 	sfxHandle_t	wstbactvSound;
 
+  fontInfo_t font;       // Default Font being used
+	fontInfo_t fontSmall;  // Fallback for when font scale is too small
+	fontInfo_t fontBig;    // Fallback for when font scale is too big
 } cgMedia_t;
 
 
@@ -1183,8 +1186,8 @@ extern	vmCvar_t		cg_timescaleFadeSpeed;
 extern	vmCvar_t		cg_timescale;
 extern	vmCvar_t		cg_cameraMode;
 #ifdef TEAMARENA
-extern  vmCvar_t		cg_smallFont;
-extern  vmCvar_t		cg_bigFont;
+extern  vmCvar_t		cg_fontSmall;
+extern  vmCvar_t		cg_fontBig;
 extern	vmCvar_t		cg_noTaunt;
 #endif
 extern	vmCvar_t		cg_noProjectileTrail;
@@ -1195,6 +1198,8 @@ extern	vmCvar_t		cg_trueLightning;
 
 //::KUA.chg
 //::::::::::::::::
+extern  vmCvar_t		hud_fontSmall;
+extern  vmCvar_t		hud_fontBig;
 extern	vmCvar_t		hud_speed_x;
 extern	vmCvar_t		hud_speed_y;
 extern	vmCvar_t		hud_timerActive_x;
@@ -1222,6 +1227,21 @@ extern  vmCvar_t		cg_recordSPDemoName;
 extern	vmCvar_t		cg_obeliskRespawnDelay;
 #endif
 
+//::KUA.add -> For easier access to cgs.glconfig.vid* variables
+//::::::::::::::::
+#define GL_W cgs.glconfig.vidWidth
+#define GL_H cgs.glconfig.vidHeight
+//::::::::::::::::
+// Text tools
+//.........................................
+// TODO: All 9 positions
+typedef enum { TEXT_ALIGN_LEFT=1, TEXT_ALIGN_CENTER, TEXT_ALIGN_RIGHT } TextAlignment;
+//.........................................
+#define TEXT_ALIGN_DEFAULT TEXT_ALIGN_LEFT  // Sets the type that will be used when called with align 0
+#define FONT_SCALE_DEFAULT 1
+//:::::::::::::::::
+//::::::::::::::::
+//::KUA.end
 //
 // cg_main.c
 //
@@ -1267,6 +1287,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 // cg_drawtools.c
 //
 void CG_AdjustFrom640( float *x, float *y, float *w, float *h );
+void CG_ToScreenSize(float*x, float* y, float* w, float* h); //::KUA.add -> Screen Percentage based proportions
 void CG_FillRect( float x, float y, float width, float height, const float *color );
 void CG_DrawPic( float x, float y, float width, float height, qhandle_t hShader );
 void CG_DrawString( float x, float y, const char *string, float charWidth, float charHeight, const float *modulate );
@@ -1314,9 +1335,18 @@ void CG_DrawActive( stereoFrame_t stereoView );
 void CG_DrawFlagModel( float x, float y, float w, float h, int team, qboolean force2D );
 void CG_DrawTeamBackground( int x, int y, int w, int h, float alpha, int team );
 void CG_OwnerDraw(float x, float y, float w, float h, float text_x, float text_y, int ownerDraw, int ownerDrawFlags, int align, float special, float scale, vec4_t color, qhandle_t shader, int textStyle);
+//..........................................
+// TeamArena Text rendering with fonts
+int  CG_Text_Width(const char *text, float scale, int limit);
+int  CG_Text_Height(const char *text, float scale, int limit);
 void CG_Text_Paint(float x, float y, float scale, vec4_t color, const char *text, float adjust, int limit, int style);
-int CG_Text_Width(const char *text, float scale, int limit);
-int CG_Text_Height(const char *text, float scale, int limit);
+//::KUA.add
+// New Text rendering with fonts
+int  CG_TextGetWidth (const char *text, fontInfo_t* font, float scale, int limit);
+int  CG_TextGetHeight(const char *text, fontInfo_t* font, float scale, int limit);
+void CG_TextDrawStr  (const char *text, fontInfo_t *font, float x, float y, float scale, vec4_t color, float adjust, int style, int limit);
+void CG_TextDraw     (const char *text, fontInfo_t *font, float x, float y, float scale, vec5_t color, float adjust, int style, int limit, int align);
+//::KUA.end ................................
 void CG_SelectPrevPlayer( void );
 void CG_SelectNextPlayer( void );
 float CG_GetValue(int ownerDraw);

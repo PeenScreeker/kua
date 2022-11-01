@@ -269,10 +269,10 @@ int Text_Width(const char *text, float scale, int limit) {
 	float useScale;
 	const char *s = text;
 	fontInfo_t *font = &uiInfo.uiDC.Assets.textFont;
-	if (scale <= ui_smallFont.value) {
-		font = &uiInfo.uiDC.Assets.smallFont;
-	} else if (scale >= ui_bigFont.value) {
-		font = &uiInfo.uiDC.Assets.bigFont;
+	if (scale <= ui_fontSmall.value) {
+		font = &uiInfo.uiDC.Assets.fontSmall;
+	} else if (scale >= ui_fontBig.value) {
+		font = &uiInfo.uiDC.Assets.fontBig;
 	}
 	useScale = scale * font->glyphScale;
   out = 0;
@@ -304,10 +304,10 @@ int Text_Height(const char *text, float scale, int limit) {
 	float useScale;
 	const char *s = text;
 	fontInfo_t *font = &uiInfo.uiDC.Assets.textFont;
-	if (scale <= ui_smallFont.value) {
-		font = &uiInfo.uiDC.Assets.smallFont;
-	} else if (scale >= ui_bigFont.value) {
-		font = &uiInfo.uiDC.Assets.bigFont;
+	if (scale <= ui_fontSmall.value) {
+		font = &uiInfo.uiDC.Assets.fontSmall;
+	} else if (scale >= ui_fontBig.value) {
+		font = &uiInfo.uiDC.Assets.fontBig;
 	}
 	useScale = scale * font->glyphScale;
   max = 0;
@@ -348,10 +348,10 @@ void Text_Paint(float x, float y, float scale, vec4_t color, const char *text, f
 	glyphInfo_t *glyph;
 	float useScale;
 	fontInfo_t *font = &uiInfo.uiDC.Assets.textFont;
-	if (scale <= ui_smallFont.value) {
-		font = &uiInfo.uiDC.Assets.smallFont;
-	} else if (scale >= ui_bigFont.value) {
-		font = &uiInfo.uiDC.Assets.bigFont;
+	if (scale <= ui_fontSmall.value) {
+		font = &uiInfo.uiDC.Assets.fontSmall;
+	} else if (scale >= ui_fontBig.value) {
+		font = &uiInfo.uiDC.Assets.fontBig;
 	}
 	useScale = scale * font->glyphScale;
   if (text) {
@@ -417,10 +417,10 @@ void Text_PaintWithCursor(float x, float y, float scale, vec4_t color, const cha
 	float yadj;
 	float useScale;
 	fontInfo_t *font = &uiInfo.uiDC.Assets.textFont;
-	if (scale <= ui_smallFont.value) {
-		font = &uiInfo.uiDC.Assets.smallFont;
-	} else if (scale >= ui_bigFont.value) {
-		font = &uiInfo.uiDC.Assets.bigFont;
+	if (scale <= ui_fontSmall.value) {
+		font = &uiInfo.uiDC.Assets.fontSmall;
+	} else if (scale >= ui_fontBig.value) {
+		font = &uiInfo.uiDC.Assets.fontBig;
 	}
 	useScale = scale * font->glyphScale;
   if (text) {
@@ -518,10 +518,10 @@ static void Text_Paint_Limit(float *maxX, float x, float y, float scale, vec4_t 
 		float max = *maxX;
 		float useScale;
 		fontInfo_t *font = &uiInfo.uiDC.Assets.textFont;
-		if (scale <= ui_smallFont.value) {
-			font = &uiInfo.uiDC.Assets.smallFont;
-		} else if (scale > ui_bigFont.value) {
-			font = &uiInfo.uiDC.Assets.bigFont;
+		if (scale <= ui_fontSmall.value) {
+			font = &uiInfo.uiDC.Assets.fontSmall;
+		} else if (scale > ui_fontBig.value) {
+			font = &uiInfo.uiDC.Assets.fontBig;
 		}
 		useScale = scale * font->glyphScale;
 		trap_R_SetColor( color );
@@ -714,21 +714,21 @@ qboolean Asset_Parse(int handle) {
 			continue;
 		}
 
-		if (Q_stricmp(token.string, "smallFont") == 0) {
+		if (Q_stricmp(token.string, "fontSmall") == 0) {
 			int pointSize;
 			if (!PC_String_Parse(handle, &tempStr) || !PC_Int_Parse(handle,&pointSize)) {
 				return qfalse;
 			}
-			trap_R_RegisterFont(tempStr, pointSize, &uiInfo.uiDC.Assets.smallFont);
+			trap_R_RegisterFont(tempStr, pointSize, &uiInfo.uiDC.Assets.fontSmall);
 			continue;
 		}
 
-		if (Q_stricmp(token.string, "bigFont") == 0) {
+		if (Q_stricmp(token.string, "fontBig") == 0) {
 			int pointSize;
 			if (!PC_String_Parse(handle, &tempStr) || !PC_Int_Parse(handle,&pointSize)) {
 				return qfalse;
 			}
-			trap_R_RegisterFont(tempStr, pointSize, &uiInfo.uiDC.Assets.bigFont);
+			trap_R_RegisterFont(tempStr, pointSize, &uiInfo.uiDC.Assets.fontBig);
 			continue;
 		}
 
@@ -1282,7 +1282,7 @@ static void UI_DrawPlayerModel(rectDef_t *rect) {
 
 	  if (trap_Cvar_VariableValue("ui_Q3Model")) {
 		Q_strncpyz(model, UI_Cvar_VariableString("model"), sizeof(model));
-		Q_strncpyz(head, UI_Cvar_VariableString("headmodel"), sizeof(head));
+		Q_strncpyz(head, UI_Cvar_VariableString("model_playerhead"), sizeof(head));
 		if (!q3Model) {
 			q3Model = qtrue;
 			updateModel = qtrue;
@@ -1291,8 +1291,8 @@ static void UI_DrawPlayerModel(rectDef_t *rect) {
 	} else {
 
 		Q_strncpyz(team, UI_Cvar_VariableString("ui_teamName"), sizeof(team));
-		Q_strncpyz(model, UI_Cvar_VariableString("team_model"), sizeof(model));
-		Q_strncpyz(head, UI_Cvar_VariableString("team_headmodel"), sizeof(head));
+		Q_strncpyz(model, UI_Cvar_VariableString("model_team"), sizeof(model));
+		Q_strncpyz(head, UI_Cvar_VariableString("model_teamheadmodel"), sizeof(head));
 		if (q3Model) {
 			q3Model = qfalse;
 			updateModel = qtrue;
@@ -4462,14 +4462,14 @@ static void UI_FeederSelection(float feederID, int index) {
 	UI_SelectedHead(index, &actual);
 	index = actual;
     if (index >= 0 && index < uiInfo.characterCount) {
-		trap_Cvar_Set( "team_model", uiInfo.characterList[index].base);
-		trap_Cvar_Set( "team_headmodel", va("*%s", uiInfo.characterList[index].name)); 
+		trap_Cvar_Set( "model_team", uiInfo.characterList[index].base);
+		trap_Cvar_Set( "model_teamheadmodel", va("*%s", uiInfo.characterList[index].name)); 
 		updateModel = qtrue;
     }
   } else if (feederID == FEEDER_Q3HEADS) {
     if (index >= 0 && index < uiInfo.q3HeadCount) {
       trap_Cvar_Set( "model", uiInfo.q3HeadNames[index]);
-      trap_Cvar_Set( "headmodel", uiInfo.q3HeadNames[index]);
+      trap_Cvar_Set( "model_playerhead", uiInfo.q3HeadNames[index]);
 			updateModel = qtrue;
 		}
   } else if (feederID == FEEDER_MAPS || feederID == FEEDER_ALLMAPS) {
@@ -5745,8 +5745,8 @@ vmCvar_t	ui_scoreShutoutBonus;
 vmCvar_t	ui_scoreTime;
 vmCvar_t	ui_captureLimit;
 vmCvar_t	ui_fragLimit;
-vmCvar_t	ui_smallFont;
-vmCvar_t	ui_bigFont;
+vmCvar_t	ui_fontSmall;
+vmCvar_t	ui_fontBig;
 vmCvar_t	ui_findPlayer;
 vmCvar_t	ui_Q3Model;
 vmCvar_t	ui_hudFiles;
@@ -5866,8 +5866,8 @@ static cvarTable_t		cvarTable[] = {
 	{ &ui_scoreShutoutBonus, "ui_scoreShutoutBonus", "0", CVAR_ARCHIVE},
 	{ &ui_fragLimit, "ui_fragLimit", "10", 0},
 	{ &ui_captureLimit, "ui_captureLimit", "5", 0},
-	{ &ui_smallFont, "ui_smallFont", "0.25", CVAR_ARCHIVE},
-	{ &ui_bigFont, "ui_bigFont", "0.4", CVAR_ARCHIVE},
+	{ &ui_fontSmall, "ui_fontSmall", "0.25", CVAR_ARCHIVE},
+	{ &ui_fontBig, "ui_fontBig", "0.4", CVAR_ARCHIVE},
 	{ &ui_findPlayer, "ui_findPlayer", "Sarge", CVAR_ARCHIVE},
 	{ &ui_Q3Model, "ui_q3model", "0", CVAR_ARCHIVE},
 	{ &ui_hudFiles, "cg_hudFiles", "ui/hud.txt", CVAR_ARCHIVE},

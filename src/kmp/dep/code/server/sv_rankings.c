@@ -110,25 +110,25 @@ void SV_RankBegin( char *gamekey )
 		switch( (int)Cvar_VariableValue("g_gametype") )
 		{
 		case GT_RUN:
-			gamekey = "Q3 Run";
+			gamekey = "Kua: Run";
 			break;
 		case GT_TOURNAMENT:
-			gamekey = "Q3 Tournament";
+			gamekey = "Kua: Tournament";
 			break;
 		case GT_TEAM:
-			gamekey = "Q3 Team Deathmatch";
+			gamekey = "Kua: Team Deathmatch";
 			break;
 		case GT_CTF:
-			gamekey = "Q3 Capture the Flag";
+			gamekey = "Kua: Capture the Flag";
 			break;
 		case GT_1FCTF:
-			gamekey = "Q3 One Flag CTF";
+			gamekey = "Kua: One Flag CTF";
 			break;
 		case GT_OBELISK:
-			gamekey = "Q3 Overload";
+			gamekey = "Kua: Overload";
 			break;
 		case GT_HARVESTER:
-			gamekey = "Q3 Harvester";
+			gamekey = "Kua: Harvester";
 			break;
 		default:
 			break;

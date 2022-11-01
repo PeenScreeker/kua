@@ -52,7 +52,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 // To generate new font data you need to go through the following steps.
 // 1. delete the fontImage_x_xx.tga files and fontImage_xx.dat files from the fonts path.
-// 2. in a ui script, specificy a font, smallFont, and bigFont keyword with font name and
+// 2. in a ui script, specificy a font, fontSmall, and fontBig keyword with font name and
 //    point size. the original TrueType fonts must exist in fonts at this point.
 // 3. run the game, you should see things normally.
 // 4. Exit the game and there will be three dat files and at least three tga files. The
@@ -351,6 +351,8 @@ float readFloat(void) {
   return f.fl;
 }
 
+
+#define FONT_CACHEDIR "cache/fonts/"
 void RE_RegisterFont(const char* fontName, int pointSize, fontInfo_t* font) {
   if (!fontName) {
     ri.Printf(PRINT_ALL, "%s: called with empty name\n", __func__);
@@ -364,7 +366,7 @@ void RE_RegisterFont(const char* fontName, int pointSize, fontInfo_t* font) {
   }
 
   char name[1024];
-  Com_sprintf(name, sizeof(name), "fonts/fontImage_%i.dat", pointSize);
+  Com_sprintf(name, sizeof(name), FONT_CACHEDIR "%s_%i.dat", fontName, pointSize);
   for (int i = 0; i < registeredFontCount; i++) {
     if (Q_stricmp(name, registeredFont[i].name) == 0) {
       Com_Memcpy(font, &registeredFont[i], sizeof(fontInfo_t));
@@ -483,10 +485,10 @@ void RE_RegisterFont(const char* fontName, int pointSize, fontInfo_t* font) {
         imageBuff[left++] = ((float)out[k] * max);
       }
 
-      Com_sprintf(name, sizeof(name), "fonts/fontImage_%i_%i.tga", imageNumber++, pointSize);
+      Com_sprintf(name, sizeof(name), FONT_CACHEDIR "%s_%i_%i.tga", fontName, imageNumber++, pointSize);
       if (r_saveFontData->integer) { WriteTGA(name, imageBuff, 256, 256); }
 
-      // Com_sprintf (name, sizeof(name), "fonts/fontImage_%i_%i", imageNumber++, pointSize);
+      // Com_sprintf (name, sizeof(name), FONT_CACHEDIR "%s_%i_%i", fontName, imageNumber++, pointSize);
       image_t*  image = R_CreateImage(name, NULL, imageBuff, 256, 256, IMGFLAG_CLAMPTOEDGE);
       qhandle_t h     = RE_RegisterShaderFromImage(name, LIGHTMAP_2D, image, qfalse);
       for (int j = lastStart; j < i; j++) {
@@ -508,7 +510,7 @@ void RE_RegisterFont(const char* fontName, int pointSize, fontInfo_t* font) {
   // change the scale to be relative to 1 based on 72 dpi ( so dpi of 144 means a scale of .5 )
   float glyphScale = 72.0f / dpi;
   // we also need to adjust the scale based on point size relative to 48 points as the ui scaling is based on a 48 point font
-  glyphScale *= 48.0f / pointSize;
+  // glyphScale *= 48.0f / pointSize;
 
   registeredFont[registeredFontCount].glyphScale = glyphScale;
   font->glyphScale                               = glyphScale;

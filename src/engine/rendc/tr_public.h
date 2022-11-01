@@ -45,13 +45,11 @@ typedef struct {
 
 	// All data that will be used in a level should be
 	// registered before rendering any frames to prevent disk hits,
-	// but they can still be registered at a later time
-	// if necessary.
+	// but they can still be registered at a later time if necessary.
 	//
 	// BeginRegistration makes any existing media pointers invalid
-	// and returns the current gl configuration, including screen width
-	// and height, which can be used by the client to intelligently
-	// size display elements
+	// and returns the current gl configuration, including screen width and height, 
+  // which can be used by the client to intelligently size display elements
 	void	(*BeginRegistration)( glconfig_t *config );
 	qhandle_t (*RegisterModel)( const char *name );
 	qhandle_t (*RegisterSkin)( const char *name );

@@ -1197,10 +1197,10 @@ static void CG_Text_Paint_Limit(float *maxX, float x, float y, float scale, vec4
 		float max = *maxX;
 		float useScale;
 		fontInfo_t *font = &cgDC.Assets.textFont;
-		if (scale <= cg_smallFont.value) {
-			font = &cgDC.Assets.smallFont;
-		} else if (scale > cg_bigFont.value) {
-			font = &cgDC.Assets.bigFont;
+		if (scale <= cg_fontSmall.value) {
+			font = &cgDC.Assets.fontSmall;
+		} else if (scale > cg_fontBig.value) {
+			font = &cgDC.Assets.fontBig;
 		}
 		useScale = scale * font->glyphScale;
 		trap_R_SetColor( color );

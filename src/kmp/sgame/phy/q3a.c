@@ -37,8 +37,8 @@ void cpm_init(){
   phy_water_scale         = pm_swimScale;
   phy_water_friction      = 0.5;
   // New
-  phy_snapvelocity        = qtrue;
-  phy_input_scalefix      = qfalse;
+  phy_snapvelocity        = qfalse;  // Changed for Kua.cpm
+  phy_input_scalefix      = qtrue;   // Changed for Kua.cpm
   phy_ground_basespeed    = 320;
   phy_ground_accel        = 15;
   // Air movement
@@ -55,7 +55,7 @@ void cpm_init(){
   phy_airstrafe_basespeed = 30;
   phy_airstrafe_accel     = 70;
   // Jump
-  phy_jump_auto           = qfalse;
+  phy_jump_auto           = qtrue;  // Changed for Kua.cpm
   phy_jump_type           = CPM;
   phy_jump_timebuffer     = 400;
   phy_jump_dj_velocity    = 100;

@@ -707,9 +707,9 @@
   {"flags":"  U  A    ",   "name":"name",                             "value": "USER",                "description":""},
   {"flags":"  U       ",   "name":"password",                         "value": "",                    "description":""},
   {"flags":"  U  A    ",   "name":"model",                            "value": "klesk/trolloc",       "description":""},
-  {"flags":"  U  A    ",   "name":"headmodel",                        "value": "klesk/trolloc",       "description":""},
-  {"flags":"  U  A    ",   "name":"team_model",                       "value": "klesk/trolloc",       "description":""},
-  {"flags":"  U  A    ",   "name":"team_headmodel",                   "value": "klesk/trolloc",       "description":""},
+  {"flags":"  U  A    ",   "name":"model_playerhead",                        "value": "klesk/trolloc",       "description":""},
+  {"flags":"  U  A    ",   "name":"model_team",                       "value": "klesk/trolloc",       "description":""},
+  {"flags":"  U  A    ",   "name":"model_teamheadmodel",                   "value": "klesk/trolloc",       "description":""},
   {"flags":"     A    ",   "name":"cg_forceModel",                    "value": "0",                   "description":""}
   ],
 
@@ -991,8 +991,8 @@
   {"flags":"          ",   "name":"timedemo",                         "value": "0",                   "description":""},
   {"flags":"       C  ",   "name":"timegraph",                        "value": "0",                   "description":""},
 
-  {"flags":"     A    ",   "name":"ui_smallFont",                     "value": "0.25",                "description":""},
-  {"flags":"     A    ",   "name":"ui_bigFont",                       "value": "0.4",                 "description":""},
+  {"flags":"     A    ",   "name":"ui_fontSmall",                     "value": "0.25",                "description":""},
+  {"flags":"     A    ",   "name":"ui_fontBig",                       "value": "0.4",                 "description":""},
 
   {"flags":"     A    ",   "name":"ui_browserGameType",               "value": "0",                   "description":""},
   {"flags":"     A    ",   "name":"ui_browserMaster",                 "value": "1",                   "description":""},

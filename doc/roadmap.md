@@ -1,11 +1,26 @@
-- [ ] Default to good visual config
-
-# Roadmap
-
+# Roadmaps
+[ktt](./roadmap-ktt.md)
+[kmp](./roadmap-kmp.md)
+---
 # Code
-- [ ] PlayerState rework to generic rpg
+## Engine+Gamecode
+- [ ] PlayerState rework 
+  - [ ] Generic rpg
+    - [ ] Attributes
+    - [ ] State (health/armor)
+  - [ ] Physics info
+    - [ ] Gravity
+    - [ ] Speed
+    - [ ] ...
+## Gamecode
+- [ ] Fix: Viewpoint flicker on Feetraise
+## Engine
+- [ ] Default to good visual config
+- [ ] Port font support to the engine, and use callbacks to draw text
 
 # Standalone Freedom
+_Main Idea:      Disable loading of all media cache assets_
+_Realistically:  Does this just work? Is it that "simple"? Need testing_
 ## UI
 ## Game: Client
 ## Game: Server
@@ -18,6 +33,7 @@
 - [ ] cg_drawgun 2
 - [ ] cg_nodamagekick
 - [ ] Separate respawn command
+- [ ] `/varcommand`
 
 # GUI
 ## UI
@@ -30,17 +46,27 @@
 - [ ] Improved Loading screen:
   - [ ] Better map info distribution
   - [ ] Add map description text field
-- [ ] `/varcommand`
+- [ ] Story-telling (? both same system ?)
+  - [ ] Dialogue
+  - [ ] Narration
+- [ ] Cvar control
+  - [ ] Serialize them
 
 ## HUD
-- [ ] Hud element: Current map & Internal version  
-- [ ] ... wsw hud system (how does it work? can it be ported?)
-- [ ] HUD customization
-
+- [x] Hud element: Current map & Internal version  
+- [x] Font support
+- [x] Aspect correct images
+- [ ] Skill bar
+  - [ ] Basic version: Timer on top of icon (grayscale:inactive, colored:active)
+- [ ] New icons : Warsow insp (vector style, simple shading, 3 tone range)
+- [ ] New design: Player state (health, ammo, powerups, etc)  
+  - [x] Basic: Q3 hud, aspect correct, widescreen, smaller
+  - [ ] Rework (What's needed?)
+  - [ ] Customization with cvars
 
 ## Racing HUD
-- [ ] New hud for Player state configuration (health, ammo, powerups, etc)  
-- [ ] Proxymod support  
+- [ ] Fix scoreboard
+- [ ] Proxymod support
   - [ ] strafehud
     - [ ] accel
     - [ ] snaps
@@ -58,14 +84,15 @@
 ## Entities
 ### New
 - [ ] Velocity pads  
-- [ ] Q1 barrel
+- [ ] Q1 barrel  (model from that default q3 map)
 - [ ] USE buttons
 - [ ] Port Warp entities
+- [ ] Client sided logic (EntityPlus and SourceEngine-I/O inspired)
 
 ### Change
 - [ ] Teleport
+  - [ ] Keep speed SpawnFlag
   - [ ] 0ups SpawnFlag
-  - [ ] No reset speed SpawnFlag
 - [ ] Map entities reset on `ClientSpawn()`
 - [ ] Support for all defrag Entities
   - [ ] trigger_ entities
@@ -99,13 +126,15 @@
 ## Physics
 - [ ] CPM rework (speed)
   - [ ] New name
+  - [ ] Separate to new file
+  - [ ] Differential strafing
+  - [ ] No W-turn
+  - [ ] Crouchslide
   - [ ] Autojump
     - [ ] no-boost on hold
     - [ ] boost on manual
   - [ ] Halfjump
-  - [ ] SBJ
-  - [ ] No W-turn
-  - [ ] Crouchslide
+  - [ ] Feetraise
 
 - [ ] VQ2 rework (tech)
   - [ ] Autojump
@@ -115,6 +144,7 @@
   - [ ] Additive multijumps
   - [ ] Rampslides
   - [ ] Rampjumps (even during rampslide, if below dj-time)
+  - [ ] Feetraise
 
 - [x] vq1 movement (qw/ag)
   - [x] AD movement
@@ -137,6 +167,7 @@
   - [ ] Blink
   - [ ] Charge
   - [ ] Bow
+  - [ ] Hover
   - [ ] ...
 - [ ] W based physics (WW)
   - [ ] W turning affected by phy_ground_accel and phy_speed (aka also by haste)
@@ -145,12 +176,12 @@
   - [ ] Dash by default (ground and air)
   - [ ] Blink by default (MC-EoE style?)
   - [ ] Wallkick by default
+  - [ ] Hover ability
 - [ ] Hooks
 - [ ] Vortex weapons (implosion/pull instead of explosion/knockback)
 - [ ] Portals
 - [ ] Powerups: Physics selection (cpm and vq3 sections in the same map)
 - [ ] Look-behind command (map-based, not global)
-- [ ] Client sided logic (EntityPlus and SourceEngine-I/O inspired)
 
 ## Multiplayer
 - [ ] Multiplayer
@@ -213,6 +244,8 @@ _(All of them are very wanted, and will become Core eventually)_
   - [ ] GLFW, remove SDL
   - [ ] Nuklear UI integration
 - [ ] Unlock 1000 maxfps. Possible with opengl1?
+- [ ] Threads
+
 
 ---
 

@@ -682,12 +682,12 @@ static void CG_LoadClientInfo( int clientNum, clientInfo_t *ci ) {
 			} else {
 				Q_strncpyz(teamname, DEFAULT_REDTEAM_NAME, sizeof(teamname) );
 			}
-			if ( !CG_RegisterClientModelname( ci, DEFAULT_TEAM_MODEL, ci->skinName, DEFAULT_TEAM_HEAD, ci->skinName, teamname ) ) {
-				CG_Error( "DEFAULT_TEAM_MODEL / skin (%s/%s) failed to register", DEFAULT_TEAM_MODEL, ci->skinName );
+			if ( !CG_RegisterClientModelname( ci, MODEL_TEAM_DEFAULT, ci->skinName, MODEL_TEAM_HEAD_DEFAULT, ci->skinName, teamname ) ) {
+				CG_Error( "MODEL_TEAM_DEFAULT / skin (%s/%s) failed to register", MODEL_TEAM_DEFAULT, ci->skinName );
 			}
 		} else {
-			if ( !CG_RegisterClientModelname( ci, DEFAULT_MODEL, "default", DEFAULT_MODEL, "default", teamname ) ) {
-				CG_Error( "DEFAULT_MODEL (%s) failed to register", DEFAULT_MODEL );
+			if ( !CG_RegisterClientModelname( ci, MODEL_DEFAULT, "default", MODEL_DEFAULT, "default", teamname ) ) {
+				CG_Error( "MODEL_DEFAULT (%s) failed to register", MODEL_DEFAULT );
 			}
 		}
 		modelloaded = qfalse;
@@ -704,7 +704,7 @@ static void CG_LoadClientInfo( int clientNum, clientInfo_t *ci ) {
 
 	// sounds
 	dir = ci->modelName;
-	fallback = (cgs.gametype >= GT_TEAM) ? DEFAULT_TEAM_MODEL : DEFAULT_MODEL;
+	fallback = (cgs.gametype >= GT_TEAM) ? MODEL_TEAM_DEFAULT : MODEL_DEFAULT;
 
 	for ( i = 0 ; i < MAX_CUSTOM_SOUNDS ; i++ ) {
 		s = cg_customSoundNames[i];
@@ -956,7 +956,7 @@ void CG_NewClientInfo( int clientNum ) {
 		char *skin;
 
 		if( cgs.gametype >= GT_TEAM ) {
-			Q_strncpyz( newInfo.modelName, DEFAULT_TEAM_MODEL, sizeof( newInfo.modelName ) );
+			Q_strncpyz( newInfo.modelName, MODEL_TEAM_DEFAULT, sizeof( newInfo.modelName ) );
 			Q_strncpyz( newInfo.skinName, "default", sizeof( newInfo.skinName ) );
 		} else {
 			trap_Cvar_VariableStringBuffer( "model", modelStr, sizeof( modelStr ) );
@@ -1000,10 +1000,10 @@ void CG_NewClientInfo( int clientNum ) {
 		char *skin;
 
 		if( cgs.gametype >= GT_TEAM ) {
-			Q_strncpyz( newInfo.headModelName, DEFAULT_TEAM_HEAD, sizeof( newInfo.headModelName ) );
+			Q_strncpyz( newInfo.headModelName, MODEL_TEAM_HEAD_DEFAULT, sizeof( newInfo.headModelName ) );
 			Q_strncpyz( newInfo.headSkinName, "default", sizeof( newInfo.headSkinName ) );
 		} else {
-			trap_Cvar_VariableStringBuffer( "headmodel", modelStr, sizeof( modelStr ) );
+			trap_Cvar_VariableStringBuffer( "model_playerhead", modelStr, sizeof( modelStr ) );
 			if ( ( skin = strchr( modelStr, '/' ) ) == NULL) {
 				skin = "default";
 			} else {
