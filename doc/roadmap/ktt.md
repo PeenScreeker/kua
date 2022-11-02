@@ -11,10 +11,11 @@
     - [ ] Media cache
   - [ ] Standalone freedom
 <!--................................-->
-      - [ ] Checking for new vers
-      - [ ] Source host (github, probably)
-    - [ ] Downloading
-    - [ ] GUI basic app
+      - [x] Checking for new vers
+      - [x] Source host (github, probably)
+      - [x] Downloading
+    - [x] GUI basic app
+    - [ ] Better GUI (async, interactive)
   - [ ] Updater / launcher
 <!--................................-->
 - [ ] Release

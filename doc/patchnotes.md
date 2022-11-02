@@ -14,7 +14,7 @@
 new : Automatic updater/downloader app. Simple version, will be upgraded over time. Made with nim/raygui
 ```
 
-2022.09.30  
+2022.10.30  
 ```
 chg : Recent item pickups now draw in the middle-bottom third of the screen, and use the default font for their text.
 chg : Score points now show on the top left third of the screen when active, and use the default font.
