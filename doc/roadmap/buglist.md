@@ -1,5 +1,6 @@
 # Bug fixes
 ## New
+- [ ] Item pickups sometimes don't draw when overlapping with weapon switch hud element
 - [ ] Viewpoint flicker on Feetraise
 - [ ] `/map_restart` doesn't reset timer
 - [ ] (CPM) Correct deceleration values

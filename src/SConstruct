@@ -538,7 +538,7 @@ ui         = base.clone()
 ## Source code
 ui.src     = srcGame_ui
 ui.srcdir  = gameDir 
-ui.ssdir   = 'ui'
+ui.ssdir   = 'q3ui'
 # Custom compiler name (non verbose)
 ui.cStr    = 'CC_ui'
 ui.lStr    = 'LD_ui'
@@ -548,24 +548,24 @@ ui.bintype = 'lib'
 #ui.defines += ['UI']
 
 # Linux
-uiLnx = ui.merge(lnx)
-uiLnx.binname = f'ui{uiLnx.arch}'
+uiLnx          = ui.merge(lnx)
+uiLnx.binname  = f'q3ui{uiLnx.arch}'
 uiLnx.defines += [f'ARCH_STRING="{uiLnx.arch}"']
-uiLnx_rls = uiLnx.merge(rls)
-uiLnx_dbg = uiLnx.merge(dbg)
+uiLnx_rls      = uiLnx.merge(rls)
+uiLnx_dbg      = uiLnx.merge(dbg)
 # Windows
-uiWin = ui.merge(win)
-uiWin.binname = f'ui{uiWin.arch}'
+uiWin          = ui.merge(win)
+uiWin.binname  = f'q3ui{uiWin.arch}'
 uiWin.defines += [f'ARCH_STRING="{uiWin.arch}"']  #TODO: Fix Memory Address nonsense. This is already defined???
-uiWin_rls = uiWin.merge(rls)
-uiWin_dbg = uiWin.merge(dbg)
+uiWin_rls      = uiWin.merge(rls)
+uiWin_dbg      = uiWin.merge(dbg)
 
 #:::::::::::::::::::::::::::::::
 # Ui New
-uiNew = uiLnx_rls.clone()
-uiNew.src = srcGame_nui
-uiNew.ssdir = 'nui'
-uiNew.binname = 'n'+uiNew.binname
+uiNew          = uiLnx_rls.clone()
+uiNew.src      = srcGame_nui
+uiNew.ssdir    = 'ui'
+uiNew.binname  = uiNew.binname.replace('q3ui', 'ui')
 #:::::::::::::::::::::::::::::::
 
 
@@ -655,7 +655,8 @@ trgEngine_ws = [clWin_sdl.trg]
 # #TODO add server (here and trgAll)
 # # game
 trgGame_ld   = [cgLnx_dbg.trg, sgLnx_dbg.trg, uiLnx_dbg.trg]
-trgGame_lr   = [cgLnx_rls.trg, sgLnx_rls.trg, uiLnx_rls.trg]
+trgGame_lr   = [cgLnx_rls.trg, sgLnx_rls.trg, uiNew.trg]
+# trgGame_lr   = [cgLnx_rls.trg, sgLnx_rls.trg, uiLnx_rls.trg]
 trgGame_wd   = [cgWin_dbg.trg, sgWin_dbg.trg, uiWin_dbg.trg]
 trgGame_wr   = [cgWin_rls.trg, sgWin_rls.trg, uiWin_rls.trg]
 # # all

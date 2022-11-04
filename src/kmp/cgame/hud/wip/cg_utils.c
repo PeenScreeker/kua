@@ -3,22 +3,22 @@
   Written by:
     id software :            Quake III Arena
     nightmare, hk, Jelvan1 : mdd cgame Proxymod
-    sOkam! :                 Opensource Defrag
+    sOkam! :                 Kua: Multiplayer
 
-  This file is part of Opensource Defrag.
+  This file is part of Kua: Multiplayer.
 
-  Opensource Defrag is free software: you can redistribute it and/or modify
+  Kua: Multiplayer is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
 
-  Opensource Defrag is distributed in the hope that it will be useful,
+  Kua: Multiplayer is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with Opensource Defrag.  If not, see <http://www.gnu.org/licenses/>.
+  along with Kua: Multiplayer.  If not, see <http://www.gnu.org/licenses/>.
   ==============================
 */
 #include "cg_utils.h"

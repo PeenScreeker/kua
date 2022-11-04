@@ -1,6 +1,152 @@
 #include "../../local.h"
 #include "../tools.h"
 
+//::::::::::::::::
+// TODO: Move out to a header accesible by the rest of the code
+#define TEXT_STYLE_SHADOW  3 // Drop shadow
+#define TEXT_STYLE_SHADOW2 6 // Drop shadow, twice the size
+//.........................................
+// uiTextGetWidth
+//   Returns the total width of the given text, when using the selected font
+//.........................................
+int uiTextGetWidth(const char *text, fontInfo_t* font, float scale, int maxLength) {
+  float useScale = scale * font->glyphScale;
+  float out = 0;
+  if (text) {
+    int len = strlen(text);
+    if (maxLength > 0 && len > maxLength) { len = maxLength; }
+    int count = 0;
+    const char *s = text;
+    while (s && *s && count < len) {
+      if ( Q_IsColorString(s) ) {
+        s += 2;
+        continue;
+      } else {
+        glyphInfo_t* glyph = &font->glyphs[*s & 255];
+        out += glyph->xSkip;
+        s++;
+        count++;
+      }
+    }
+  }
+  return out * useScale;
+}
+//.........................................
+// uiTextGetHeight
+//   Returns the max height of the given text, when using the selected font
+//.........................................
+int uiTextGetHeight(const char *text, fontInfo_t* font, float scale, int maxLength) {
+  float useScale = scale * font->glyphScale;
+  float max = 0;
+  if (text) {
+    int len = strlen(text);
+    if (maxLength > 0 && len > maxLength) {
+      len = maxLength;
+    }
+    int count = 0;
+    const char *s = text;
+    while (s && *s && count < len) {
+      if ( Q_IsColorString(s) ) {
+        s += 2;
+        continue;
+      } else {
+        glyphInfo_t* glyph = &font->glyphs[*s & 255];
+        if (max < glyph->height) {
+          max = glyph->height;
+        }
+        s++;
+        count++;
+      }
+    }
+  }
+  return max * useScale;
+}
+
+//.........................................
+// uiDrawTextChar
+//   Draws a character in the given shader
+//   Coordinates are expected in screen size. No adjusting is done
+//.........................................
+static void uiTextDrawChar(float x, float y, float width, float height, float scale, float s, float t, float s2, float t2, qhandle_t glyphShader) {
+  float w = width * scale;
+  float h = height * scale;
+  id3R_DrawStretchPic( x, y, w, h, s, t, s2, t2, glyphShader );
+}
+//.........................................
+// uiDrawTextStr
+//   Draws a text string with the given properties
+//   Coordinates are expected in screen size. No adjusting is done
+//.........................................
+void uiTextDrawStr(const char *text, fontInfo_t *font, float x, float y, float scale, vec4_t color, float adjust, int style, int maxLength) {
+  // if (scale <= hud_fontSmall.value)   { font = &uis.media.fontSmall; } 
+  // else if (scale > hud_fontBig.value) { font = &uis.media.fontBig; }
+  float useScale = scale * font->glyphScale;
+  if (text) {
+    const char *s = text;
+    id3R_SetColor( color );
+    vec4_t newColor;
+    memcpy(&newColor[0], &color[0], sizeof(vec4_t));
+    int len = strlen(text);
+    if (maxLength > 0 && len > maxLength) { len = maxLength; }
+    int count = 0;
+    while (s && *s && count < len) {
+      glyphInfo_t* glyph = &font->glyphs[*s & 255];
+      //int yadj = Assets.textFont.glyphs[text[i]].bottom + Assets.textFont.glyphs[text[i]].top;
+      //float yadj = scale * (Assets.textFont.glyphs[text[i]].imageHeight - Assets.textFont.glyphs[text[i]].height);
+      if ( Q_IsColorString( s ) ) {
+        memcpy( newColor, g_color_table[ColorIndex(*(s+1))], sizeof( newColor ) );
+        newColor[3] = color[3];
+        id3R_SetColor( newColor );
+        s += 2;
+        continue;
+      } else {
+        float yadj = useScale * glyph->top;
+        if (style == TEXT_STYLE_SHADOW || style == TEXT_STYLE_SHADOW2) {
+          int ofs = style == TEXT_STYLE_SHADOW2 ? 2 : 1;
+          colorBlack[3] = newColor[3];
+          id3R_SetColor( colorBlack );
+          uiTextDrawChar(x + ofs, y - yadj + ofs,
+                          glyph->imageWidth, glyph->imageHeight, useScale, 
+                          glyph->s, glyph->t, glyph->s2, glyph->t2,
+                          glyph->glyph);
+          colorBlack[3] = 1.0;
+          id3R_SetColor( newColor );
+        }
+        uiTextDrawChar(x, y - yadj,
+                        glyph->imageWidth, glyph->imageHeight, useScale, 
+                        glyph->s, glyph->t, glyph->s2, glyph->t2,
+                        glyph->glyph);
+        x += (glyph->xSkip * useScale) + adjust;
+        s++;
+        count++;
+      }
+    }
+    id3R_SetColor( NULL );
+  }
+}
+//.........................................
+// uiTextDraw
+//   Draws text to screen using the given font properties
+//   Expects X, Y in [0-1] percentage range
+//.........................................
+void uiTextDraw(const char *text, fontInfo_t *font, float x, float y, float scale, vec4_t color, float adjust, int style, int maxLength, int align) {
+  // Convert X-Y from [0-1] to screen resolution
+  x *= uis.glconfig.vidWidth;
+  y *= uis.glconfig.vidHeight;
+
+  int w = uiTextGetWidth(text, font, scale, maxLength);
+  if (!align) { align = TEXT_ALIGN_DEFAULT; }
+  switch (align) { 
+    case TEXT_ALIGN_LEFT:   x -= 0; break;
+    case TEXT_ALIGN_CENTER: x -= (w*0.5); break;
+    case TEXT_ALIGN_RIGHT:  x -= w; break;
+    default: break;
+  }
+  uiTextDrawStr(text, font, x, y, scale, color, adjust, style, maxLength);
+}
+
+
+
 //:::::::::::::::::::::::
 // PAnything = Proportional
 //   PString : ProportionalString
@@ -230,7 +376,7 @@ void uiDrawHandlePic(float x, float y, float w, float h, qhandle_t hShader) {
   float t0 = (flipH) ? 1 : 0;
   float t1 = (flipH) ? 0 : 1;
 
-  uiAdjustFrom640(&x, &y, &w, &h);
+  // uiAdjustFrom640(&x, &y, &w, &h);
   id3R_DrawStretchPic(x, y, w, h, s0, t0, s1, t1, hShader);
 }
 

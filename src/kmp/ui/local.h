@@ -35,6 +35,24 @@ extern bool       m_entersound;
 //:::::::::::::::::
 
 //:::::::::::::::::
+// Aliases to remove virtual screen sizing
+// Will use current native window sizes instead
+#define GL_W uis.glconfig.vidWidth
+#define GL_H uis.glconfig.vidHeight
+//::::::::::::::::
+// Text tools
+//.........................................
+// TODO: All 9 positions
+typedef enum { TEXT_ALIGN_LEFT=1, TEXT_ALIGN_CENTER, TEXT_ALIGN_RIGHT } TextAlignment;
+//.........................................
+#define TEXT_ALIGN_DEFAULT TEXT_ALIGN_LEFT  // Sets the type that will be used when called with align 0
+#define FONT_SCALE_DEFAULT 1
+#define FONT_FILE_DEFAULT "ui/fonts/default.ttf"
+#define FONT_SIZE_DEFAULT 16
+//:::::::::::::::::
+
+
+//:::::::::::::::::
 // ui/core.c      Methods
 void uiInit(void);              // Requested right after asking for apiVersion
 void uiShutdown(void);          // Requested when engine shutsdown the UI

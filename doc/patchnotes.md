@@ -6,15 +6,35 @@
 > fix : Bug fixes.  
 > sec : Security, in case of vulnerabilities.  
 > ... : Part of the feature listed above it
+---
 
+```
+# TODO
+bld : Freetype2 windows compiling
+chg : Multiple default font types (probably needed during font UI dev)
+chg : Text drawing: Vertical alignment support
+```
+
+---
 # Unreleased
 ## 0.35a
+2022.11.03  
+```
+new : UI font support
+```
+
+2022.11.03  
+```
+doc : License text: Changed name to Kua, was osdf
+bld : New ui is now default. Windows version disconnected temporarily
+```
+
 2022.10.31  
 ```
 new : Automatic updater/downloader app. Simple version, will be upgraded over time. Made with nim/raygui
 ```
 
-2022.10.30  
+2022.10.19  
 ```
 chg : Recent item pickups now draw in the middle-bottom third of the screen, and use the default font for their text.
 chg : Score points now show on the top left third of the screen when active, and use the default font.

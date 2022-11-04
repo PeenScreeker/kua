@@ -22,6 +22,11 @@ void uiDrawString(int, int, const char*, int, vec4_t);
 void uiDrawNamedPic(float, float, float, float, const char*);
 void uiDrawHandlePic(float, float, float, float, qhandle_t);
 void uiDrawBannerString(int, int, const char*, int, vec4_t);
+//...................
+int  uiTextGetWidth(const char*, fontInfo_t*, float, int);
+int  uiTextGetHeight(const char*, fontInfo_t*, float, int);
+void uiTextDrawStr(const char*, fontInfo_t*, float, float, float, vec4_t, float, int, int);
+void uiTextDraw(const char*, fontInfo_t*, float, float, float, vec4_t, float, int, int, int);
 //:::::::::::::::::
 // framework/utils.c  Config
 #define PROPB_GAP_WIDTH 4

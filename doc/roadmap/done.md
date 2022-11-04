@@ -58,6 +58,8 @@
 - [x] Sound: Event limit system
 
 ## OSDF to KUA (0.35a)
-- [x] New Users UX: Basic Launcher & Autoupdater app
-- [x] Font support: cgame hud
-- [x] Aspect correct hud
+- [x] UX: Basic Launcher & Autoupdater app
+- [x] HUD: Font support for cgame
+- [x] HUD: Aspect correct hud
+- [x] HUD: Current map & Internal version  
+- [x] Engine: Crouch+Jump simultaneous inputs also store separate signals

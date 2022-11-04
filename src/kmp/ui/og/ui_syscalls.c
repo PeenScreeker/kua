@@ -33,7 +33,7 @@ int id3FS_Seek(fileHandle_t f, long offset, int origin) { return callback(UI_FS_
 
 // id3R_RegisterModel
 qhandle_t id3R_RegisterSkin(const char* name) { return callback(UI_R_REGISTERSKIN, name); }
-void      id3R_RegisterFont(const char* fontName, int pointSize, fontInfo_t* font) { callback(UI_R_REGISTERFONT, fontName, pointSize, font); }
+// id3R_RegisterFont
 // id3R_RegisterShaderNoMip
 // id3R_ClearScene
 void id3R_AddRefEntityToScene(const refEntity_t* re) { callback(UI_R_ADDREFENTITYTOSCENE, re); }

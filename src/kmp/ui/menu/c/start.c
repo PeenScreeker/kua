@@ -50,6 +50,9 @@ sfxHandle_t errorMessage_key(int key) {
 void menuStart_cache(void) {
   // Register the banner model file
   s_mstart.bannerModel = id3R_RegisterModel(MDL_START_BANNER);
+  // id3R_RegisterFont(const char* fontName, int pointSize, fontInfo_t* font);
+  id3R_RegisterFont(FONT_FILE_DEFAULT, FONT_SIZE_DEFAULT-4, &uis.font.small);
+
 }
 //:::::::::::::::::::
 // Main_MenuDraw
@@ -57,7 +60,7 @@ void menuStart_cache(void) {
 //:::::::::::::::::::
 #define BANNER_X 320
 #define BANNER_Y 450
-#define BANNER_TEXT "Opensource Defrag | GPL2.0+"
+#define BANNER_TEXT "Kua: Multiplayer | GPL2.0+"
 //:::::::::::::::::::
 static void menuStart_draw(void) {  // Main_MenuDraw(void) {
   // setup the refdef
@@ -109,7 +112,8 @@ static void menuStart_draw(void) {  // Main_MenuDraw(void) {
   } else {
     uiDrawMenu(&s_mstart.menu);  // standard menu drawing
   }
-  uiDrawString(BANNER_X, BANNER_Y, BANNER_TEXT, UI_CENTER | UI_SMALLFONT, (vec_t*)mStartColor.neutral);
+  // uiDrawString(BANNER_X, BANNER_Y, BANNER_TEXT, UI_CENTER | UI_SMALLFONT, (vec_t*)mStartColor.neutral);
+  uiTextDraw(BANNER_TEXT, &uis.font.small, 0.5, 0.99, 1, (vec_t*)mStartColor.neutral, 0, 0, strlen(BANNER_TEXT), TEXT_ALIGN_CENTER);
 }
 
 

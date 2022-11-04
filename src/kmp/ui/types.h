@@ -100,6 +100,10 @@ typedef struct {
 //:::::::::::::::::
 
 //:::::::::::::::::
+typedef struct fonts_s {
+  fontInfo_t small;
+} fonts_t;
+//:::::::::::::::::
 typedef struct {
   int        frametime;
   int        realtime;
@@ -125,6 +129,7 @@ typedef struct {
   float      bias;
   bool       demoversion;
   bool       firstdraw;
+  fonts_t    font;
 } uiStatic_t;
 //:::::::::::::::::
 typedef struct q3sound_s {

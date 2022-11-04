@@ -6,7 +6,7 @@
 //:::::::::::::::::::
 void menuCache(void) {
   // New UI assets
-  uis.menuBackShader       = id3R_RegisterShaderNoMip("ui/bgtest");
+  uis.menuBackShader       = id3R_RegisterShaderNoMip("ui/bg");
   uis.cursor               = id3R_RegisterShaderNoMip("ui/cursor");
   // Old Q3 assets
   uis.charset              = id3R_RegisterShaderNoMip("gfx/2d/bigchars");
@@ -31,7 +31,7 @@ void menuCache(void) {
   // sliderBar                = id3R_RegisterShaderNoMip("menu/art/slider2");
   // sliderButton_0           = id3R_RegisterShaderNoMip("menu/art/sliderbutt_0");
   // sliderButton_1           = id3R_RegisterShaderNoMip("menu/art/sliderbutt_1");
-  Com_Printf(":: Finished loading the menu cache\n");
+  Com_Printf(":: Finished loading menu cache\n");
 }
 
 //:::::::::::::::::::

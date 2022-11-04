@@ -20,6 +20,7 @@ void        id3GetClipboardData(char* buf, int bufsize);
 void        id3GetGlconfig(glconfig_t*);
 qhandle_t   id3R_RegisterModel(const char*);
 qhandle_t   id3R_RegisterShaderNoMip(const char*);
+void        id3R_RegisterFont(const char*, int, fontInfo_t*);
 void        id3R_ClearScene(void);
 void        id3R_RenderScene(const refdef_t*);
 void        id3R_SetColor(const float*);

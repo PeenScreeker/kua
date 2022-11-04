@@ -41,19 +41,18 @@ void id3Cmd_ExecuteText(int exec_when, const char* text) { callback(UI_CMD_EXECU
 void id3CvarRegister(vmCvar_t* cvar, const char* var_name, const char* value, int flags) { callback(UI_CVAR_REGISTER, cvar, var_name, value, flags); }
 void id3Cvar_Set(const char* var_name, const char* value) { callback(UI_CVAR_SET, var_name, value); }
 void id3Cvar_Update(vmCvar_t* cvar) { callback(UI_CVAR_UPDATE, cvar); }
-void id3Cvar_VariableStringBuffer(const char* var_name, char* buffer, int bufsize) {
-  callback(UI_CVAR_VARIABLESTRINGBUFFER, var_name, buffer, bufsize);
-}
+void id3Cvar_VariableStringBuffer(const char* var_name, char* buffer, int bufsize) { callback(UI_CVAR_VARIABLESTRINGBUFFER, var_name, buffer, bufsize); }
 //:::::::::::::::::
 // Renderer
 void      id3GetGlconfig(glconfig_t* glconfig) { callback(UI_GETGLCONFIG, glconfig); }
 qhandle_t id3R_RegisterModel(const char* name) { return callback(UI_R_REGISTERMODEL, name); }
 qhandle_t id3R_RegisterShaderNoMip(const char* name) { return callback(UI_R_REGISTERSHADERNOMIP, name); }
+void      id3R_RegisterFont(const char* fontName, int pointSize, fontInfo_t* font) { callback(UI_R_REGISTERFONT, fontName, pointSize, font); }
 void      id3R_ClearScene(void) { callback(UI_R_CLEARSCENE); }
 void      id3R_RenderScene(const refdef_t* fd) { callback(UI_R_RENDERSCENE, fd); }
 void      id3R_SetColor(const float* rgba) { callback(UI_R_SETCOLOR, rgba); }
 void      id3R_DrawStretchPic(float x, float y, float w, float h, float s1, float t1, float s2, float t2, qhandle_t hShader) {
-       callback(UI_R_DRAWSTRETCHPIC, Passf(x), Passf(y), Passf(w), Passf(h), Passf(s1), Passf(t1), Passf(s2), Passf(t2), hShader);
+  callback(UI_R_DRAWSTRETCHPIC, Passf(x), Passf(y), Passf(w), Passf(h), Passf(s1), Passf(t1), Passf(s2), Passf(t2), hShader);
 }
 void id3UpdateScreen(void) { callback(UI_UPDATESCREEN); }
 

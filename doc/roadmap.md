@@ -57,9 +57,6 @@ _Realistically:  Does this just work? Is it that "simple"? Need testing_
   - [ ] Serialize them
 
 ## HUD
-- [x] Hud element: Current map & Internal version  
-- [x] Font support
-- [x] Aspect correct images
 - [ ] Skill bar
   - [ ] Basic version: Timer on top of icon (grayscale:inactive, colored:active)
 - [ ] New icons : Warsow insp (vector style, simple shading, 3 tone range)
@@ -125,7 +122,7 @@ _Realistically:  Does this just work? Is it that "simple"? Need testing_
     - [ ] boost on manual
   - [ ] Halfjump
   - [ ] Feetraise
-
+---
 - [ ] VQ2 rework (tech)
   - [ ] Autojump
     - [ ] no-boost on hold
@@ -135,21 +132,7 @@ _Realistically:  Does this just work? Is it that "simple"? Need testing_
   - [ ] Rampslides
   - [ ] Rampjumps (even during rampslide, if below dj-time)
   - [ ] Feetraise
-
-- [x] vq1 movement (qw/ag)
-  - [x] AD movement
-    - [x] QW balanced
-    - [x] AG balanced
-  - [x] Half Jumps (aka Duckroll)
-  - [x] Feetraise (SBJ)
-    - [x] Basic implementation
-    - [x] Fix crouch-jumping
-  - [ ] Q1 rocket launcher
-  - [ ] Gaus (needs new name)
-  - [ ] ...
-- [x] vq4 movement
-- [x] vjk movement
-  - [x] holdboost mechanic
+---
 - [ ] New mechanics
   - [ ] Airjump (Powerup and WW passive)
   - [ ] Walljumps (urt insp) (optional wsw-like powerup, to boost its power)
@@ -172,3 +155,23 @@ _Realistically:  Does this just work? Is it that "simple"? Need testing_
 - [ ] Portals
 - [ ] Powerups: Physics selection (cpm and vq3 sections in the same map)
 - [ ] Look-behind command (map-based, not global)
+---
+- [x] vq1 movement (qw/ag)
+  - [x] AD movement
+    - [x] QW balanced
+    - [x] AG balanced
+  - [x] Half Jumps (aka Duckroll)
+  - [x] Feetraise (SBJ)
+    - [x] Basic implementation
+    - [x] Fix crouch-jumping
+  - [ ] Q1 rocket launcher
+  - [ ] Gaus (needs new name)
+  - [ ] ...
+- [x] vq4 movement
+  - [x] Crouchslide
+  - [x] Rampslide
+  - [x] Feetraise
+  - [ ] Ramp jumps
+- [x] vjk movement
+  - [x] holdboost mechanic
+
