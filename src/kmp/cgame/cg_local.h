@@ -656,6 +656,15 @@ typedef struct {
 } cg_t;
 
 
+//...............
+typedef struct Fonts_s {
+  fontInfo_t small;
+  fontInfo_t normal;
+  fontInfo_t label;
+  fontInfo_t action;
+  fontInfo_t mono;
+  fontInfo_t number;
+} Fonts;
 // all of the model, shader, and sound references that are
 // loaded at gamestate time are stored in cgMedia_t
 // Other media that can be tied to clients, weapons, or items are
@@ -999,6 +1008,7 @@ typedef struct {
   fontInfo_t font;       // Default Font being used
 	fontInfo_t fontSmall;  // Fallback for when font scale is too small
 	fontInfo_t fontBig;    // Fallback for when font scale is too big
+  // Fonts      font;      // TODO: Move cg fonts here
 } cgMedia_t;
 
 

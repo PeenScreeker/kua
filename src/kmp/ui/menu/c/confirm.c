@@ -17,9 +17,9 @@ typedef struct {
   const char** lines;
   void (*draw)(void);
   void (*action)(bool result);
-} confirmMenu_t;
+} MenuConfirm;
 //:::::::::::::::::::
-static confirmMenu_t s_confirm;
+static MenuConfirm s_confirm;
 //:::::::::::::::::::
 
 
@@ -59,7 +59,7 @@ static sfxHandle_t menuConfirm_key(int key) {
 static void menuConfirm_draw(void) {
   uiDrawNamedPic(142, 118, 359, 256, SHADER_CONFIRM_FRAME);
   uiDrawPString(320, 204, s_confirm.question, s_confirm.style, (vec_t*)mStartQ3.key);
-  uiDrawPString(s_confirm.slashX, 265, "/", UI_LEFT | UI_INVERSE, (vec_t*)mStartQ3.key);
+  uiDrawPString(s_confirm.slashX, 265, "/", UI_LEFT | UI_INACTIVE, (vec_t*)mStartQ3.key);
   uiDrawMenu(&s_confirm.menu);
   if (s_confirm.draw) { s_confirm.draw(); }
 }
@@ -132,6 +132,6 @@ void menuConfirm_style(const char* question, int style, void (*draw)(void), void
 // UI_menuConfirm
 //:::::::::::::::::::
 void menuConfirm(const char* question, void (*draw)(void), void (*action)(bool result)) {
-  menuConfirm_style(question, UI_CENTER | UI_INVERSE, draw, action);
+  menuConfirm_style(question, UI_CENTER | UI_INACTIVE, draw, action);
 }
 //:::::::::::::::::::

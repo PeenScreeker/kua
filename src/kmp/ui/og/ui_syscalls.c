@@ -18,8 +18,8 @@ void id3Cvar_Reset(const char* name) { callback(UI_CVAR_RESET, name); }
 void id3Cvar_Create(const char* var_name, const char* var_value, int flags) { callback(UI_CVAR_CREATE, var_name, var_value, flags); }
 void id3Cvar_InfoStringBuffer(int bit, char* buffer, int bufsize) { callback(UI_CVAR_INFOSTRINGBUFFER, bit, buffer, bufsize); }
 
-int  id3Argc(void) { return callback(UI_ARGC); }
-void id3Argv(int n, char* buffer, int bufferLength) { callback(UI_ARGV, n, buffer, bufferLength); }
+// id3Argc
+// id3Argv
 // id3Cmd_ExecuteText
 
 int  id3FS_FOpenFile(const char* qpath, fileHandle_t* f, fsMode_t mode) { return callback(UI_FS_FOPENFILE, qpath, f, mode); }
@@ -36,7 +36,7 @@ qhandle_t id3R_RegisterSkin(const char* name) { return callback(UI_R_REGISTERSKI
 // id3R_RegisterFont
 // id3R_RegisterShaderNoMip
 // id3R_ClearScene
-void id3R_AddRefEntityToScene(const refEntity_t* re) { callback(UI_R_ADDREFENTITYTOSCENE, re); }
+// id3R_AddRefEntityToScene
 void id3R_AddPolyToScene(qhandle_t hShader, int numVerts, const polyVert_t* verts) { callback(UI_R_ADDPOLYTOSCENE, hShader, numVerts, verts); }
 void id3R_AddLightToScene(const vec3_t org, float intensity, float r, float g, float b) {
   callback(UI_R_ADDLIGHTTOSCENE, org, PASSFLOAT(intensity), PASSFLOAT(r), PASSFLOAT(g), PASSFLOAT(b));

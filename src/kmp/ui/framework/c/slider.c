@@ -69,7 +69,7 @@ void slider_draw(MenuSlider* s) {
   uiDrawString(x - SMALLCHAR_WIDTH, y, s->generic.name, UI_RIGHT | style, color);
   // draw slider
   uiSetColor(color);
-  uiDrawHandlePic(x + SMALLCHAR_WIDTH, y, 96, 16, sliderBar);
+  uiDrawHandlePicPix(x + SMALLCHAR_WIDTH, y, 96, 16, sliderBar);
   uiSetColor(NULL);
   // clamp thumb
   if (s->maxvalue > s->minvalue) {
@@ -79,5 +79,5 @@ void slider_draw(MenuSlider* s) {
   }
   // draw thumb
   int button = (style & UI_PULSE) ? sliderButton_1 : sliderButton_0;
-  uiDrawHandlePic((int)(x + 2 * SMALLCHAR_WIDTH + (SLIDER_RANGE - 1) * SMALLCHAR_WIDTH * s->range) - 2, y - 2, 12, 20, button);
+  uiDrawHandlePicPix((int)(x + 2 * SMALLCHAR_WIDTH + (SLIDER_RANGE - 1) * SMALLCHAR_WIDTH * s->range) - 2, y - 2, 12, 20, button);
 }

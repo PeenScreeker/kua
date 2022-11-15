@@ -51,10 +51,10 @@ typedef struct {
 	
 	int style;
 	const char **lines;
-} confirmMenu_t;
+} MenuConfirm;
 
 
-static confirmMenu_t	s_confirm;
+static MenuConfirm	s_confirm;
 
 
 /*

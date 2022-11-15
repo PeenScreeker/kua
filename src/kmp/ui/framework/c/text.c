@@ -44,10 +44,10 @@ void BText_draw(MenuText* t) {
 //:::::::::::::::::::::::
 void PText_init(MenuText* t) {
   float sizeScale = uiPSizeScale(t->style);
-  int   x         = t->generic.x;
-  int   y         = t->generic.y;
-  int   w         = uiPStringWidth(t->string) * sizeScale;
-  int   h         = PROP_HEIGHT * sizeScale;
+  float x         = t->generic.x;
+  float y         = t->generic.y;
+  float w         = uiPStringWidth(t->string) * sizeScale;
+  float h         = PROP_HEIGHT * sizeScale;
   if (t->generic.flags & MFL_RIGHT_JUSTIFY) { x -= w; }
   if (t->generic.flags & MFL_CENTER_JUSTIFY) { x -= w / 2; }
   t->generic.left   = x - PROP_GAP_WIDTH * sizeScale;
@@ -60,11 +60,11 @@ void PText_init(MenuText* t) {
 // PText_Draw
 //:::::::::::::::::
 void PText_draw(MenuText* t) {
-  int    x      = t->generic.x;
-  int    y      = t->generic.y;
+  float  x      = t->generic.x;
+  float  y      = t->generic.y;
   bool   grayed = (t->generic.flags & MFL_GRAYED);
   float* color  = (grayed) ? (vec_t*)q3color.text_disabled : t->color;
   int    style  = t->style;
-  if (t->generic.flags & MFL_PULSEIFFOCUS) { style |= (cursorGetItem(t->generic.parent) == t) ? UI_PULSE : UI_INVERSE; }
-  uiDrawPString(x, y, t->string, style, color);
+  if (t->generic.flags & MFL_PULSEIFFOCUS) { style |= (cursorGetItem(t->generic.parent) == t) ? UI_PULSE : UI_INACTIVE; }
+  uiTextDraw(t->string, &t->font, x, y, 1, color, 0, style, strlen(t->string), 1);
 }

@@ -1,5 +1,6 @@
 # Bug fixes
 ## New
+- [ ] Font registration doesn't allow multiple calls for the exact same font. It registers them again, but this is incorrect.
 - [ ] Item pickups sometimes don't draw when overlapping with weapon switch hud element
 - [ ] Viewpoint flicker on Feetraise
 - [ ] `/map_restart` doesn't reset timer

@@ -9,7 +9,7 @@ CONFIRMATION MENU
 // ART_CONFIRM_FRAME
 // MID_CONFIRM_NO
 // MID_CONFIRM_YES
-// confirmMenu_t
+// MenuConfirm
 // s_confirm
 
 // ConfirmMenu_Event
@@ -56,7 +56,7 @@ void UI_Message(const char** lines) {
   int l1                        = 320 - (n1 / 2);
 
   s_confirm.lines           = lines;
-  s_confirm.style           = UI_CENTER | UI_INVERSE | UI_SMALLFONT;
+  s_confirm.style           = UI_CENTER | UI_INACTIVE | UI_SMALLFONT;
 
   s_confirm.menu.draw       = MessageMenu_Draw;
   s_confirm.menu.key        = menuConfirm_Key;

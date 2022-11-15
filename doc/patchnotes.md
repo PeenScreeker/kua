@@ -11,13 +11,28 @@
 ```
 # TODO
 bld : Freetype2 windows compiling
-chg : Multiple default font types (probably needed during font UI dev)
 chg : Text drawing: Vertical alignment support
+chg : Cleaner Exit confirm menu (no credits)
+fix : Menu item mouse selection (core.c/uiEvent_mouse)
+new : Kua logo
 ```
 
 ---
 # Unreleased
 ## 0.35a
+2022.11.15  
+```
+new : Logo Background (temporarily Q3, will be changed for Kua when its made)
+fix : Cursor constraints are now aspect correct
+new : Start menu now uses fonts !!
+new : Font file: heyNovember (used for ActionKey)
+new : Font type: Action (temporarily uses Roboto, could be changed)
+new : PText menu items now draw with fonts
+new : TextDraw now accepts styling (pulse, shadow and inactive)
+chg : UI_INVERSE renamed to UI_INACTIVE
+new : UI: Multiple default font types
+```
+
 2022.11.03  
 ```
 new : UI font support

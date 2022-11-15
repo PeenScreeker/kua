@@ -38,10 +38,10 @@ void bitmap_draw(MenuBitmap* b) {
   vec4_t tempcolor;
   if (b->generic.flags & MFL_GRAYED && b->shader) {
     id3R_SetColor(colorMdGrey);
-    uiDrawHandlePic(x, y, w, h, b->shader);
+    uiDrawHandlePicPix(x, y, w, h, b->shader);
     id3R_SetColor(NULL);
   } else {
-    if (b->shader) { uiDrawHandlePic(x, y, w, h, b->shader); }
+    if (b->shader) { uiDrawHandlePicPix(x, y, w, h, b->shader); }
     if (((b->generic.flags & MFL_PULSE) || (b->generic.flags & MFL_PULSEIFFOCUS)) && (cursorGetItem(b->generic.parent) == b)) {
       if (b->focuscolor) {
         tempcolor[0] = b->focuscolor[0];
@@ -53,15 +53,15 @@ void bitmap_draw(MenuBitmap* b) {
       }
       color[3] = 0.5 + 0.5 * sin((double)uis.realtime / PULSE_DIVISOR);
       id3R_SetColor(color);
-      uiDrawHandlePic(x, y, w, h, b->focusshader);
+      uiDrawHandlePicPix(x, y, w, h, b->focusshader);
       id3R_SetColor(NULL);
     } else if ((b->generic.flags & MFL_HIGHLIGHT) || ((b->generic.flags & MFL_HIGHLIGHT_IF_FOCUS) && (cursorGetItem(b->generic.parent) == b))) {
       if (b->focuscolor) {
         id3R_SetColor(b->focuscolor);
-        uiDrawHandlePic(x, y, w, h, b->focusshader);
+        uiDrawHandlePicPix(x, y, w, h, b->focusshader);
         id3R_SetColor(NULL);
       } else {
-        uiDrawHandlePic(x, y, w, h, b->focusshader);
+        uiDrawHandlePicPix(x, y, w, h, b->focusshader);
       }
     }
   }

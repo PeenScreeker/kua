@@ -844,7 +844,7 @@ void UI_DrawProportionalString( int x, int y, const char* str, int style, vec4_t
 		UI_DrawProportionalString2( x+2, y+2, str, drawcolor, sizeScale, cgs.media.charsetProp );
 	}
 
-	if ( style & UI_INVERSE ) {
+	if ( style & UI_INACTIVE ) {
 		drawcolor[0] = color[0] * 0.8;
 		drawcolor[1] = color[1] * 0.8;
 		drawcolor[2] = color[2] * 0.8;

@@ -24,7 +24,7 @@ extern uiStatic_t uis;
 
 //:::::::::::::::::
 // Global Menu IDs
-#define MID_SINGLEPLAYER 10
+#define MID_PLAY 10
 #define MID_MULTIPLAYER 11
 #define MID_SETUP 12
 #define MID_DEMOS 13

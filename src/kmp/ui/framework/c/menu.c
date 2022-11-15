@@ -6,27 +6,35 @@
 //:::::::::::::::::::
 void menuCache(void) {
   // New UI assets
-  uis.menuBackShader       = id3R_RegisterShaderNoMip("ui/bg");
-  uis.cursor               = id3R_RegisterShaderNoMip("ui/cursor");
+  uis.menuBackShader = id3R_RegisterShaderNoMip("ui/bg");
+  uis.cursor         = id3R_RegisterShaderNoMip("ui/cursor");
+  uis.logoQ3         = id3R_RegisterShaderNoMip("ui/logoQ3");
+  // Fonts
+  id3R_RegisterFont(FONT_FILE_DEFAULT, FONT_SIZE_DEFAULT - 4, &uis.font.small);
+  id3R_RegisterFont(FONT_FILE_DEFAULT, FONT_SIZE_DEFAULT, &uis.font.normal);
+  id3R_RegisterFont(FONT_FILE_ACTION, FONT_SIZE_ACTION, &uis.font.action);
+  id3R_RegisterFont(FONT_FILE_ACTIONKEY, FONT_SIZE_ACTIONKEY, &uis.font.actionKey);
+
   // Old Q3 assets
-  uis.charset              = id3R_RegisterShaderNoMip("gfx/2d/bigchars");
-  uis.charsetProp          = id3R_RegisterShaderNoMip("menu/art/font1_prop.tga");
-  uis.charsetPropGlow      = id3R_RegisterShaderNoMip("menu/art/font1_prop_glo.tga");
-  uis.charsetPropB         = id3R_RegisterShaderNoMip("menu/art/font2_prop.tga");
+  // uis.charset          = id3R_RegisterShaderNoMip("gfx/2d/bigchars");
+  // uis.charsetProp      = id3R_RegisterShaderNoMip("menu/art/font1_prop.tga");
+  // uis.charsetPropGlow  = id3R_RegisterShaderNoMip("menu/art/font1_prop_glo.tga");
+  // uis.charsetPropB     = id3R_RegisterShaderNoMip("menu/art/font2_prop.tga");
   // uis.cursor               = id3R_RegisterShaderNoMip("menu/art/3_cursor2");
-  uis.rb_on                = id3R_RegisterShaderNoMip("menu/art/switch_on");
-  uis.rb_off               = id3R_RegisterShaderNoMip("menu/art/switch_off");
-  uis.whiteShader          = id3R_RegisterShaderNoMip("white");
+  uis.rb_on            = id3R_RegisterShaderNoMip("menu/art/switch_on");
+  uis.rb_off           = id3R_RegisterShaderNoMip("menu/art/switch_off");
+  uis.whiteShader      = id3R_RegisterShaderNoMip("white");
 
   // uis.menuBackNoLogoShader = id3R_RegisterShaderNoMip("menubacknologo");
   // uis.menuBackShader       = id3R_RegisterShaderNoMip("menuback");
 
-  q3sound.menu_in          = id3S_RegisterSound("sound/misc/menu1.wav", false);
-  q3sound.menu_out         = id3S_RegisterSound("sound/misc/menu3.wav", false);
-  q3sound.menu_move        = id3S_RegisterSound("sound/misc/menu2.wav", false);
-  q3sound.menu_buzz        = id3S_RegisterSound("sound/misc/menu4.wav", false);
-  q3sound.weaponChange     = id3S_RegisterSound("sound/weapons/change.wav", false);
-  q3sound.menu_null        = -1;  // need a nonzero sound, make an empty sound for this
+  // TODO: Move to menu/snd/*
+  q3sound.menu_in      = id3S_RegisterSound("sound/misc/menu1.wav", false);
+  q3sound.menu_out     = id3S_RegisterSound("sound/misc/menu3.wav", false);
+  q3sound.menu_move    = id3S_RegisterSound("sound/misc/menu2.wav", false);
+  q3sound.menu_buzz    = id3S_RegisterSound("sound/misc/menu4.wav", false);
+  q3sound.weaponChange = id3S_RegisterSound("sound/weapons/change.wav", false);
+  q3sound.menu_null    = -1;  // need a nonzero sound, make an empty sound for this
 
   // sliderBar                = id3R_RegisterShaderNoMip("menu/art/slider2");
   // sliderButton_0           = id3R_RegisterShaderNoMip("menu/art/sliderbutt_0");
@@ -55,30 +63,29 @@ void menuForceOff(void) {
 //:::::::::::::::::::
 void menuPush(MenuFw* menu) {
   // avoid stacking menus invoked by hotkeys
-  int i;
-  for (i = 0; i < uis.menusp; i++) {
-    if (uis.stack[i] == menu) {
-      uis.menusp = i;
+  int m;                              // Menu id
+  for (m = 0; m < uis.menusp; m++) {  // Search for the input menu in the menus stack
+    if (uis.stack[m] == menu) {       // Found it
+      uis.menusp = m;
       break;
     }
   }
-  if (i == uis.menusp) {
+  if (m == uis.menusp) {  // Check if we are at the last registered item
     if (uis.menusp >= MAX_MENUDEPTH) { id3Error(va("%s: menu stack overflow", __func__)); }
-    uis.stack[uis.menusp++] = menu;
+    uis.stack[uis.menusp++] = menu;  // Increase the stack id, and store the menu data
   }
-  uis.activemenu    = menu;
+  uis.activemenu    = menu;  // Make input menu the active one
   // default cursor position
   menu->cursor      = 0;
   menu->cursor_prev = 0;
   m_entersound      = true;
   id3Key_SetCatcher(KEYCATCH_UI);
   // force first available item to have focus
-  MenuCommon* item;
-  for (int j = 0; j < menu->nitems; j++) {
-    item = (MenuCommon*)menu->items[j];
-    if (!(item->flags & (MFL_GRAYED | MFL_MOUSEONLY | MFL_INACTIVE))) {
+  for (int it = 0; it < menu->nitems; it++) {  // For every item in the input menu
+    MenuCommon* item = (MenuCommon*)menu->items[it];
+    if (!(item->flags & (MFL_GRAYED | MFL_MOUSEONLY | MFL_INACTIVE))) {  // Ignore grayed, mouseonly and inactive items
       menu->cursor_prev = -1;
-      cursorSet(menu, j);
+      cursorSet(menu, it);
       break;
     }
   }

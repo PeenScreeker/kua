@@ -59,10 +59,10 @@ void radioBtn_draw(MenuRadioBtn* rb) {
 
   if (rb->generic.name) { uiDrawString(x - SMALLCHAR_WIDTH, y, rb->generic.name, UI_RIGHT | UI_SMALLFONT, color); }
   if (!rb->curvalue) {
-    uiDrawHandlePic(x + SMALLCHAR_WIDTH, y + 2, 16, 16, uis.rb_off);
+    uiDrawHandlePicPix(x + SMALLCHAR_WIDTH, y + 2, 16, 16, uis.rb_off);
     uiDrawString(x + SMALLCHAR_WIDTH + 16, y, "off", style, color);
   } else {
-    uiDrawHandlePic(x + SMALLCHAR_WIDTH, y + 2, 16, 16, uis.rb_on);
+    uiDrawHandlePicPix(x + SMALLCHAR_WIDTH, y + 2, 16, 16, uis.rb_on);
     uiDrawString(x + SMALLCHAR_WIDTH + 16, y, "on", style, color);
   }
 }

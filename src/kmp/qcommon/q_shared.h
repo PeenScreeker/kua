@@ -313,19 +313,25 @@ typedef enum {
 #define BLINK_DIVISOR			200
 #define PULSE_DIVISOR			75
 
-#define UI_LEFT			0x00000000	// default
-#define UI_CENTER		0x00000001
-#define UI_RIGHT		0x00000002
-#define UI_FORMATMASK	0x00000007
-#define UI_SMALLFONT	0x00000010
-#define UI_BIGFONT		0x00000020	// default
-#define UI_GIANTFONT	0x00000040
-#define UI_DROPSHADOW	0x00000800
-#define UI_BLINK		0x00001000
-#define UI_INVERSE		0x00002000
-#define UI_PULSE		0x00004000
+//..............................
+#define UI_LEFT       0x00000000  // default
+#define UI_CENTER     0x00000001
+#define UI_RIGHT      0x00000002
+#define UI_UNDEF_FMT  0x00000004  // Not defined. Default flag system only allows for adding this one extra flag slot
+#define UI_FORMATMASK 0x00000007
+//..............................
+#define UI_SMALLFONT  0x00000010
+#define UI_BIGFONT    0x00000020  // default
+#define UI_GIANTFONT  0x00000040
+//..............................
+// Behavior for these is controlled with the MFL_XX variables
+#define UI_DROPSHADOW 0x00000800
+#define UI_BLINK      0x00001000
+#define UI_INACTIVE   0x00002000  // Item that is not currently selected (inactive, but not disabled/grayed)
+#define UI_PULSE      0x00004000
+//..............................
 
-#if !defined(NDEBUG) && !defined(BSPC)
+#if !defined NDEBUG && !defined BSPC 
 	#define HUNK_DEBUG
 #endif
 

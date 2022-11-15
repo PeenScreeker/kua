@@ -35,6 +35,8 @@ void id3Error(const char* string) { callback(UI_ERROR, string); }
 int  id3Milliseconds(void) { return callback(UI_MILLISECONDS); }
 void id3GetClipboardData(char* buf, int bufsize) { callback(UI_GETCLIPBOARDDATA, buf, bufsize); }
 void id3GetClientState(uiClientState_t* state) { callback(UI_GETCLIENTSTATE, state); }
+int  id3Argc(void) { return callback(UI_ARGC); }
+void id3Argv(int n, char* buffer, int bufferLength) { callback(UI_ARGV, n, buffer, bufferLength); }
 void id3Cmd_ExecuteText(int exec_when, const char* text) { callback(UI_CMD_EXECUTETEXT, exec_when, text); }
 //:::::::::::::::::
 // Cvars
@@ -49,6 +51,7 @@ qhandle_t id3R_RegisterModel(const char* name) { return callback(UI_R_REGISTERMO
 qhandle_t id3R_RegisterShaderNoMip(const char* name) { return callback(UI_R_REGISTERSHADERNOMIP, name); }
 void      id3R_RegisterFont(const char* fontName, int pointSize, fontInfo_t* font) { callback(UI_R_REGISTERFONT, fontName, pointSize, font); }
 void      id3R_ClearScene(void) { callback(UI_R_CLEARSCENE); }
+void      id3R_AddRefEntityToScene(const refEntity_t* re) { callback(UI_R_ADDREFENTITYTOSCENE, re); }
 void      id3R_RenderScene(const refdef_t* fd) { callback(UI_R_RENDERSCENE, fd); }
 void      id3R_SetColor(const float* rgba) { callback(UI_R_SETCOLOR, rgba); }
 void      id3R_DrawStretchPic(float x, float y, float w, float h, float s1, float t1, float s2, float t2, qhandle_t hShader) {
