@@ -6,7 +6,7 @@
 #include "../rendc/tr_types.h"
 #include "config.h"
 
-//:::::::::::::::::
+//::::::::::::::::::
 // Menu Data types
 typedef struct menuframework_s {
   int   cursor;
@@ -15,20 +15,20 @@ typedef struct menuframework_s {
   void* items[MAX_MENUITEMS];
   bool  wrapAround;
   bool  fullscreen;
-  bool  showlogo;
+  bool  isMain;  // Menu is considered a main menu. (was showlogo)
   void (*draw)(void);
   sfxHandle_t (*key)(int key);
 } MenuFw;
-//:::::::::::::::::
+//::::::::::::::::::
 typedef struct menucommon_s {
   int          type;
   const char*  name;
   int          id;
-  float        x, y;  // Position of the menu
-  int          left;
-  int          top;
-  int          right;
-  int          bottom;
+  float        x, y;    // Position of the menu (percentage)
+  float        left;    // Left bound of the item (percentage)
+  float        top;     // Top bound of the item (percentage)
+  float        right;   // Right bound of the item (percentage)
+  float        bottom;  // Bottom bound of the item (percentage)
   MenuFw*      parent;
   int          menuPosition;
   unsigned int flags;
@@ -36,7 +36,7 @@ typedef struct menucommon_s {
   void (*statusbar)(void* self);
   void (*ownerdraw)(void* self);
 } MenuCommon;  // Properties common between items
-//:::::::::::::::::
+//::::::::::::::::::
 typedef struct mfield_s {
   int  cursor;
   int  scroll;
@@ -44,12 +44,12 @@ typedef struct mfield_s {
   char buffer[MAX_EDIT_LINE];
   int  maxchars;
 } Field;
-//:::::::::::::::::
+//::::::::::::::::::
 typedef struct menufield_s {
   MenuCommon generic;  // Properties common between items
   Field      field;
 } MenuField;
-//:::::::::::::::::
+//::::::::::::::::::
 typedef struct menuslider_s {
   MenuCommon generic;  // Properties common between items
   float      minvalue;
@@ -57,7 +57,7 @@ typedef struct menuslider_s {
   float      curvalue;
   float      range;
 } MenuSlider;
-//:::::::::::::::::
+//::::::::::::::::::
 typedef struct menulist_s {
   MenuCommon   generic;  // Properties common between items
   int          oldvalue;
@@ -70,16 +70,16 @@ typedef struct menulist_s {
   int          columns;
   int          separation;
 } MenuList;
-//:::::::::::::::::
+//::::::::::::::::::
 typedef struct menuaction_s {
   MenuCommon generic;  // Properties common between items
 } MenuAction;
-//:::::::::::::::::
+//::::::::::::::::::
 typedef struct menuradiobutton_s {
   MenuCommon generic;  // Properties common between items
   int        curvalue;
 } MenuRadioBtn;
-//:::::::::::::::::
+//::::::::::::::::::
 typedef struct menubitmap_s {
   MenuCommon generic;  // Properties common between items
   char*      focuspic;
@@ -90,7 +90,7 @@ typedef struct menubitmap_s {
   int        height;
   float*     focuscolor;
 } MenuBitmap;
-//:::::::::::::::::
+//::::::::::::::::::
 typedef struct {
   MenuCommon generic;  // Properties common between items
   char*      string;   // Text to draw
@@ -99,9 +99,9 @@ typedef struct {
   fontInfo_t font;     // Font data
   int        align;    // Text alignment enum id
 } MenuText;
-//:::::::::::::::::
+//::::::::::::::::::
 
-//:::::::::::::::::
+//::::::::::::::::::
 typedef struct Fonts_s {
   fontInfo_t small;
   fontInfo_t normal;
@@ -112,6 +112,7 @@ typedef struct Fonts_s {
   fontInfo_t number;
 } Fonts;
 //:::::::::::::::::
+//::::::::::::::::::
 typedef struct {
   int        frametime;
   int        realtime;
@@ -123,8 +124,8 @@ typedef struct {
   glconfig_t glconfig;
   bool       debug;
   qhandle_t  whiteShader;
-  qhandle_t  menuBackShader;
-  qhandle_t  menuBackNoLogoShader;
+  qhandle_t  bgMain;  // Background for main menus (was menuBackShader)
+  qhandle_t  bgAlt;   // Background for alternative menus (was menuBackNoLogoShader)
   qhandle_t  charset;
   qhandle_t  charsetProp;
   qhandle_t  charsetPropGlow;
@@ -140,7 +141,7 @@ typedef struct {
   bool       firstdraw;
   Fonts      font;
 } uiStatic_t;
-//:::::::::::::::::
+//::::::::::::::::::
 typedef struct q3sound_s {
   sfxHandle_t menu_in;
   sfxHandle_t menu_out;
@@ -149,7 +150,21 @@ typedef struct q3sound_s {
   sfxHandle_t menu_null;
   sfxHandle_t weaponChange;
 } Q3sound;
-//:::::::::::::::::
+//..................
+typedef struct sounds_s {
+  sfxHandle_t move;
+  sfxHandle_t select;
+  sfxHandle_t error;
+  sfxHandle_t cancel;
+  sfxHandle_t silence;
+  sfxHandle_t notification;
+} Sounds;
+//::::::::::::::::::
+typedef struct songs_s {
+  sfxHandle_t chronos;   // Alexander Nakarada - Chronos
+  sfxHandle_t succubus;  // Alexander Nakarada - Succubus
+} Songs;
+//::::::::::::::::::
 
-//:::::::::::::::::
+//::::::::::::::::::
 #endif  // UI_TYPES_H

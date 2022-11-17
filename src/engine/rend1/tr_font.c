@@ -352,7 +352,7 @@ float readFloat(void) {
 }
 
 
-#define FONT_CACHEDIR "cache/fonts/"
+#define FONT_CACHEDIR "cache/"
 void RE_RegisterFont(const char* fontName, int pointSize, fontInfo_t* font) {
   if (!fontName) {
     ri.Printf(PRINT_ALL, "%s: called with empty name\n", __func__);
@@ -519,6 +519,9 @@ void RE_RegisterFont(const char* fontName, int pointSize, fontInfo_t* font) {
   if (r_saveFontData->integer) { ri.FS_WriteFile(va("fonts/fontImage_%i.dat", pointSize), font, sizeof(fontInfo_t)); }
 
   ri.Free(out);
+
+  // FIXME: Put this in the correct place
+  Com_Memcpy(font->name, fontName, strlen(fontName));
 
   ri.FS_FreeFile(faceData);
 #endif // NO_FREETYPE

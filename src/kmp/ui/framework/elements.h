@@ -19,6 +19,8 @@ extern qhandle_t sliderButton_0;
 extern qhandle_t sliderButton_1;
 //:::::::::::::::::
 extern Q3sound    q3sound;
+extern Sounds     uiSound;
+extern Songs      song;
 extern uiStatic_t uis;
 //:::::::::::::::::
 

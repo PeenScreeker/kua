@@ -16,7 +16,7 @@ CONFIRMATION MENU
 // ConfirmMenu_Key
 /*
 =================
-MessaheMenu_Draw
+MessageMenu_Draw
 =================
 */
 static void MessageMenu_Draw(void) {

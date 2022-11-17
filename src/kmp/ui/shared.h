@@ -13,6 +13,22 @@
 #define NR __attribute__((noreturn))  // Marks the function as noreturn for gcc
 //::::::::::::::::::::::::::
 
+//:::::::::::::::::
+// Aliases to remove virtual screen sizing
+// Will use current native window sizes instead
+#define GL_W uis.glconfig.vidWidth
+#define GL_H uis.glconfig.vidHeight
+//:::::::::::::::::
+
+//::::::::::::::::
+// Text tools
+//.........................................
+// TODO: All 9 positions
+typedef enum { TEXT_ALIGN_LEFT = 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_RIGHT } TextAlignment;
+//.........................................
+#define TEXT_ALIGN_DEFAULT TEXT_ALIGN_LEFT  // Sets the type that will be used when called with align 0
+//::::::::::::::::::::::::::
+
 
 //::::::::::::::::::::::::::
 // Define API version

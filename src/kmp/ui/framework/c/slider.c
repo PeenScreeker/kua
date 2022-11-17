@@ -32,17 +32,17 @@ sfxHandle_t slider_key(MenuSlider* s, int key) {
       s->curvalue = (x / (float)(SLIDER_RANGE * SMALLCHAR_WIDTH)) * (s->maxvalue - s->minvalue) + s->minvalue;
       if (s->curvalue < s->minvalue) s->curvalue = s->minvalue;
       else if (s->curvalue > s->maxvalue) s->curvalue = s->maxvalue;
-      sound = (s->curvalue != oldvalue) ? q3sound.menu_move : 0;
+      sound = (s->curvalue != oldvalue) ? uiSound.move : 0;
       break;
     case K_KP_LEFTARROW:
     case K_LEFTARROW:
       if (s->curvalue > s->minvalue) { s->curvalue--; }
-      sound = (s->curvalue > s->minvalue) ? q3sound.menu_move : q3sound.menu_buzz;
+      sound = (s->curvalue > s->minvalue) ? uiSound.move : uiSound.error;
       break;
     case K_KP_RIGHTARROW:
     case K_RIGHTARROW:
       if (s->curvalue < s->maxvalue) { s->curvalue++; }
-      sound = (s->curvalue < s->maxvalue) ? q3sound.menu_move : q3sound.menu_buzz;
+      sound = (s->curvalue < s->maxvalue) ? uiSound.move : uiSound.error;
       break;
     default: sound = 0; break;  // key not handled
   }

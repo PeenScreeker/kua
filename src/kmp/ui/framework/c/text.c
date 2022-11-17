@@ -41,18 +41,28 @@ void BText_draw(MenuText* t) {
 
 //:::::::::::::::::::::::
 // PText_Init
+//   Initalizes the bounds of the item
 //:::::::::::::::::::::::
 void PText_init(MenuText* t) {
-  float sizeScale = uiPSizeScale(t->style);
-  float x         = t->generic.x;
-  float y         = t->generic.y;
-  float w         = uiPStringWidth(t->string) * sizeScale;
-  float h         = PROP_HEIGHT * sizeScale;
-  if (t->generic.flags & MFL_RIGHT_JUSTIFY) { x -= w; }
-  if (t->generic.flags & MFL_CENTER_JUSTIFY) { x -= w / 2; }
-  t->generic.left   = x - PROP_GAP_WIDTH * sizeScale;
-  t->generic.right  = x + w + PROP_GAP_WIDTH * sizeScale;
-  t->generic.top    = y;
+  int   scale = 1;  // uiPSizeScale(t->style);  // TODO: Make this possible with fonts
+  float x     = t->generic.x;
+  float y     = t->generic.y;
+  float w     = uiTextGetWidth(t->string, &t->font, scale, strlen(t->string));   // uiPStringWidth(t->string) * sizeScale;
+  float h     = uiTextGetHeight(t->string, &t->font, scale, strlen(t->string));  // PROP_HEIGHT * sizeScale;
+  // Correct alignment. X starts at the leftmost point
+  switch (t->align) {
+    // TODO: Add vertical alignment
+    case TEXT_ALIGN_LEFT: x = x; break;
+    case TEXT_ALIGN_RIGHT: x -= w; break;
+    case TEXT_ALIGN_CENTER: x -= (w / 2); break;
+  }
+  // Find each of the item bounds
+  t->generic.left  = x;      // - PROP_GAP_WIDTH * sizeScale;
+  t->generic.right = x + w;  // + PROP_GAP_WIDTH * sizeScale;
+  t->generic.top   = y;
+  if (Q_stristr(t->font.name, "heyNovember")) {  // hack: heyNovember font incorrect alignment (what is this font doing?)
+    h -= 0.1 * uiTextGetHeight(t->string, &uis.font.actionKey, 1, strlen(t->string));
+  }
   t->generic.bottom = y + h;
 }
 
@@ -66,5 +76,8 @@ void PText_draw(MenuText* t) {
   float* color  = (grayed) ? (vec_t*)q3color.text_disabled : t->color;
   int    style  = t->style;
   if (t->generic.flags & MFL_PULSEIFFOCUS) { style |= (cursorGetItem(t->generic.parent) == t) ? UI_PULSE : UI_INACTIVE; }
-  uiTextDraw(t->string, &t->font, x, y, 1, color, 0, style, strlen(t->string), 1);
+  if (Q_stristr(t->font.name, "heyNovember")) {  // hack: heyNovember font incorrect alignment (what is this font doing?)
+    y += 0.7 * uiTextGetHeight(t->string, &uis.font.actionKey, 1, strlen(t->string));
+  }
+  uiTextDraw(t->string, &t->font, x, y, 1, color, 0, style, strlen(t->string), t->align);
 }

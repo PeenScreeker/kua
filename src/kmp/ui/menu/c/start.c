@@ -29,7 +29,10 @@ static ErrorMsg  s_errorMsg;
 //:::::::::::::::::::
 // Module wide data
 Q3sound q3sound;
+Sounds  uiSound;
+Songs   song;
 bool    m_entersound;  // after a frame, so caching won't disrupt the sound
+bool    m_enterSong;
 //:::::::::::::::::::
 
 //:::::::::::::::::::
@@ -118,7 +121,8 @@ static void menuStart_draw(void) {  // Main_MenuDraw(void) {
 static void menuStart_exit(bool result) {
   if (!result) { return; }
   menuPop();
-  menuCredits();
+  id3Cmd_ExecuteText(EXEC_APPEND, "quit\n");
+  // menuCredits();
 }
 
 //:::::::::::::::::::
@@ -134,15 +138,17 @@ void menuStart_event(void* ptr, int event) {
     // case MID_CINEMATICS: menuCinematics(); break;
     // case MID_MODS: menuMods(); break;
     // case MID_TEAMARENA: id3Cvar_Set("fs_game", BASETA); id3Cmd_ExecuteText(EXEC_APPEND, "vid_restart;"); break;
-    case MID_EXIT: menuConfirm("EXIT GAME?", 0, menuStart_exit); break;
-    default: Com_Printf("%s: Requested unrecognized menu ID %i", __func__, ((MenuCommon*)ptr)->id); break;
+    case MID_EXIT: menuConfirm("Exit", 0, menuStart_exit); break;
+    default: Com_Printf("%s: Requested unrecognized menu ID %i\n", __func__, ((MenuCommon*)ptr)->id); break;
   }
 }
 
 //:::::::::::::::::::
 // uiSpacingUpdate
 //:::::::::::::::::::
-inline static void uiSpacingUpdate(float* ySpacing, MenuText* m) { *ySpacing = uiTextGetHeight(m->string, &m->font, 1, strlen(m->string)); }
+inline static void uiSpacingUpdate(float* ySpacing, MenuText* m) { 
+  *ySpacing = uiTextGetHeight(m->string, &m->font, 1, strlen(m->string)); 
+}
 
 //:::::::::::::::::::
 // menuStart_init
@@ -169,7 +175,7 @@ void menuStart_init(void) {
     err->menu.key        = errorMessage_key;
     err->menu.fullscreen = true;
     err->menu.wrapAround = true;
-    err->menu.showlogo   = true;
+    err->menu.isMain   = true;
     id3Key_SetCatcher(KEYCATCH_UI);
     uis.menusp = 0;
     menuPush(&err->menu);
@@ -178,9 +184,9 @@ void menuStart_init(void) {
 
   // Else draw normal menu
   float  x                  = 0.15;  // GL_W * 0.5; // 32;  // 320;
-  float  y                  = 0.50;  // GL_H * 0.5; // 200;  // 134;
+  float  y                  = 0.45;  // GL_H * 0.5; // 200;  // 134;
   float  ySpacing           = 0;     // Raw Spacing between one line and the next
-  float  yMargin            = 0.02;  // Margin to add to raw spacing, to calculate absolute line spacing
+  float  yMargin            = 0.03;  // Margin to add to raw spacing, to calculate absolute line spacing
   int    justify            = MFL_LEFT_JUSTIFY;
   int    style              = UI_DROPSHADOW;
   int    align              = TEXT_ALIGN_LEFT;
@@ -189,40 +195,42 @@ void menuStart_init(void) {
   sm->menu.draw             = menuStart_draw;
   sm->menu.fullscreen       = true;
   sm->menu.wrapAround       = true;
-  sm->menu.showlogo         = true;
+  sm->menu.isMain           = true;
 
   sm->play.string           = "Play";
+  sm->play.generic.name     = sm->play.string;
   sm->play.color            = textColor;
   sm->play.style            = style;
   sm->play.font             = uis.font.actionKey;
   sm->play.align            = align;
   sm->play.generic.type     = MITEM_PTEXT;
-  sm->play.generic.flags    = MFL_LEFT_JUSTIFY | MFL_PULSEIFFOCUS;
-  sm->play.generic.x        = x;
-  sm->play.generic.y        = y;
+  sm->play.generic.flags    = justify | MFL_PULSEIFFOCUS;
   sm->play.generic.id       = MID_PLAY;
   sm->play.generic.callback = menuStart_event;
-
+  sm->play.generic.x        = x;
+  sm->play.generic.y        = y;
+  // Move to the next line
   uiSpacingUpdate(&ySpacing, &sm->play);
-  ySpacing *= 0.5;
   y += ySpacing + yMargin;
 
   sm->setup.string           = "Settings";
+  sm->setup.generic.name     = sm->setup.string;
   sm->setup.color            = textColor;
   sm->setup.style            = style;
   sm->setup.font             = uis.font.action;
   sm->setup.align            = align;
   sm->setup.generic.type     = MITEM_PTEXT;
-  sm->setup.generic.flags    = justify | MFL_PULSEIFFOCUS;
+  sm->setup.generic.flags    = justify | MFL_PULSEIFFOCUS | MFL_GRAYED;
   sm->setup.generic.x        = x;
   sm->setup.generic.y        = y;
   sm->setup.generic.id       = MID_SETUP;
   sm->setup.generic.callback = menuStart_event;
-
+  // Move to the next line
   uiSpacingUpdate(&ySpacing, &sm->setup);
   y += ySpacing + yMargin;
 
   sm->exit.string           = "Exit";
+  sm->exit.generic.name     = sm->exit.string;
   sm->exit.color            = textColor;
   sm->exit.style            = style;
   sm->exit.font             = uis.font.action;
@@ -258,7 +266,7 @@ void menuStart_init(void) {
 //     err->menu.key        = errorMessage_key;
 //     err->menu.fullscreen = true;
 //     err->menu.wrapAround = true;
-//     err->menu.showlogo   = true;
+//     err->menu.isMain   = true;
 //     id3Key_SetCatcher(KEYCATCH_UI);
 //     uis.menusp = 0;
 //     menuPush(&err->menu);
@@ -274,7 +282,7 @@ void menuStart_init(void) {
 //   sm->menu.draw                     = menuStart_draw;
 //   sm->menu.fullscreen               = true;
 //   sm->menu.wrapAround               = true;
-//   sm->menu.showlogo                 = true;
+//   sm->menu.isMain                 = true;
 
 //   sm->singleplayer.generic.type     = MITEM_PTEXT;
 //   sm->singleplayer.generic.flags    = MFL_LEFT_JUSTIFY | MFL_PULSEIFFOCUS;

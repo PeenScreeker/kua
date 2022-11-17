@@ -50,7 +50,7 @@ sfxHandle_t scrollList_key(MenuList* l, int key) {
         l->curvalue = l->top + index;
         if (l->oldvalue != l->curvalue && l->generic.callback) {
           l->generic.callback(l, MS_GOTFOCUS);
-          return (q3sound.menu_move);
+          return (uiSound.move);
         }
       }
 
@@ -59,9 +59,9 @@ sfxHandle_t scrollList_key(MenuList* l, int key) {
       l->oldvalue = l->curvalue;
       l->curvalue = 0;
       l->top      = 0;
-      if (!(l->oldvalue != l->curvalue && l->generic.callback)) { return (q3sound.menu_buzz); }
+      if (!(l->oldvalue != l->curvalue && l->generic.callback)) { return (uiSound.error); }
       l->generic.callback(l, MS_GOTFOCUS);
-      return (q3sound.menu_move);
+      return (uiSound.move);
 
     case K_KP_END:
     case K_END:
@@ -76,37 +76,37 @@ sfxHandle_t scrollList_key(MenuList* l, int key) {
       if (l->top < 0) l->top = 0;
       if (l->oldvalue != l->curvalue && l->generic.callback) {
         l->generic.callback(l, MS_GOTFOCUS);
-        return (q3sound.menu_move);
+        return (uiSound.move);
       }
-      return (q3sound.menu_buzz);
+      return (uiSound.error);
 
     case K_PGUP:
     case K_KP_PGUP:
       if (l->columns > 1) { return q3sound.menu_null; }
-      if (!(l->curvalue > 0)) { return (q3sound.menu_buzz); }
+      if (!(l->curvalue > 0)) { return (uiSound.error); }
       l->oldvalue = l->curvalue;
       l->curvalue -= l->height - 1;
       if (l->curvalue < 0) l->curvalue = 0;
       l->top = l->curvalue;
       if (l->top < 0) l->top = 0;
       if (l->generic.callback) l->generic.callback(l, MS_GOTFOCUS);
-      return (q3sound.menu_move);
+      return (uiSound.move);
 
     case K_PGDN:
     case K_KP_PGDN:
       if (l->columns > 1) { return q3sound.menu_null; }
-      if (!(l->curvalue < l->numitems - 1)) { return (q3sound.menu_buzz); }
+      if (!(l->curvalue < l->numitems - 1)) { return (uiSound.error); }
       l->oldvalue = l->curvalue;
       l->curvalue += l->height - 1;
       if (l->curvalue > l->numitems - 1) l->curvalue = l->numitems - 1;
       l->top = l->curvalue - (l->height - 1);
       if (l->top < 0) l->top = 0;
       if (l->generic.callback) l->generic.callback(l, MS_GOTFOCUS);
-      return (q3sound.menu_move);
+      return (uiSound.move);
 
     case K_MWHEELUP:
       if (l->columns > 1) { return q3sound.menu_null; }
-      if (!(l->top > 0)) { return (q3sound.menu_buzz); }
+      if (!(l->top > 0)) { return (uiSound.error); }
       // if scrolling 3 lines would replace over half of the displayed items, only scroll 1 item at a time.
       scroll = l->height < 6 ? 1 : 3;
       l->top -= scroll;
@@ -116,7 +116,7 @@ sfxHandle_t scrollList_key(MenuList* l, int key) {
 
     case K_MWHEELDOWN:
       if (l->columns > 1) { return q3sound.menu_null; }
-      if (!(l->top < l->numitems - l->height)) { return (q3sound.menu_buzz); }
+      if (!(l->top < l->numitems - l->height)) { return (uiSound.error); }
       // if scrolling 3 items would replace over half of the displayed items, only scroll 1 item at a time.
       scroll = l->height < 6 ? 1 : 3;
       l->top += scroll;
@@ -126,7 +126,7 @@ sfxHandle_t scrollList_key(MenuList* l, int key) {
 
     case K_KP_UPARROW:
     case K_UPARROW:
-      if (l->curvalue == 0) { return q3sound.menu_buzz; }
+      if (l->curvalue == 0) { return uiSound.error; }
       l->oldvalue = l->curvalue;
       l->curvalue--;
       if (l->curvalue < l->top) {
@@ -137,11 +137,11 @@ sfxHandle_t scrollList_key(MenuList* l, int key) {
         }
       }
       if (l->generic.callback) { l->generic.callback(l, MS_GOTFOCUS); }
-      return (q3sound.menu_move);
+      return (uiSound.move);
 
     case K_KP_DOWNARROW:
     case K_DOWNARROW:
-      if (l->curvalue == l->numitems - 1) { return q3sound.menu_buzz; }
+      if (l->curvalue == l->numitems - 1) { return uiSound.error; }
       l->oldvalue = l->curvalue;
       l->curvalue++;
       if (l->curvalue >= l->top + l->columns * l->height) {
@@ -152,28 +152,28 @@ sfxHandle_t scrollList_key(MenuList* l, int key) {
         }
       }
       if (l->generic.callback) { l->generic.callback(l, MS_GOTFOCUS); }
-      return q3sound.menu_move;
+      return uiSound.move;
 
     case K_KP_LEFTARROW:
     case K_LEFTARROW:
       if (l->columns == 1) { return q3sound.menu_null; }
-      if (l->curvalue < l->height) { return q3sound.menu_buzz; }
+      if (l->curvalue < l->height) { return uiSound.error; }
       l->oldvalue = l->curvalue;
       l->curvalue -= l->height;
       if (l->curvalue < l->top) { l->top -= l->height; }
       if (l->generic.callback) { l->generic.callback(l, MS_GOTFOCUS); }
-      return q3sound.menu_move;
+      return uiSound.move;
 
     case K_KP_RIGHTARROW:
     case K_RIGHTARROW:
       if (l->columns == 1) { return q3sound.menu_null; }
       c = l->curvalue + l->height;
-      if (c >= l->numitems) { return q3sound.menu_buzz; }
+      if (c >= l->numitems) { return uiSound.error; }
       l->oldvalue = l->curvalue;
       l->curvalue = c;
       if (l->curvalue > l->top + l->columns * l->height - 1) { l->top += l->height; }
       if (l->generic.callback) { l->generic.callback(l, MS_GOTFOCUS); }
-      return q3sound.menu_move;
+      return uiSound.move;
   }
   // cycle look for ascii key inside list items
   if (!Q_isprint(key)) { return (0); }
@@ -197,12 +197,12 @@ sfxHandle_t scrollList_key(MenuList* l, int key) {
         l->oldvalue = l->curvalue;
         l->curvalue = j;
         if (l->generic.callback) l->generic.callback(l, MS_GOTFOCUS);
-        return (q3sound.menu_move);
+        return (uiSound.move);
       }
-      return (q3sound.menu_buzz);
+      return (uiSound.error);
     }
   }
-  return (q3sound.menu_buzz);
+  return (uiSound.error);
 }
 
 // ScrollList_Draw

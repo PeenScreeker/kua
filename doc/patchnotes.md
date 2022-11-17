@@ -10,16 +10,46 @@
 
 ```
 # TODO
-bld : Freetype2 windows compiling
+new : ogg loading
+new : Menu items use a scale property (was hardcoded to scale = 1)
 chg : Text drawing: Vertical alignment support
-chg : Cleaner Exit confirm menu (no credits)
-fix : Menu item mouse selection (core.c/uiEvent_mouse)
 new : Kua logo
+chg : UI color scheme, not Q3 based
+new : JSON based Settings menu
+new : SQlite based Play menu
+new : Move credits to its own menu item (lower right corner)
+chg : Credits menu goes back to StartMenu
+new : Basic Settings menu
+new : UI asset palette (debug mode)
+bld : Freetype2 windows compiling
+new : Basic Play menu
 ```
 
 ---
 # Unreleased
 ## 0.35a
+2022.11.17  
+```
+new : New Assets licensing notice
+```
+
+2022.11.17  
+```
+new : Random song on loading (TODO: fix big files crashing the engine)
+chg : New UI feedback sounds (move, cancel, error, silence)
+new : Entering the game for the first time now plays a song.
+fix : Menu item mouse selection (core.c/uiEvent_mouse)
+```
+
+2022.11.16  
+```
+chg : Cleaner Exit confirm menu (no credits)
+fix : Exit confirm background drawing correctly
+chg : Alternative background is now the main background but darkened, to make it more seamless
+chg : menuBack and menuBackNoLogo renamed to bgMain and bgAlt
+chg : showlogo menu property renamed to isMain
+```
+
 2022.11.15  
 ```
 new : Logo Background (temporarily Q3, will be changed for Kua when its made)

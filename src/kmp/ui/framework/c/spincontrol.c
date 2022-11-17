@@ -31,13 +31,13 @@ sfxHandle_t spinControl_key(MenuList* s, int key) {
     case K_MOUSE1:
       s->curvalue++;
       if (s->curvalue >= s->numitems) s->curvalue = 0;
-      sound = q3sound.menu_move;
+      sound = uiSound.move;
       break;
     case K_KP_LEFTARROW:
     case K_LEFTARROW:
       s->curvalue--;
       if (s->curvalue < 0) s->curvalue = s->numitems - 1;
-      sound = q3sound.menu_move;
+      sound = uiSound.move;
       break;
   }
   if (sound && s->generic.callback) s->generic.callback(s, MS_ACTIVATED);

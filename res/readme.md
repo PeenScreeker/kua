@@ -5,6 +5,7 @@ Each `.pk3` file that will be created will have its own set of subfolders.
 - The folder will be considered the root for the resulting `.pk3` file
 - The structure of the subfolder must be the one that will be understood by the code.
 - Empty folders will be skipped
+- `dep` and `src` folders will be skipped
 
 ## Example:
 Distributing a file called `y.ourmod.example.pk3`:
@@ -16,3 +17,10 @@ Distributing a file called `y.ourmod.example.pk3`:
 
 **Automation:**  
 The [build.py](../build.py) script does this process automatically for all existing folders when the `-p` switch is active
+
+
+# Helper folders
+None of these will be added by the packing process
+`src`  : Source files used to create the assets
+`dep`  : Deprecated assets, that will be eventually removed
+`skel` : Guide / Template for what every category folder can contain 

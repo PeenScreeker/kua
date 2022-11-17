@@ -111,7 +111,7 @@ def PackAll():
   for file in lnxEngine: cp(str(file), rlsDir)
   # Assets:
   for file in pk3Files: cp(file, rlsBase)  # Copy all pk3 res files at root of res/ folder
-  Pk3CreateAll(resDir, rlsBase, prefix=f"k.{modAlias}.", exclude=["skel"])  # Pack all res/ subfolders as separate pk3 files
+  Pk3CreateAll(resDir, rlsBase, prefix=f"k.{modAlias}.", exclude=["skel", "dep", "src"])  # Pack all res/ subfolders as separate pk3 files
   # Zip and Copy source code
   ZipDir(srcDir, srcZip)
   # Pack everything

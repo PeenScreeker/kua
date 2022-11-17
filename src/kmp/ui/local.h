@@ -31,21 +31,19 @@ Q_EXPORT void     dllEntry(dllCallback_t);
 //:::::::::::::::::::
 extern uiStatic_t uis;
 extern Q3sound    q3sound;
+extern Sounds     uiSound;
+extern Songs      song;
 extern bool       m_entersound;
+extern bool       m_enterSong;
 //:::::::::::::::::
 
-//:::::::::::::::::
-// Aliases to remove virtual screen sizing
-// Will use current native window sizes instead
-#define GL_W uis.glconfig.vidWidth
-#define GL_H uis.glconfig.vidHeight
 //::::::::::::::::
 // Text tools
 //.........................................
 // TODO: All 9 positions
-typedef enum { TEXT_ALIGN_LEFT = 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_RIGHT } TextAlignment;
+// typedef enum { TEXT_ALIGN_LEFT = 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_RIGHT } TextAlignment;
 //.........................................
-#define TEXT_ALIGN_DEFAULT TEXT_ALIGN_LEFT  // Sets the type that will be used when called with align 0
+// #define TEXT_ALIGN_DEFAULT TEXT_ALIGN_LEFT  // Sets the type that will be used when called with align 0
 #define FONT_SCALE_DEFAULT 1
 //..................
 #define FONT_FILE_DEFAULT "ui/fonts/default.ttf"
@@ -87,7 +85,7 @@ void  menuForceOff(void);      // Force disable all menus
 void* cursorGetItem(MenuFw*);  // Get menu item under cursor
 // Menu page loaders
 void menuStart_init(void);    // Start menu setup  (start = name, not verb)
-void menuCredits(void);  // Credits menu
+void menuCredits(void);       // Credits menu
 
 //:::::::::::::::::
 // Engine Callbacks

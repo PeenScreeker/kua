@@ -30,7 +30,7 @@ sfxHandle_t radioBtn_key(MenuRadioBtn* rb, int key) {
     case K_RIGHTARROW:
       rb->curvalue = !rb->curvalue;
       if (rb->generic.callback) rb->generic.callback(rb, MS_ACTIVATED);
-      return (q3sound.menu_move);
+      return (uiSound.move);
   }
   return 0; // key not handled
 }

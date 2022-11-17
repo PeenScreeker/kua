@@ -118,8 +118,11 @@ void uiEvent_key(int key, int down) {
   if (!down) { return; }
 
   sfxHandle_t s;
-  if (uis.activemenu->key) { s = uis.activemenu->key(key); }
-  else { s = menuDefaultKey(uis.activemenu, key); }
+  if (uis.activemenu->key) {
+    s = uis.activemenu->key(key);
+  } else {
+    s = menuDefaultKey(uis.activemenu, key);
+  }
   if ((s > 0) && (s != q3sound.menu_null)) { id3S_StartLocalSound(s, CHAN_LOCAL_SOUND); }
 }
 
@@ -142,17 +145,18 @@ void uiEvent_mouse(int dx, int dy) {
   for (int i = 0; i < uis.activemenu->nitems; i++) {
     MenuCommon* m = (MenuCommon*)uis.activemenu->items[i];
     if (m->flags & (MFL_GRAYED | MFL_INACTIVE)) { continue; }
-    if ((uis.cursorx < m->left) || (uis.cursorx > m->right) || (uis.cursory < m->top) || (uis.cursory > m->bottom)) {
-      continue;  // cursor out of item bounds
-    }
+    // Item bounds  (convert from percentage to pixels)
+    int left  = m->left * GL_W;
+    int right = m->right * GL_W;
+    int top   = m->top * GL_H;
+    int bot   = m->bottom * GL_H;
+    if ((uis.cursorx < left) || (uis.cursorx > right) || (uis.cursory < top) || (uis.cursory > bot)) { continue; }  // cursor out of item bounds
 
     // set focus to item at cursor
     if (uis.activemenu->cursor != i) {
       cursorSet(uis.activemenu, i);
       ((MenuCommon*)(uis.activemenu->items[uis.activemenu->cursor_prev]))->flags &= ~MFL_HASMOUSEFOCUS;
-      if (!(((MenuCommon*)(uis.activemenu->items[uis.activemenu->cursor]))->flags & MFL_SILENT)) {
-        id3S_StartLocalSound(q3sound.menu_move, CHAN_LOCAL_SOUND);
-      }
+      if (!(((MenuCommon*)(uis.activemenu->items[uis.activemenu->cursor]))->flags & MFL_SILENT)) { id3S_StartLocalSound(uiSound.move, CHAN_LOCAL_SOUND); }
     }
     ((MenuCommon*)(uis.activemenu->items[uis.activemenu->cursor]))->flags |= MFL_HASMOUSEFOCUS;
     return;
@@ -172,6 +176,16 @@ char* uiArgv(int arg) {
   return buffer;
 }
 
+static void uiSongPlayRandom(void) {
+  int lower = 0;
+  int upper = 1;
+  int r = (rand() % (upper - lower + 1)) + lower;
+  switch (r) {
+    case 0: id3S_StartLocalSound(song.chronos, CHAN_LOCAL_SOUND); break;
+    // case 1: id3S_StartLocalSound(song.succubus, CHAN_LOCAL_SOUND); break;
+    default: id3S_StartLocalSound(uiSound.silence, CHAN_LOCAL_SOUND); break;
+  }
+}
 
 //:::::::::::::::::::
 // UI_UpdateScreen
@@ -182,35 +196,46 @@ void uiUpdateScreen(void) { id3UpdateScreen(); }
 // UI_Refresh
 //:::::::::::::::::::
 void uiRefresh(int realtime) {
+  // Update time
   uis.frametime = realtime - uis.realtime;
   uis.realtime  = realtime;
   if (!(id3Key_GetCatcher() & KEYCATCH_UI)) { return; }
+  // Update cvars
   uiCvarsUpdateAll();
+  // Draw active menu
   if (uis.activemenu) {
-    if (uis.activemenu->fullscreen) {
-      // draw the background
-      if (uis.activemenu->showlogo) {
-        uiDrawHandlePicPix(0, 0, GL_W, GL_H, uis.menuBackShader);
-      } else {
-        uiDrawHandlePicPix(0, 0, GL_W, GL_H, uis.menuBackNoLogoShader);
-      }
-    }
+    // Draw the background
+    if (uis.activemenu->fullscreen) { uiDrawHandlePicPix(0, 0, GL_W, GL_H, (uis.activemenu->isMain) ? uis.bgMain : uis.bgAlt); }
+    // Draw the menu
     if (uis.activemenu->draw) uis.activemenu->draw();
     else uiDrawMenu(uis.activemenu);
+    // Init the cursor position
     if (uis.firstdraw) {
+      // uiEvent_mouse(GL_W * 0.5, GL_H * 0.5);  // Start with cursor at 0.5, 0.5 (was 0,0)
       uiEvent_mouse(0, 0);
       uis.firstdraw = false;
     }
   }
   // draw cursor
   uiSetColor(NULL);
-  uiDrawHandlePicPix(uis.cursorx - 16, uis.cursory - 16, 32, 32, uis.cursor);
+  uiDrawHandlePicPix(uis.cursorx, uis.cursory - 16, 32, 32, uis.cursor);  // why -half of the cursor size (-16) ?? puzzled
+  // Debug cursor position
+  char* coordText = va("(%d,%d)", uis.cursorx, uis.cursory);
+  // float x = 0.5; float y = 0.5;
+  float x         = (float)uis.cursorx / GL_W;
+  float y         = ((float)uis.cursory / GL_H) + 0.05;
+  uiTextDraw(coordText, &uis.font.normal, x, y, 1, colorCyan, 0, 0, strlen(coordText), TEXT_ALIGN_CENTER);
+  if (uis.debug) {}  // cursor coordinates
 #ifndef NDEBUG
-  if (uis.debug) { uiDrawString(0, 0, va("(%d,%d)", uis.cursorx, uis.cursory), UI_LEFT | UI_SMALLFONT, colorRed); }  // cursor coordinates
 #endif
-  // delay playing the enter sound until the menu has been drawn, to avoid delay while caching images
+  // Play the enter sound after menu has been drawn, to avoid delay while caching images
   if (m_entersound) {
-    id3S_StartLocalSound(q3sound.menu_in, CHAN_LOCAL_SOUND);
+    // id3S_StartLocalSound(q3sound.menu_in, CHAN_LOCAL_SOUND);
+    id3S_StartLocalSound(uiSound.move, CHAN_LOCAL_SOUND);
     m_entersound = false;
+  }
+  if (m_enterSong) { 
+    uiSongPlayRandom();
+    m_enterSong = false;
   }
 }

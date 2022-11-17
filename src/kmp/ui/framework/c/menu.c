@@ -6,9 +6,19 @@
 //:::::::::::::::::::
 void menuCache(void) {
   // New UI assets
-  uis.menuBackShader = id3R_RegisterShaderNoMip("ui/bg");
-  uis.cursor         = id3R_RegisterShaderNoMip("ui/cursor");
-  uis.logoQ3         = id3R_RegisterShaderNoMip("ui/logoQ3");
+  uis.bgMain      = id3R_RegisterShaderNoMip("ui/bg");
+  uis.bgAlt       = id3R_RegisterShaderNoMip("ui/bgAlt");
+  uis.cursor      = id3R_RegisterShaderNoMip("ui/cursor");
+  uis.logoQ3      = id3R_RegisterShaderNoMip("ui/logoQ3");
+  // Sounds
+  uiSound.move    = id3S_RegisterSound("ui/snd/move.wav", false);
+  uiSound.select  = id3S_RegisterSound("ui/snd/select.wav", false);
+  uiSound.error   = id3S_RegisterSound("ui/snd/error.wav", false);
+  uiSound.cancel  = id3S_RegisterSound("ui/snd/cancel.wav", false);
+  uiSound.silence = id3S_RegisterSound("ui/snd/silence.wav", false);
+  // Songs
+  song.chronos    = id3S_RegisterSound("ui/snd/song-chronos.wav", false);
+  // song.succubus   = id3S_RegisterSound("ui/snd/songSuccubus.wav", false);
   // Fonts
   id3R_RegisterFont(FONT_FILE_DEFAULT, FONT_SIZE_DEFAULT - 4, &uis.font.small);
   id3R_RegisterFont(FONT_FILE_DEFAULT, FONT_SIZE_DEFAULT, &uis.font.normal);
@@ -24,9 +34,6 @@ void menuCache(void) {
   uis.rb_on            = id3R_RegisterShaderNoMip("menu/art/switch_on");
   uis.rb_off           = id3R_RegisterShaderNoMip("menu/art/switch_off");
   uis.whiteShader      = id3R_RegisterShaderNoMip("white");
-
-  // uis.menuBackNoLogoShader = id3R_RegisterShaderNoMip("menubacknologo");
-  // uis.menuBackShader       = id3R_RegisterShaderNoMip("menuback");
 
   // TODO: Move to menu/snd/*
   q3sound.menu_in      = id3S_RegisterSound("sound/misc/menu1.wav", false);
@@ -79,6 +86,7 @@ void menuPush(MenuFw* menu) {
   menu->cursor      = 0;
   menu->cursor_prev = 0;
   m_entersound      = true;
+  if (menu->isMain) m_enterSong = true;
   id3Key_SetCatcher(KEYCATCH_UI);
   // force first available item to have focus
   for (int it = 0; it < menu->nitems; it++) {  // For every item in the input menu
@@ -95,7 +103,7 @@ void menuPush(MenuFw* menu) {
 // uiPopMenu
 //:::::::::::::::::::
 void menuPop(void) {
-  id3S_StartLocalSound(q3sound.menu_out, CHAN_LOCAL_SOUND);
+  id3S_StartLocalSound(uiSound.cancel, CHAN_LOCAL_SOUND);
   uis.menusp--;
   if (uis.menusp < 0) { id3Error(va("%s: menu stack underflow", __func__)); }
   if (uis.menusp) {
@@ -142,7 +150,7 @@ void menuAddItem(MenuFw* menu, void* item) {
 sfxHandle_t menuActivateItem(MenuFw* s, MenuCommon* item) {
   if (item->callback) {
     item->callback(item, MS_ACTIVATED);
-    if (!(item->flags & MFL_SILENT)) { return q3sound.menu_move; }
+    if (!(item->flags & MFL_SILENT)) { return uiSound.move; }
   }
   return 0;
 }
@@ -154,7 +162,7 @@ sfxHandle_t menuDefaultKey(MenuFw* m, int key) {
   // menu system keys
   switch (key) {
     case K_MOUSE2:
-    case K_ESCAPE: menuPop(); return q3sound.menu_out;
+    case K_ESCAPE: menuPop(); return uiSound.cancel;
   }
   if (!m || !m->nitems) { return 0; }
   // route key stimulus to widget
@@ -185,7 +193,7 @@ sfxHandle_t menuDefaultKey(MenuFw* m, int key) {
       cursorAdjust(m, -1);
       if (cursor_prev != m->cursor) {
         cursorMoved(m);
-        sound = q3sound.menu_move;
+        sound = uiSound.move;
       }
       break;
 
@@ -198,7 +206,7 @@ sfxHandle_t menuDefaultKey(MenuFw* m, int key) {
       cursorAdjust(m, 1);
       if (cursor_prev != m->cursor) {
         cursorMoved(m);
-        sound = q3sound.menu_move;
+        sound = uiSound.move;
       }
       break;
 

@@ -579,6 +579,7 @@ typedef struct {
 
 #define VectorClear(a)			((a)[0]=(a)[1]=(a)[2]=0)
 #define VectorNegate(a,b)		((b)[0]=-(a)[0],(b)[1]=-(a)[1],(b)[2]=-(a)[2])
+#define Vector2Set(v, x, y)	((v)[0]=(x), (v)[1]=(y))
 #define VectorSet(v, x, y, z)	((v)[0]=(x), (v)[1]=(y), (v)[2]=(z))
 #define Vector4Set(v, r, g, b, a)	((v)[0]=(r), (v)[1]=(g), (v)[2]=(b), (v)[3]=(a))
 #define Vector4Copy(a,b)		((b)[0]=(a)[0],(b)[1]=(a)[1],(b)[2]=(a)[2],(b)[3]=(a)[3])
@@ -1397,12 +1398,13 @@ typedef enum {
 } connstate_t;
 
 // font support 
-
+//.............................
 #define GLYPH_START 0
 #define GLYPH_END 255
 #define GLYPH_CHARSTART 32
 #define GLYPH_CHAREND 127
 #define GLYPHS_PER_FONT GLYPH_END - GLYPH_START + 1
+//.............................
 typedef struct {
   int height;       // number of scan lines
   int top;          // top of glyph in buffer
@@ -1418,19 +1420,18 @@ typedef struct {
   qhandle_t glyph;  // handle to the shader with the glyph
   char shaderName[32];
 } glyphInfo_t;
-
+//.............................
 typedef struct {
   glyphInfo_t glyphs [GLYPHS_PER_FONT];
   float glyphScale;
   char name[MAX_QPATH];
 } fontInfo_t;
+//.............................
 
 #define Square(x) ((x)*(x))
 
 // real time
 //=============================================
-
-
 typedef struct qtime_s {
 	int tm_sec;     /* seconds after the minute - [0,59] */
 	int tm_min;     /* minutes after the hour - [0,59] */
@@ -1442,7 +1443,6 @@ typedef struct qtime_s {
 	int tm_yday;    /* days since January 1 - [0,365] */
 	int tm_isdst;   /* daylight savings time flag */
 } qtime_t;
-
 
 // server browser sources
 // TTimo: AS_MPLAYER is no longer used
