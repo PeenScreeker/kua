@@ -4,7 +4,7 @@
 //:::::::::::::::::::::::
 // SpinControl_Init
 //:::::::::::::::::::::::
-void spinControl_init(MenuList* s) {
+void menuMOpt_init(MenuList* s) {
   int len         = (s->generic.name) ? strlen(s->generic.name) * SMALLCHAR_WIDTH : 0;
   s->generic.left = s->generic.x - SMALLCHAR_WIDTH - len;
   int         l;
@@ -23,7 +23,7 @@ void spinControl_init(MenuList* s) {
 //:::::::::::::::::::::::
 // SpinControl_Key
 //:::::::::::::::::::::::
-sfxHandle_t spinControl_key(MenuList* s, int key) {
+sfxHandle_t menuMOpt_key(MenuList* s, int key) {
   sfxHandle_t sound = 0;
   switch (key) {
     case K_KP_RIGHTARROW:
@@ -47,10 +47,10 @@ sfxHandle_t spinControl_key(MenuList* s, int key) {
 //:::::::::::::::::::::::
 // SpinControl_Draw
 //:::::::::::::::::::::::
-void spinControl_draw(MenuList* s) {
+void menuMOpt_draw(MenuList* s) {
   float* color;
   int    style = UI_SMALLFONT;
-  bool   focus = (s->generic.parent->cursor == s->generic.menuPosition);
+  bool   focus = (s->generic.parent->cursor == s->generic.activeId);
   if (s->generic.flags & MFL_GRAYED) {
     color = (vec_t*)q3color.text_disabled;
   } else if (focus) {

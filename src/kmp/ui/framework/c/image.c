@@ -3,7 +3,7 @@
 //:::::::::::::::::
 // Bitmap_Init
 //:::::::::::::::::
-void bitmap_init(MenuBitmap* b) {
+void menuImage_init(MenuImage* b) {
   int x = b->generic.x;
   int y = b->generic.y;
   int w = b->width;
@@ -23,7 +23,7 @@ void bitmap_init(MenuBitmap* b) {
 //:::::::::::::::::
 // Bitmap_Draw
 //:::::::::::::::::
-void bitmap_draw(MenuBitmap* b) {
+void menuImage_draw(MenuImage* b) {
   int x = b->generic.x;
   int y = b->generic.y;
   int w = b->width;

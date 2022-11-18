@@ -69,13 +69,13 @@ static void menuConfirm_draw(void) {
   float ySpacing = 0;                  // Raw Spacing between one line and the next
   float yMargin  = s_confirm.yMargin;  // Margin to add to raw spacing, to calculate absolute line spacing
   // Draw the Question
-  uiTextDraw(s_confirm.question, &s_confirm.font, x, y, 1, (vec_t*)mStartQ3.fg, 0, s_confirm.style, strlen(s_confirm.question), s_confirm.align);
+  uiTextDraw(s_confirm.question, &s_confirm.font, x, y, 1, (vec_t*)mColorQ3.fg, 0, s_confirm.style, strlen(s_confirm.question), s_confirm.align);
   // Add line spacing
   ySpacing = uiTextGetHeight(s_confirm.question, &s_confirm.font, 1, strlen(s_confirm.question));
   y += ySpacing - s_confirm.sep.yMod + yMargin;
 
   // Draw the separator
-  uiTextDraw(s_confirm.sep.text, &s_confirm.sep.font, x, y, 1, (vec_t*)mStartQ3.fg, 0, UI_INACTIVE, strlen(s_confirm.sep.text), s_confirm.sep.align);
+  uiTextDraw(s_confirm.sep.text, &s_confirm.sep.font, x, y, 1, (vec_t*)mColorQ3.fg, 0, UI_INACTIVE, strlen(s_confirm.sep.text), s_confirm.sep.align);
 
   // Draw the options
   uiDrawMenu(&s_confirm.menu);
@@ -93,7 +93,7 @@ void menuConfirm_cache(void) {
 // UI_MenuConfirm_Style
 //:::::::::::::::::::
 // When ySep is 0, y position is not modified
-void menuConfirm_style(const char* question, fontInfo_t* font, float ySep, int style, void (*draw)(void), void (*action)(bool result)) {
+void menuConfirm_init(const char* question, fontInfo_t* font, float ySep, int style, void (*draw)(void), void (*action)(bool result)) {
   // zero set all our globals
   memset(&s_confirm, 0, sizeof(s_confirm));
   // Default positions
@@ -112,10 +112,10 @@ void menuConfirm_style(const char* question, fontInfo_t* font, float ySep, int s
   float sepW                     = uiTextGetWidth(s_confirm.sep.text, &s_confirm.sep.font, 1, strlen(s_confirm.sep.text));
 
   s_confirm.yes.string           = "Yes";
-  s_confirm.yes.color            = (vec_t*)mStartQ3.fg;
+  s_confirm.yes.color            = (vec_t*)mColorQ3.fg;
   s_confirm.yes.font             = uis.font.action;
   s_confirm.yes.align            = TEXT_ALIGN_CENTER;
-  s_confirm.yes.generic.type     = MITEM_PTEXT;
+  s_confirm.yes.generic.type     = MITEM_TEXT;
   s_confirm.yes.generic.flags    = MFL_LEFT_JUSTIFY | MFL_PULSEIFFOCUS;
   s_confirm.yes.generic.callback = menuConfirm_event;
   s_confirm.yes.generic.id       = MID_CONFIRM_YES;
@@ -125,10 +125,10 @@ void menuConfirm_style(const char* question, fontInfo_t* font, float ySep, int s
 
 
   s_confirm.no.string            = "No";
-  s_confirm.no.color             = (vec_t*)mStartQ3.fg;
+  s_confirm.no.color             = (vec_t*)mColorQ3.fg;
   s_confirm.no.font              = uis.font.action;
   s_confirm.no.align             = TEXT_ALIGN_CENTER;
-  s_confirm.no.generic.type      = MITEM_PTEXT;
+  s_confirm.no.generic.type      = MITEM_TEXT;
   s_confirm.no.generic.flags     = MFL_LEFT_JUSTIFY | MFL_PULSEIFFOCUS;
   s_confirm.no.generic.callback  = menuConfirm_event;
   s_confirm.no.generic.id        = MID_CONFIRM_NO;
@@ -170,6 +170,6 @@ void menuConfirm_style(const char* question, fontInfo_t* font, float ySep, int s
 //:::::::::::::::::::
 void menuConfirm(const char* question, void (*draw)(void), void (*action)(bool result)) {
   float yMod = uiTextGetHeight(question, &uis.font.actionKey, 1, strlen(question)) * 0.5;
-  menuConfirm_style(question, &uis.font.actionKey, yMod, UI_CENTER | UI_INACTIVE, draw, action);
+  menuConfirm_init(question, &uis.font.actionKey, yMod, UI_CENTER | UI_INACTIVE, draw, action);
 }
 //:::::::::::::::::::

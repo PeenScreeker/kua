@@ -10,6 +10,8 @@ void menuCache(void) {
   uis.bgAlt       = id3R_RegisterShaderNoMip("ui/bgAlt");
   uis.cursor      = id3R_RegisterShaderNoMip("ui/cursor");
   uis.logoQ3      = id3R_RegisterShaderNoMip("ui/logoQ3");
+  // Icons
+  uis.icon.cancel = id3R_RegisterShaderNoMip("ui/cancel");
   // Sounds
   uiSound.move    = id3S_RegisterSound("ui/snd/move.wav", false);
   uiSound.select  = id3S_RegisterSound("ui/snd/select.wav", false);
@@ -120,24 +122,24 @@ void menuPop(void) {
 void menuAddItem(MenuFw* menu, void* item) {
   if (menu->nitems >= MAX_MENUITEMS) { id3Error("Menu_AddItem: excessive items"); }
   // Set data
-  menu->items[menu->nitems]                              = item;
-  ((MenuCommon*)menu->items[menu->nitems])->parent       = menu;
-  ((MenuCommon*)menu->items[menu->nitems])->menuPosition = menu->nitems;
+  menu->items[menu->nitems]                          = item;
+  ((MenuCommon*)menu->items[menu->nitems])->parent   = menu;
+  ((MenuCommon*)menu->items[menu->nitems])->activeId = menu->nitems;
   ((MenuCommon*)menu->items[menu->nitems])->flags &= ~MFL_HASMOUSEFOCUS;
   // perform any item specific initializations
   MenuCommon* itemptr = (MenuCommon*)item;
   if (!(itemptr->flags & MFL_NODEFAULTINIT)) {
     switch (itemptr->type) {
-      case MITEM_ACTION: action_init((MenuAction*)item); break;
+      case MITEM_ACTION: menuAction_init((MenuAction*)item); break;
       case MITEM_FIELD: menuField_init((MenuField*)item); break;
-      case MITEM_SPINCONTROL: spinControl_init((MenuList*)item); break;
-      case MITEM_RADIOBUTTON: radioBtn_init((MenuRadioBtn*)item); break;
-      case MITEM_SLIDER: slider_init((MenuSlider*)item); break;
-      case MITEM_BITMAP: bitmap_init((MenuBitmap*)item); break;
-      case MITEM_TEXT: text_init((MenuText*)item); break;
-      case MITEM_SCROLLLIST: scrollList_init((MenuList*)item); break;
-      case MITEM_PTEXT: PText_init((MenuText*)item); break;
-      case MITEM_BTEXT: BText_init((MenuText*)item); break;
+      case MITEM_MULTIOPT: menuMOpt_init((MenuList*)item); break;
+      case MITEM_SWITCH: menuSwitch_init((MenuSwitch*)item); break;
+      case MITEM_SLIDER: menuSlider_init((MenuSlider*)item); break;
+      case MITEM_IMAGE: menuImage_init((MenuImage*)item); break;
+      case MITEM_LTEXT: OText_init((MenuText*)item); break;
+      case MITEM_LIST: menuList_init((MenuList*)item); break;
+      case MITEM_TEXT: menuText_init((MenuText*)item); break;
+      // case MITEM_BTEXT: BText_init((MenuText*)item); break;
       default: id3Error(va("Menu_Init: unknown type %d", itemptr->type));
     }
   }
@@ -170,10 +172,10 @@ sfxHandle_t menuDefaultKey(MenuFw* m, int key) {
   MenuCommon* item  = cursorGetItem(m);
   if (item && !(item->flags & (MFL_GRAYED | MFL_INACTIVE))) {
     switch (item->type) {
-      case MITEM_SPINCONTROL: sound = spinControl_key((MenuList*)item, key); break;
-      case MITEM_RADIOBUTTON: sound = radioBtn_key((MenuRadioBtn*)item, key); break;
-      case MITEM_SLIDER: sound = slider_key((MenuSlider*)item, key); break;
-      case MITEM_SCROLLLIST: sound = scrollList_key((MenuList*)item, key); break;
+      case MITEM_MULTIOPT: sound = menuMOpt_key((MenuList*)item, key); break;
+      case MITEM_SWITCH: sound = menuSwitch_key((MenuSwitch*)item, key); break;
+      case MITEM_SLIDER: sound = menuSlider_key((MenuSlider*)item, key); break;
+      case MITEM_LIST: sound = menuList_key((MenuList*)item, key); break;
       case MITEM_FIELD: sound = menuField_key((MenuField*)item, &key); break;
     }
     if (sound) { return sound; }  // key was handled

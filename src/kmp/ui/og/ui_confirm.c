@@ -70,7 +70,7 @@ void UI_Message(const char** lines) {
     s_confirm.menu.fullscreen = true;
   }
 
-  s_confirm.yes.generic.type     = MITEM_PTEXT;
+  s_confirm.yes.generic.type     = MITEM_TEXT;
   s_confirm.yes.generic.flags    = MFL_LEFT_JUSTIFY | MFL_PULSEIFFOCUS;
   s_confirm.yes.generic.callback = menuConfirm_Event;
   s_confirm.yes.generic.id       = MID_CONFIRM_YES;

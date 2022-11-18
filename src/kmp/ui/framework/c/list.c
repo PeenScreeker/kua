@@ -3,7 +3,7 @@
 //:::::::::::::::::::::::
 // ScrollList_Init
 //:::::::::::::::::::::::
-void scrollList_init(MenuList* l) {
+void menuList_init(MenuList* l) {
   l->oldvalue = 0;
   l->curvalue = 0;
   l->top      = 0;
@@ -27,7 +27,7 @@ void scrollList_init(MenuList* l) {
 //:::::::::::::::::::::::
 // ScrollList_Key
 //:::::::::::::::::::::::
-sfxHandle_t scrollList_key(MenuList* l, int key) {
+sfxHandle_t menuList_key(MenuList* l, int key) {
   int x, y, w;
   int i, j, c;
   int cursorx, cursory;
@@ -206,9 +206,9 @@ sfxHandle_t scrollList_key(MenuList* l, int key) {
 }
 
 // ScrollList_Draw
-void scrollList_draw(MenuList* l) {
+void menuList_draw(MenuList* l) {
   float* color;
-  bool   hasfocus = (l->generic.parent->cursor == l->generic.menuPosition);
+  bool   hasfocus = (l->generic.parent->cursor == l->generic.activeId);
   int    x        = l->generic.x;
   for (int column = 0; column < l->columns; column++) {
     int style = UI_LEFT | UI_SMALLFONT;

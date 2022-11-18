@@ -544,22 +544,22 @@ void uiDrawMenu(MenuFw* menu) {
       itemptr->ownerdraw(itemptr);  // total subclassing, owner draws everything
     } else {
       switch (itemptr->type) {
-        case MITEM_RADIOBUTTON: radioBtn_draw((MenuRadioBtn*)itemptr); break;
+        case MITEM_SWITCH: menuSwitch_draw((MenuSwitch*)itemptr); break;
         case MITEM_FIELD: menuField_draw((MenuField*)itemptr); break;
-        case MITEM_SLIDER: slider_draw((MenuSlider*)itemptr); break;
-        case MITEM_SPINCONTROL: spinControl_draw((MenuList*)itemptr); break;
-        case MITEM_ACTION: action_draw((MenuAction*)itemptr); break;
-        case MITEM_BITMAP: bitmap_draw((MenuBitmap*)itemptr); break;
-        case MITEM_TEXT: text_draw((MenuText*)itemptr); break;
-        case MITEM_SCROLLLIST: scrollList_draw((MenuList*)itemptr); break;
-        case MITEM_PTEXT: PText_draw((MenuText*)itemptr); break;
-        case MITEM_BTEXT: BText_draw((MenuText*)itemptr); break;
-        default: id3Error(va("Menu_Draw: unknown type %d", itemptr->type));
+        case MITEM_SLIDER: menuSlider_draw((MenuSlider*)itemptr); break;
+        case MITEM_MULTIOPT: menuMOpt_draw((MenuList*)itemptr); break;
+        case MITEM_ACTION: menuAction_draw((MenuAction*)itemptr); break;
+        case MITEM_IMAGE: menuImage_draw((MenuImage*)itemptr); break;
+        case MITEM_LTEXT: OText_draw((MenuText*)itemptr); break;
+        case MITEM_LIST: menuList_draw((MenuList*)itemptr); break;
+        case MITEM_TEXT: menuText_draw((MenuText*)itemptr); break;
+        // case MITEM_BTEXT: BText_draw((MenuText*)itemptr); break;
+        default: id3Error(va("%s: unknown type %d", __func__, itemptr->type));
       }
     }
-    /*
-#ifndef NDEBUG
+#ifndef NDEBUG  // TODO:
     if (uis.debug) {
+    /*
       if (!(itemptr->flags & MFL_INACTIVE)) {
         int x = itemptr->left;
         int y = itemptr->top;
@@ -571,12 +571,10 @@ void uiDrawMenu(MenuFw* menu) {
           drawRect(x, y, w, h, colorWhite);
         }
       }
+  */
     }
 #endif
-  */
   }
-  /*
   itemptr = cursorGetItem(menu);
   if (itemptr && itemptr->statusbar) itemptr->statusbar((void*)itemptr);
-  */
 }

@@ -111,7 +111,7 @@ static void menuStart_draw(void) {  // Main_MenuDraw(void) {
   } else {
     uiDrawMenu(&s_mstart.menu);  // standard menu drawing
   }
-  uiTextDraw(BANNER_TEXT, &uis.font.small, 0.5, 0.99, 1, (vec_t*)mStartColor.neutral, 0, 0, strlen(BANNER_TEXT), TEXT_ALIGN_CENTER);
+  uiTextDraw(BANNER_TEXT, &uis.font.small, 0.5, 0.99, 1, (vec_t*)mColor.neutral, 0, 0, strlen(BANNER_TEXT), TEXT_ALIGN_CENTER);
 }
 
 
@@ -131,7 +131,7 @@ static void menuStart_exit(bool result) {
 void menuStart_event(void* ptr, int event) {
   if (event != MS_ACTIVATED) { return; }
   switch (((MenuCommon*)ptr)->id) {
-    // case MID_PLAY: menuSPLevel(); break;
+    case MID_PLAY: menuPlay(); break;
     // case MID_MULTIPLAYER: menuArenaServers(); break;
     // case MID_SETUP: menuSetup(); break;
     // case MID_DEMOS: menuDemos(); break;
@@ -203,7 +203,7 @@ void menuStart_init(void) {
   sm->play.style            = style;
   sm->play.font             = uis.font.actionKey;
   sm->play.align            = align;
-  sm->play.generic.type     = MITEM_PTEXT;
+  sm->play.generic.type     = MITEM_TEXT;
   sm->play.generic.flags    = justify | MFL_PULSEIFFOCUS;
   sm->play.generic.id       = MID_PLAY;
   sm->play.generic.callback = menuStart_event;
@@ -219,7 +219,7 @@ void menuStart_init(void) {
   sm->setup.style            = style;
   sm->setup.font             = uis.font.action;
   sm->setup.align            = align;
-  sm->setup.generic.type     = MITEM_PTEXT;
+  sm->setup.generic.type     = MITEM_TEXT;
   sm->setup.generic.flags    = justify | MFL_PULSEIFFOCUS | MFL_GRAYED;
   sm->setup.generic.x        = x;
   sm->setup.generic.y        = y;
@@ -235,12 +235,12 @@ void menuStart_init(void) {
   sm->exit.style            = style;
   sm->exit.font             = uis.font.action;
   sm->exit.align            = align;
-  sm->exit.generic.type     = MITEM_PTEXT;
+  sm->exit.generic.type     = MITEM_TEXT;
   sm->exit.generic.flags    = justify | MFL_PULSEIFFOCUS;
   sm->exit.generic.x        = x;
   sm->exit.generic.y        = y;
-  sm->exit.generic.id       = MID_EXIT;
-  sm->exit.generic.callback = menuStart_event;
+  // sm->exit.generic.id       = MID_EXIT;
+  // sm->exit.generic.callback = menuStart_event;
 
   menuAddItem(&sm->menu, &sm->play);
   menuAddItem(&sm->menu, &sm->setup);
@@ -250,115 +250,4 @@ void menuStart_init(void) {
   uis.menusp = 0;
   menuPush(&sm->menu);  // Add menu to the registered menus list ("stack")
 }
-//:::::::::::::::::::
-// void menuStart_old(void) {            // UI_MainMenu(void) {
-//   id3Cvar_Set("sv_killserver", "1");  // Make sure the attract loop server is down and local cinematics are killed
-//   // Initialize all data
-//   MenuStart* sm  = &s_mstart;
-//   ErrorMsg*  err = &s_errorMsg;
-//   memset(sm, 0, sizeof(MenuStart));
-//   memset(err, 0, sizeof(ErrorMsg));
-//   menuStart_cache();  // com_errorMessage needs cache data too // MainMenu_Cache();
 
-//   id3Cvar_VariableStringBuffer("com_errorMessage", err->errorMessage, sizeof(err->errorMessage));
-//   if (strlen(err->errorMessage)) {
-//     err->menu.draw       = menuStart_draw;  // Main_MenuDraw;
-//     err->menu.key        = errorMessage_key;
-//     err->menu.fullscreen = true;
-//     err->menu.wrapAround = true;
-//     err->menu.isMain   = true;
-//     id3Key_SetCatcher(KEYCATCH_UI);
-//     uis.menusp = 0;
-//     menuPush(&err->menu);
-//     return;
-//   }
-
-//   int    xpos                       = 32;  // 320;
-//   int    justify                    = MFL_LEFT_JUSTIFY;
-//   int    y                          = 200;  // 134;
-//   int    style                      = UI_LEFT | UI_DROPSHADOW;
-//   vec_t* textColor                  = (vec_t*)q3color.text_menu;
-
-//   sm->menu.draw                     = menuStart_draw;
-//   sm->menu.fullscreen               = true;
-//   sm->menu.wrapAround               = true;
-//   sm->menu.isMain                 = true;
-
-//   sm->singleplayer.generic.type     = MITEM_PTEXT;
-//   sm->singleplayer.generic.flags    = MFL_LEFT_JUSTIFY | MFL_PULSEIFFOCUS;
-//   sm->singleplayer.generic.x        = xpos;
-//   sm->singleplayer.generic.y        = y;
-//   sm->singleplayer.generic.id       = MID_PLAY;
-//   sm->singleplayer.generic.callback = menuStart_event;
-//   sm->singleplayer.string           = "SINGLE PLAYER";
-//   sm->singleplayer.color            = textColor;
-//   sm->singleplayer.style            = style;
-
-//   y += MAIN_MENU_VERTICAL_SPACING;
-//   sm->multiplayer.generic.type     = MITEM_PTEXT;
-//   sm->multiplayer.generic.flags    = justify | MFL_PULSEIFFOCUS;
-//   sm->multiplayer.generic.x        = xpos;
-//   sm->multiplayer.generic.y        = y;
-//   sm->multiplayer.generic.id       = MID_MULTIPLAYER;
-//   sm->multiplayer.generic.callback = menuStart_event;
-//   sm->multiplayer.string           = "MULTIPLAYER";
-//   sm->multiplayer.color            = textColor;
-//   sm->multiplayer.style            = style;
-
-//   y += MAIN_MENU_VERTICAL_SPACING;
-//   sm->demos.generic.type     = MITEM_PTEXT;
-//   sm->demos.generic.flags    = justify | MFL_PULSEIFFOCUS;
-//   sm->demos.generic.x        = xpos;
-//   sm->demos.generic.y        = y;
-//   sm->demos.generic.id       = MID_DEMOS;
-//   sm->demos.generic.callback = menuStart_event;
-//   sm->demos.string           = "DEMOS";
-//   sm->demos.color            = textColor;
-//   sm->demos.style            = style;
-
-//   y += MAIN_MENU_VERTICAL_SPACING;
-
-//   y += MAIN_MENU_VERTICAL_SPACING;
-//   sm->setup.generic.type     = MITEM_PTEXT;
-//   sm->setup.generic.flags    = justify | MFL_PULSEIFFOCUS;
-//   sm->setup.generic.x        = xpos;
-//   sm->setup.generic.y        = y;
-//   sm->setup.generic.id       = MID_SETUP;
-//   sm->setup.generic.callback = menuStart_event;
-//   sm->setup.string           = "SETUP";
-//   sm->setup.color            = textColor;
-//   sm->setup.style            = style;
-
-//   y += MAIN_MENU_VERTICAL_SPACING;
-//   sm->mods.generic.type     = MITEM_PTEXT;
-//   sm->mods.generic.flags    = justify | MFL_PULSEIFFOCUS;
-//   sm->mods.generic.x        = xpos;
-//   sm->mods.generic.y        = y;
-//   sm->mods.generic.id       = MID_MODS;
-//   sm->mods.generic.callback = menuStart_event;
-//   sm->mods.string           = "MODS";
-//   sm->mods.color            = textColor;
-//   sm->mods.style            = style;
-
-//   y += MAIN_MENU_VERTICAL_SPACING;
-//   sm->exit.generic.type     = MITEM_PTEXT;
-//   sm->exit.generic.flags    = justify | MFL_PULSEIFFOCUS;
-//   sm->exit.generic.x        = xpos;
-//   sm->exit.generic.y        = y;
-//   sm->exit.generic.id       = MID_EXIT;
-//   sm->exit.generic.callback = menuStart_event;
-//   sm->exit.string           = "EXIT";
-//   sm->exit.color            = textColor;
-//   sm->exit.style            = style;
-
-//   // menuAddItem(&sm->menu, &sm->singleplayer);
-//   // menuAddItem(&sm->menu, &sm->multiplayer);
-//   // menuAddItem(&sm->menu, &sm->demos);
-//   // menuAddItem(&sm->menu, &sm->setup);
-//   // menuAddItem(&sm->menu, &sm->mods);
-//   menuAddItem(&sm->menu, &sm->exit);
-
-//   id3Key_SetCatcher(KEYCATCH_UI);
-//   uis.menusp = 0;
-//   menuPush(&sm->menu);
-// }

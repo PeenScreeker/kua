@@ -37,7 +37,7 @@ ColorScheme q3credits = {
 
 //:::::::::::::::::::::::
 // Quake3 based
-ColorScheme mStartQ3 = {
+ColorScheme mColorQ3 = {
   .bg        = &color_black,
   .neutral   = &color_gray50,
   .fg        = &color_white,
@@ -56,7 +56,7 @@ static const vec4_t wht;  // White
 static const vec4_t re3;  // Orange
 static const vec4_t re6;  // Red
 //:::::::::::::::::::::::
-ColorScheme mStartColor = {
+ColorScheme mColor = {
   .bg        = &k00,
   .neutral   = &k50,
   .fg        = &wht,

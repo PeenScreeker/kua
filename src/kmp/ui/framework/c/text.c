@@ -2,48 +2,10 @@
 
 
 //:::::::::::::::::::::::
-// Text_Init
-//:::::::::::::::::::::::
-void text_init(MenuText* t) { t->generic.flags |= MFL_INACTIVE; }
-
-//:::::::::::::::::::::::
-// Text_Draw
-//:::::::::::::::::::::::
-void text_draw(MenuText* t) {
-  char buff[512];
-  buff[0] = '\0';
-  int x   = t->generic.x;
-  int y   = t->generic.y;
-  // possible label
-  if (t->generic.name) { strcpy(buff, t->generic.name); }
-  // possible value
-  if (t->string) { strcat(buff, t->string); }
-  bool   grayed = (t->generic.flags & MFL_GRAYED);
-  float* color  = (grayed) ? (vec_t*)q3color.text_disabled : t->color;
-  uiDrawString(x, y, buff, t->style, color);
-}
-
-//:::::::::::::::::::::::
-// BText_Init
-//:::::::::::::::::::::::
-void BText_init(MenuText* t) { t->generic.flags |= MFL_INACTIVE; }
-
-//:::::::::::::::::::::::
-// BText_Draw
-//:::::::::::::::::::::::
-void BText_draw(MenuText* t) {
-  int    x      = t->generic.x;
-  int    y      = t->generic.y;
-  bool   grayed = (t->generic.flags & MFL_GRAYED);
-  float* color  = (grayed) ? (vec_t*)q3color.text_disabled : t->color;
-  uiDrawBannerString(x, y, t->string, t->style, color);
-}
-
-//:::::::::::::::::::::::
 // PText_Init
 //   Initalizes the bounds of the item
 //:::::::::::::::::::::::
-void PText_init(MenuText* t) {
+void menuText_init(MenuText* t) {
   int   scale = 1;  // uiPSizeScale(t->style);  // TODO: Make this possible with fonts
   float x     = t->generic.x;
   float y     = t->generic.y;
@@ -69,7 +31,7 @@ void PText_init(MenuText* t) {
 //:::::::::::::::::
 // PText_Draw
 //:::::::::::::::::
-void PText_draw(MenuText* t) {
+void menuText_draw(MenuText* t) {
   float  x      = t->generic.x;
   float  y      = t->generic.y;
   bool   grayed = (t->generic.flags & MFL_GRAYED);
@@ -81,3 +43,49 @@ void PText_draw(MenuText* t) {
   }
   uiTextDraw(t->string, &t->font, x, y, 1, color, 0, style, strlen(t->string), t->align);
 }
+
+//:::::::::::::::::::::::
+// Text_
+// Is this even needed at all?
+// The only difference seems to be that it concatenates the lable with the value
+//:::::::::::::::::::::::
+// Text_Init
+//:::::::::::::::::::::::
+void OText_init(MenuText* t) { t->generic.flags |= MFL_INACTIVE; }
+
+//:::::::::::::::::::::::
+// Text_Draw
+//:::::::::::::::::::::::
+void OText_draw(MenuText* t) {
+  char buff[512];
+  buff[0] = '\0';
+  int x   = t->generic.x;
+  int y   = t->generic.y;
+  // possible label
+  if (t->generic.name) { strcpy(buff, t->generic.name); }
+  // possible value
+  if (t->string) { strcat(buff, t->string); }
+  bool   grayed = (t->generic.flags & MFL_GRAYED);
+  float* color  = (grayed) ? (vec_t*)q3color.text_disabled : t->color;
+  uiDrawString(x, y, buff, t->style, color);
+}
+
+
+
+// Banner text is a duplicate of PText, not clickable and with a different font atlas
+//:::::::::::::::::::::::
+// BText_Init
+//:::::::::::::::::::::::
+// void BText_init(MenuText* t) { t->generic.flags |= MFL_INACTIVE; }
+
+//:::::::::::::::::::::::
+// BText_Draw
+//:::::::::::::::::::::::
+// void BText_draw(MenuText* t) {
+//   int    x      = t->generic.x;
+//   int    y      = t->generic.y;
+//   bool   grayed = (t->generic.flags & MFL_GRAYED);
+//   float* color  = (grayed) ? (vec_t*)q3color.text_disabled : t->color;
+//   uiDrawBannerString(x, y, t->string, t->style, color);
+// }
+

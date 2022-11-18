@@ -45,6 +45,11 @@ void id3Cvar_Set(const char* var_name, const char* value) { callback(UI_CVAR_SET
 void id3Cvar_Update(vmCvar_t* cvar) { callback(UI_CVAR_UPDATE, cvar); }
 void id3Cvar_VariableStringBuffer(const char* var_name, char* buffer, int bufsize) { callback(UI_CVAR_VARIABLESTRINGBUFFER, var_name, buffer, bufsize); }
 //:::::::::::::::::
+// Filesystem
+int  id3FS_GetFileList(const char* path, const char* extension, char* listbuf, int bufsize) {
+   return callback(UI_FS_GETFILELIST, path, extension, listbuf, bufsize);
+}
+//:::::::::::::::::
 // Renderer
 void      id3GetGlconfig(glconfig_t* glconfig) { callback(UI_GETGLCONFIG, glconfig); }
 qhandle_t id3R_RegisterModel(const char* name) { return callback(UI_R_REGISTERMODEL, name); }

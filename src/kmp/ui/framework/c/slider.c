@@ -9,7 +9,7 @@ qhandle_t sliderButton_1;
 //:::::::::::::::::
 // Slider_Init
 //:::::::::::::::::
-void slider_init(MenuSlider* s) {
+void menuSlider_init(MenuSlider* s) {
   int len           = (s->generic.name) ? strlen(s->generic.name) : 0;  // calculate bounds
   s->generic.left   = s->generic.x - (len + 1) * SMALLCHAR_WIDTH;
   s->generic.right  = s->generic.x + (SLIDER_RANGE + 2 + 1) * SMALLCHAR_WIDTH;
@@ -20,7 +20,7 @@ void slider_init(MenuSlider* s) {
 //:::::::::::::::::
 // Slider_Key
 //:::::::::::::::::
-sfxHandle_t slider_key(MenuSlider* s, int key) {
+sfxHandle_t menuSlider_key(MenuSlider* s, int key) {
   sfxHandle_t sound;
   int         x;
   int         oldvalue;
@@ -54,10 +54,10 @@ sfxHandle_t slider_key(MenuSlider* s, int key) {
 // Slider_Draw
 //   sk->note There was another version of the slider, behind an #if 0
 //:::::::::::::::::
-void slider_draw(MenuSlider* s) {
+void menuSlider_draw(MenuSlider* s) {
   int    x      = s->generic.x;
   int    y      = s->generic.y;
-  bool   focus  = (s->generic.parent->cursor == s->generic.menuPosition);
+  bool   focus  = (s->generic.parent->cursor == s->generic.activeId);
   bool   grayed = (s->generic.flags & MFL_GRAYED);
   float* color  = (grayed) ? (vec_t*)q3color.text_disabled : (vec_t*)q3color.text_normal;
   int    style  = UI_SMALLFONT;

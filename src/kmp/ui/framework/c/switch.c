@@ -3,7 +3,7 @@
 //:::::::::::::::::
 // RadioButton_Init
 //:::::::::::::::::
-void radioBtn_init(MenuRadioBtn* rb) {
+void menuSwitch_init(MenuSwitch* rb) {
   int len            = (rb->generic.name) ? strlen(rb->generic.name) : 0;  // calculate bounds
   rb->generic.left   = rb->generic.x - (len + 1) * SMALLCHAR_WIDTH;
   rb->generic.right  = rb->generic.x + 6 * SMALLCHAR_WIDTH;
@@ -14,7 +14,7 @@ void radioBtn_init(MenuRadioBtn* rb) {
 //:::::::::::::::::
 // RadioButton_Key
 //:::::::::::::::::
-sfxHandle_t radioBtn_key(MenuRadioBtn* rb, int key) {
+sfxHandle_t menuSwitch_key(MenuSwitch* rb, int key) {
   switch (key) {
     case K_MOUSE1:
       if (!(rb->generic.flags & MFL_HASMOUSEFOCUS)) { break; }
@@ -38,13 +38,13 @@ sfxHandle_t radioBtn_key(MenuRadioBtn* rb, int key) {
 //:::::::::::::::::::::::
 // drawRadioBtn
 //:::::::::::::::::::::::
-void radioBtn_draw(MenuRadioBtn* rb) {
+void menuSwitch_draw(MenuSwitch* rb) {
   int    x      = rb->generic.x;
   int    y      = rb->generic.y;
   bool   grayed = (rb->generic.flags & MFL_GRAYED);
   float* color  = (grayed) ? (vec_t*)q3color.text_disabled : (vec_t*)q3color.text_normal;
   int    style  = UI_LEFT | UI_SMALLFONT;
-  bool   focus  = (rb->generic.parent->cursor == rb->generic.menuPosition);
+  bool   focus  = (rb->generic.parent->cursor == rb->generic.activeId);
   if (focus) {
     color = (vec_t*)q3color.text_highlight;
     style |= UI_PULSE;

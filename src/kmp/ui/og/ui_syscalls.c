@@ -26,9 +26,7 @@ int  id3FS_FOpenFile(const char* qpath, fileHandle_t* f, fsMode_t mode) { return
 void id3FS_Read(void* buffer, int len, fileHandle_t f) { callback(UI_FS_READ, buffer, len, f); }
 void id3FS_Write(const void* buffer, int len, fileHandle_t f) { callback(UI_FS_WRITE, buffer, len, f); }
 void id3FS_FCloseFile(fileHandle_t f) { callback(UI_FS_FCLOSEFILE, f); }
-int  id3FS_GetFileList(const char* path, const char* extension, char* listbuf, int bufsize) {
-   return callback(UI_FS_GETFILELIST, path, extension, listbuf, bufsize);
-}
+// id3FS_GetFileList
 int id3FS_Seek(fileHandle_t f, long offset, int origin) { return callback(UI_FS_SEEK, f, offset, origin); }
 
 // id3R_RegisterModel

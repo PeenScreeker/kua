@@ -21,17 +21,17 @@ typedef struct menuframework_s {
 } MenuFw;
 //::::::::::::::::::
 typedef struct menucommon_s {
-  int          type;
-  const char*  name;
-  int          id;
-  float        x, y;    // Position of the menu (percentage)
-  float        left;    // Left bound of the item (percentage)
-  float        top;     // Top bound of the item (percentage)
-  float        right;   // Right bound of the item (percentage)
-  float        bottom;  // Bottom bound of the item (percentage)
-  MenuFw*      parent;
-  int          menuPosition;
-  unsigned int flags;
+  int          type;      // MITEM type id
+  const char*  name;      // Name of the item (also drawn for labeled text)
+  int          id;        // Menu id. Used for navigation and actions
+  float        x, y;      // Position of the menu (percentage)
+  float        left;      // Left bound of the item (percentage)
+  float        top;       // Top bound of the item (percentage)
+  float        right;     // Right bound of the item (percentage)
+  float        bottom;    // Bottom bound of the item (percentage)
+  MenuFw*      parent;    // Owner of this menu item
+  int          activeId;  // Currently active item (? hovering or opposite ?) (was menuPosition)
+  unsigned int flags;     // Item properties
   void (*callback)(void* self, int event);
   void (*statusbar)(void* self);
   void (*ownerdraw)(void* self);
@@ -78,7 +78,7 @@ typedef struct menuaction_s {
 typedef struct menuradiobutton_s {
   MenuCommon generic;  // Properties common between items
   int        curvalue;
-} MenuRadioBtn;
+} MenuSwitch;
 //::::::::::::::::::
 typedef struct menubitmap_s {
   MenuCommon generic;  // Properties common between items
@@ -89,13 +89,13 @@ typedef struct menubitmap_s {
   int        width;
   int        height;
   float*     focuscolor;
-} MenuBitmap;
+} MenuImage;
 //::::::::::::::::::
 typedef struct {
   MenuCommon generic;  // Properties common between items
   char*      string;   // Text to draw
   int        style;    // UI styling flags
-  float*     color;    // Text color
+  vec_t*     color;    // Text color
   fontInfo_t font;     // Font data
   int        align;    // Text alignment enum id
 } MenuText;
@@ -112,6 +112,11 @@ typedef struct Fonts_s {
   fontInfo_t number;
 } Fonts;
 //:::::::::::::::::
+
+//::::::::::::::::::
+typedef struct Icons_s {
+  qhandle_t  cancel;
+} Icons;
 //::::::::::::::::::
 typedef struct {
   int        frametime;
@@ -132,6 +137,7 @@ typedef struct {
   qhandle_t  charsetPropB;
   qhandle_t  logoQ3;  // TODO: Remove, and change to Kua logo
   qhandle_t  cursor;
+  Icons      icon;   // Icon handles
   qhandle_t  rb_on;
   qhandle_t  rb_off;
   float      xscale;
