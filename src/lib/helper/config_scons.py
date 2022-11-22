@@ -78,19 +78,21 @@ libDir  = 'lib'
 jpgDir  = join(libDir,'jpeg')
 pcreDir = join(libDir,'pcre')
 # Gamecode src folders
+## Client Game
 cgDir  = 'cgame'
-sgDir  = 'sgame'
-uiDir  = 'ui_q3'
-phyDir = join(sgDir,'phy')
 hudDir = join(cgDir,'hud')
+## Server Game
+sgDir  = 'sgame'
+phyDir = join(sgDir,'phy')
+## UI
+uiDir       = 'ui'
+uiDir_menu  = join(uiDir,'menu')
+uiDir_fwork = join(uiDir,'framework')
+uiDir_color = join(uiDir,'color')
 # Not used
-asmDir = 'asm'
-tuiDir = 'ui_ta'
-# New UI folders (WIP)
-nuiDir       = 'ui'
-nuiDir_menu  = join(nuiDir,'menu')
-nuiDir_fwork = join(nuiDir,'framework')
-nuiDir_color = join(nuiDir,'color')
+asmDir = 'asm'   # Assembly code
+tuiDir = 'ui_ta' # Team Arena UI
+ouiDir = 'ui_q3' # Old Q3 UI
 
 ## Compiler Flags
 # ::::::::::::::::

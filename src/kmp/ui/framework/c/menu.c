@@ -12,6 +12,7 @@ void menuCache(void) {
   uis.logoQ3      = id3R_RegisterShaderNoMip("ui/logoQ3");
   // Icons
   uis.icon.cancel = id3R_RegisterShaderNoMip("ui/cancel");
+  uis.icon.accept = id3R_RegisterShaderNoMip("ui/accept");
   // Sounds
   uiSound.move    = id3S_RegisterSound("ui/snd/move.wav", false);
   uiSound.select  = id3S_RegisterSound("ui/snd/select.wav", false);
@@ -151,7 +152,7 @@ void menuAddItem(MenuFw* menu, void* item) {
 //:::::::::::::::::::
 sfxHandle_t menuActivateItem(MenuFw* s, MenuCommon* item) {
   if (item->callback) {
-    item->callback(item, MS_ACTIVATED);
+    item->callback(item, MST_ACTIVE);
     if (!(item->flags & MFL_SILENT)) { return uiSound.move; }
   }
   return 0;

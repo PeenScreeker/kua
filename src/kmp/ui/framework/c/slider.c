@@ -46,7 +46,7 @@ sfxHandle_t menuSlider_key(MenuSlider* s, int key) {
       break;
     default: sound = 0; break;  // key not handled
   }
-  if (sound && s->generic.callback) { s->generic.callback(s, MS_ACTIVATED); }
+  if (sound && s->generic.callback) { s->generic.callback(s, MST_ACTIVE); }
   return (sound);
 }
 

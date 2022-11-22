@@ -324,20 +324,8 @@ StartServer_LevelshotDraw
 ===============
 */
 static void StartServer_LevelshotDraw( void *self ) {
-	menubitmap_s	*b;
-	int				x;
-	int				y;
-	int				w;
-	int				h;
-	int				n;
-	const char		*info;
-	char			mapname[ MAX_NAMELENGTH ];
-
-	b = (menubitmap_s *)self;
-
-	if( !b->generic.name ) {
-		return;
-	}
+	menubitmap_s* b = (menubitmap_s *)self;
+	if( !b->generic.name ) { return; }
 
 	if( b->generic.name && !b->shader ) {
 		b->shader = trap_R_RegisterShaderNoMip( b->generic.name );
@@ -350,13 +338,11 @@ static void StartServer_LevelshotDraw( void *self ) {
 		b->focusshader = trap_R_RegisterShaderNoMip( b->focuspic );
 	}
 
-	x = b->generic.x;
-	y = b->generic.y;
-	w = b->width;
-	h =	b->height;
-	if( b->shader ) {
-		UI_DrawHandlePic( x, y, w, h, b->shader );
-	}
+	int x = b->generic.x;
+	int y = b->generic.y;
+	int w = b->width;
+	int h =	b->height;
+	if( b->shader ) { UI_DrawHandlePic( x, y, w, h, b->shader ); }
 
 	x = b->generic.x;
 	y = b->generic.y + b->height;
@@ -364,9 +350,10 @@ static void StartServer_LevelshotDraw( void *self ) {
 
 	x += b->width / 2;
 	y += 4;
-	n = s_startserver.page * MAX_MAPSPERPAGE + b->generic.id - ID_PICTURES;
+	int n = s_startserver.page * MAX_MAPSPERPAGE + b->generic.id - ID_PICTURES;
 
-	info = UI_GetArenaInfoByNumber( s_startserver.maplist[ n ]);
+	char mapname[ MAX_NAMELENGTH ];
+	const char* info = UI_GetArenaInfoByNumber( s_startserver.maplist[ n ]);
 	Q_strncpyz( mapname, Info_ValueForKey( info, "map"), MAX_NAMELENGTH );
 	Q_strupr( mapname );
 	UI_DrawString( x, y, mapname, UI_CENTER|UI_SMALLFONT, color_orange );
@@ -375,9 +362,7 @@ static void StartServer_LevelshotDraw( void *self ) {
 	y = b->generic.y;
 	w = b->width;
 	h =	b->height + 28;
-	if( b->generic.flags & QMF_HIGHLIGHT ) {	
-		UI_DrawHandlePic( x, y, w, h, b->focusshader );
-	}
+	if( b->generic.flags & QMF_HIGHLIGHT ) { UI_DrawHandlePic( x, y, w, h, b->focusshader ); }
 }
 
 

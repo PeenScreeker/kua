@@ -1,21 +1,13 @@
-# Roadmaps  
+# Other Roadmaps  
 [ktt](./roadmap/ktt.md)
 [kmp](./roadmap/kmp.md)
 [done](./roadmap/done.md)
 [wishlist](./roadmap/wishlist.md)
 [buglist](./roadmap/buglist.md)
 
+# Core roadmap
 ---
 # Code
-## Engine+Gamecode
-- [ ] PlayerState rework 
-  - [ ] Generic rpg
-    - [ ] Attributes
-    - [ ] State (health/armor)
-  - [ ] Physics info
-    - [ ] Gravity
-    - [ ] Speed
-    - [ ] ...
 ## Gamecode
 ## Engine
 - [ ] Default to good visual config
@@ -25,12 +17,19 @@
 _Main Idea:      Disable loading of all media cache assets_
 _Realistically:  Does this just work? Is it that "simple"? Need testing_
 ## UI
+- [x] Freedom achieved
+  - [x] Don't load any old assets
 ## Game: Client
 ## Game: Server
+- [ ] Freedom achieved
+  - [ ] Lava fry sound (? Why is this in the server ?)
+  - [ ] SP podium model (? Why is this in the server ?)
+  - [ ] Does bot loading initialize any assets?
+  - [ ] Remove shaders from G_RemapTeamShaders (teamarena only code)
 
 # UX
 ## New Users
-- [ ] Steam integration (requires Standalone game)
+- [ ] Steam integration (requires Standalone freedom)
 ## QoL
 - [ ] cg_drawgun 2
 - [ ] cg_nodamagekick
@@ -40,9 +39,9 @@ _Realistically:  Does this just work? Is it that "simple"? Need testing_
 
 # GUI
 ## UI
-- [ ] Font support
-- [ ] UI q3ui
-- [ ] UI revamp
+- [x] Font support
+- [x] UI q3ui
+- [x] UI revamp
 - [ ] Menus
   - [ ] Map loader UI  
   - [ ] Setup
@@ -55,15 +54,16 @@ _Realistically:  Does this just work? Is it that "simple"? Need testing_
   - [ ] Narration
 - [ ] Cvar control
   - [ ] Serialize them
+  - [ ] Improved setup menu
 
 ## HUD
-- [ ] Skill bar
-  - [ ] Basic version: Timer on top of icon (grayscale:inactive, colored:active)
 - [ ] New icons : Warsow insp (vector style, simple shading, 3 tone range)
 - [ ] New design: Player state (health, ammo, powerups, etc)  
   - [x] Basic: Q3 hud, aspect correct, widescreen, smaller
   - [ ] Rework (What's needed?)
   - [ ] Customization with cvars
+- [ ] Skill bar
+  - [ ] Basic version: Timer on top of icon (grayscale:inactive, colored:active)
 
 ---
 
@@ -111,6 +111,17 @@ _Realistically:  Does this just work? Is it that "simple"? Need testing_
   - [ ] notdefrag
 
 ## Physics
+### Code
+- [ ] PlayerState rework 
+  - [ ] Generic rpg
+    - [ ] Attributes
+    - [ ] State (health/armor)
+  - [ ] Physics info
+    - [ ] Gravity
+    - [ ] Speed
+    - [ ] ...
+
+### Mechanics
 - [ ] CPM rework (speed)
   - [ ] New name
   - [ ] Separate to new file
@@ -174,4 +185,5 @@ _Realistically:  Does this just work? Is it that "simple"? Need testing_
   - [ ] Ramp jumps
 - [x] vjk movement
   - [x] holdboost mechanic
+  - [ ] feels bland. Do we want anything else ??
 

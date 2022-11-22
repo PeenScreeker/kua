@@ -262,22 +262,22 @@ srcUI_bg = [
   ]
 ## Filter: Remove
 srcUI_rankings = [
-  gameDir.Dir(uiDir).File('ui_login.c'),
-  gameDir.Dir(uiDir).File('ui_rankings.c'),
-  gameDir.Dir(uiDir).File('ui_rankstatus.c'),
-  gameDir.Dir(uiDir).File('ui_signup.c'),
-  gameDir.Dir(uiDir).File('ui_specifyleague.c'),
-  gameDir.Dir(uiDir).File('ui_spreset.c'),
+  gameDir.Dir(ouiDir).File('ui_login.c'),
+  gameDir.Dir(ouiDir).File('ui_rankings.c'),
+  gameDir.Dir(ouiDir).File('ui_rankstatus.c'),
+  gameDir.Dir(ouiDir).File('ui_signup.c'),
+  gameDir.Dir(ouiDir).File('ui_specifyleague.c'),
+  gameDir.Dir(ouiDir).File('ui_spreset.c'),
   ]
 ## Filters: Apply
-srcGame_ui = [f for f in srcUI if f not in srcUI_rankings] +srcUI_bg +srcShlib
+srcGame_OldUi = [f for f in srcUI if f not in srcUI_rankings] +srcUI_bg +srcShlib
 
 ## Ui New
-srcUI_core  = Glob(gameDir.Dir(nuiDir).Dir('c').path +sep+ '*.c')
-srcUI_menu  = Glob(gameDir.Dir(nuiDir_menu).Dir('c').path +sep+ '*.c')
-srcUI_fwork = Glob(gameDir.Dir(nuiDir_fwork).Dir('c').path +sep+ '*.c')
-srcUI_color = Glob(gameDir.Dir(nuiDir_color).Dir('c').path +sep+ '*.c')
-srcGame_nui = srcUI_core +srcShlib +srcUI_menu +srcUI_fwork +srcUI_color# +srcUI_bg
+srcUI_core  = Glob(gameDir.Dir(uiDir).Dir('c').path +sep+ '*.c')
+srcUI_menu  = Glob(gameDir.Dir(uiDir_menu).Dir('c').path +sep+ '*.c')
+srcUI_fwork = Glob(gameDir.Dir(uiDir_fwork).Dir('c').path +sep+ '*.c')
+srcUI_color = Glob(gameDir.Dir(uiDir_color).Dir('c').path +sep+ '*.c')
+srcGame_ui  = srcUI_core +srcUI_menu +srcUI_fwork +srcUI_color +srcShlib # +srcUI_bg
 
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
 ############################################################
@@ -538,7 +538,7 @@ ui         = base.clone()
 ## Source code
 ui.src     = srcGame_ui
 ui.srcdir  = gameDir 
-ui.ssdir   = 'q3ui'
+ui.ssdir   = 'ui'
 # Custom compiler name (non verbose)
 ui.cStr    = 'CC_ui'
 ui.lStr    = 'LD_ui'
@@ -549,23 +549,23 @@ ui.bintype = 'lib'
 
 # Linux
 uiLnx          = ui.merge(lnx)
-uiLnx.binname  = f'q3ui{uiLnx.arch}'
+uiLnx.binname  = f'ui{uiLnx.arch}'
 uiLnx.defines += [f'ARCH_STRING="{uiLnx.arch}"']
 uiLnx_rls      = uiLnx.merge(rls)
 uiLnx_dbg      = uiLnx.merge(dbg)
 # Windows
 uiWin          = ui.merge(win)
-uiWin.binname  = f'q3ui{uiWin.arch}'
+uiWin.binname  = f'ui{uiWin.arch}'
 uiWin.defines += [f'ARCH_STRING="{uiWin.arch}"']  #TODO: Fix Memory Address nonsense. This is already defined???
 uiWin_rls      = uiWin.merge(rls)
 uiWin_dbg      = uiWin.merge(dbg)
 
 #:::::::::::::::::::::::::::::::
-# Ui New
-uiNew          = uiLnx_rls.clone()
-uiNew.src      = srcGame_nui
-uiNew.ssdir    = 'ui'
-uiNew.binname  = uiNew.binname.replace('q3ui', 'ui')
+# Old Q3 UI
+uiOld          = uiLnx_rls.clone()
+uiOld.src      = srcGame_OldUi
+uiOld.ssdir    = 'q3ui'
+uiOld.binname  = uiOld.binname.replace('ui', 'q3ui')
 #:::::::::::::::::::::::::::::::
 
 
@@ -593,7 +593,7 @@ uiLnx_dbg.setup()
 uiWin_rls.setup()
 uiWin_dbg.setup()
 ## Ui New
-uiNew.setup()
+uiOld.setup()
 
 
 #############################################################################
@@ -655,18 +655,16 @@ trgEngine_ws = [clWin_sdl.trg]
 # #TODO add server (here and trgAll)
 # # game
 trgGame_ld   = [cgLnx_dbg.trg, sgLnx_dbg.trg, uiLnx_dbg.trg]
-trgGame_lr   = [cgLnx_rls.trg, sgLnx_rls.trg, uiNew.trg]
+trgGame_lr   = [cgLnx_rls.trg, sgLnx_rls.trg, uiLnx_rls.trg]
 # trgGame_lr   = [cgLnx_rls.trg, sgLnx_rls.trg, uiLnx_rls.trg]
 trgGame_wd   = [cgWin_dbg.trg, sgWin_dbg.trg, uiWin_dbg.trg]
 trgGame_wr   = [cgWin_rls.trg, sgWin_rls.trg, uiWin_rls.trg]
 # # all
 trgAll       = [trgEngine_ld, trgEngine_lr, trgEngine_wd, trgEngine_wr, trgEngine_ws,
                 trgGame_ld, trgGame_lr, trgGame_wd, trgGame_wr]
-# WIP
-trgUiQ3      = [uiLnx_rls.trg]
-trgUiNew     = [uiNew.trg]
-Alias('q3ui', trgUiQ3)
-Alias('nui', trgUiNew)
+# Old UI (release only)
+trgUiOld     = [uiOld.trg]
+Alias('q3ui', trgUiOld)
 
 ## Groups
 ### Current Platform

@@ -2232,7 +2232,7 @@ static qboolean CG_DrawFollow(void) {
 	if (!(cg.snap->ps.pm_flags & PMF_FOLLOW)) { return qfalse; }
 
 	vec4_t		color;
-  Vector4Set(color, 1, 1, 1, 1);
+  Vector4Set(&color, 1, 1, 1, 1);
 
 	CG_DrawBigString( 320 - 9 * 8, 24, "following", 1.0F );
 

@@ -911,12 +911,8 @@ char *Q_strupr( char *s1 ) {
 
 // never goes past bounds or leaves without a terminating 0
 void Q_strcat( char *dest, int size, const char *src ) {
-	int		l1;
-
-	l1 = strlen( dest );
-	if ( l1 >= size ) {
-		Com_Error( ERR_FATAL, "Q_strcat: already overflowed" );
-	}
+	int l1 = strlen( dest );
+	if ( l1 >= size ) { Com_Error( ERR_FATAL, "Q_strcat: already overflowed" ); }
 	Q_strncpyz( dest + l1, src, size - l1 );
 }
 
@@ -1089,8 +1085,7 @@ FIXME: overflow check?
 */
 char *Info_ValueForKey( const char *s, const char *key ) {
 	char	pkey[BIG_INFO_KEY];
-	static	char value[2][BIG_INFO_VALUE];	// use two buffers so compares
-											// work without stomping on each other
+	static	char value[2][BIG_INFO_VALUE];	// use two buffers so compares work without stomping on each other
 	static	int	valueindex = 0;
 	char	*o;
 	
@@ -1461,15 +1456,31 @@ char *Com_SkipTokens( char *s, int numTokens, char *sep )
 		return s;
 }
 
-//::KUA.chg
+//::KUA.add
 //:::::::::::::::::
-// VectorMAM: taken from mmod. :: Not in q3a. May come from xonotic originally
+// VectorMAM: Not in q3a. May come from xonotic originally
 //#define VectorMAM(scale1, b1, scale2, b2, c) (c.x = scale1 * b1.x + scale2 * b2.x, c.y = scale1 * b1.y + scale2 * b2.y, c.z = scale1 * b1.z + scale2 * b2.z);
 void VectorMAM(float scale1, vec3_t b1, float scale2, vec3_t b2, vec3_t c){
     c[0] = scale1 * b1[0] + scale2 * b2[0];
     c[1] = scale1 * b1[1] + scale2 * b2[1];
     c[2] = scale1 * b1[2] + scale2 * b2[2];
 };
+void Vector4Set(vec4_t v, const vec_t r, const vec_t g, const vec_t b, const vec_t a)	{
+  v[R] = r; v[G] = g; v[B] = b; v[A] = a;
+}
+
+//:::::::::::::::::::::::
+// StrArrayCat
+//   Concatenate all strings in an array of null terminated strings, into a single null terminated string (char* result)
+//:::::::::::::::::::::::
+void StrArrayCat(const char** list, const int items, char* result) {
+  for (int it = 0; it < items; it++) {               // For every item in the list
+    for (int ch = 0; ch < strlen(list[it]); ch++) {  // For every character in current item
+      char tmp[2] = { list[it][ch], '\0' };          // Create a new null terminated string with the character
+      strcat(result, tmp);                           // Concatenate the character into the result  (there should be a simpler way, but this works :shrug:)
+    }
+  }
+}
 //:::::::::::::::::
 //::KUA.end
 

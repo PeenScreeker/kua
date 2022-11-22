@@ -322,6 +322,10 @@ typedef enum {
 #define UI_INVERSE		0x00002000
 #define UI_PULSE		0x00004000
 
+typedef enum { R, G, B, A } Colors;
+typedef enum { X, Y, Z, W } Axes;
+typedef enum { GRAY, GA, RGB, RGBA } ColorChannels;
+
 #if defined(_DEBUG) && !defined(BSPC)
 	#define HUNK_DEBUG
 #endif

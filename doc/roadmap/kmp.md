@@ -5,6 +5,13 @@
 
 
 <!--................................-->
+## UI Online integration
+- [ ] Advanced play menu 
+  - [ ] Map download list (navigation)
+  - [ ] Recent maps List
+    - [ ] Levelshot pre-draw
+    - [ ] Download map
+
 ## Racing HUD
 - [ ] Fix scoreboard
 - [ ] Proxymod support

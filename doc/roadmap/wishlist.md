@@ -7,8 +7,16 @@ _(All of them are very wanted, and will become Core eventually)_
   - [ ] OpenGL3 renderer
   - [ ] GLFW, remove SDL
   - [ ] Nuklear UI integration
-- [ ] Unlock 1000 maxfps. Change requires float, and would break long server times (+4days). 1ms = 1u:int = 1000fps
+- [ ] Unlock 1000 maxfps. Change requires float, and could break long server times (+4days). 1ms = 1u:int = 1000fps
   - Notes: double should be good. But you never really need to cast full time to float. 
   The time bugs could be fixed by casting difference between times to float, which will be small enough
-  so instead of `float delta = (float)endTime - (float)startTime`, it would be `delta = (float)(endTime - startTime)`
+  _(no decimals allowed in millisec time per frame)_
+  1000ms / 8ms = 125 fps
+  1000ms / 7ms = 144 fps
+  1000ms / 6ms = 166 fps
+  1000ms / 5ms = 200 fps
+  1000ms / 4ms = 250 fps
+  ... // divide 1000 by 3, 2, etc to get the in-betweens
+  1000ms / 1000 = 1ms  _Max FPS value allowed, because anything lower becomes decimals_
+
 - [ ] Threads

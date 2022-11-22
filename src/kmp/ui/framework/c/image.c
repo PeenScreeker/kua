@@ -3,65 +3,65 @@
 //:::::::::::::::::
 // Bitmap_Init
 //:::::::::::::::::
-void menuImage_init(MenuImage* b) {
-  int x = b->generic.x;
-  int y = b->generic.y;
-  int w = b->width;
-  int h = b->height;
+void menuImage_init(MenuImage* i) {
+  int x = i->generic.x;
+  int y = i->generic.y;
+  int w = i->width;
+  int h = i->height;
   if (w < 0) { w = -w; }
   if (h < 0) { h = -h; }
-  if (b->generic.flags & MFL_RIGHT_JUSTIFY) { x = x - w; }
-  if (b->generic.flags & MFL_CENTER_JUSTIFY) { x = x - w / 2; }
-  b->generic.left   = x;
-  b->generic.right  = x + w;
-  b->generic.top    = y;
-  b->generic.bottom = y + h;
-  b->shader         = 0;
-  b->focusshader    = 0;
+  if (i->generic.flags & MFL_RIGHT_JUSTIFY) { x = x - w; }
+  if (i->generic.flags & MFL_CENTER_JUSTIFY) { x = x - w / 2; }
+  i->generic.left   = x;
+  i->generic.right  = x + w;
+  i->generic.top    = y;
+  i->generic.bottom = y + h;
+  // i->shader         = 0;
+  // i->focusshader    = 0;
 }
 
 //:::::::::::::::::
 // Bitmap_Draw
 //:::::::::::::::::
-void menuImage_draw(MenuImage* b) {
-  int x = b->generic.x;
-  int y = b->generic.y;
-  int w = b->width;
-  int h = b->height;
-  if (b->generic.flags & MFL_RIGHT_JUSTIFY) { x = x - w; }
-  if (b->generic.flags & MFL_CENTER_JUSTIFY) { x = x - w / 2; }
-  if (b->generic.name && !b->shader) {  // used to refresh shader
-    b->shader = (b->errorpic) ? id3R_RegisterShaderNoMip(b->errorpic) : id3R_RegisterShaderNoMip(b->generic.name);
+void menuImage_draw(MenuImage* i) {
+  int x = i->generic.x * GL_W;
+  int y = i->generic.y * GL_H;
+  int w = i->width;
+  int h = i->height;
+  if (i->generic.flags & MFL_RIGHT_JUSTIFY) { x = x - w; }
+  if (i->generic.flags & MFL_CENTER_JUSTIFY) { x = x - w / 2; }
+  if (i->focuspic && !i->shader) {  // used to refresh shader
+    i->shader = (i->errorpic) ? id3R_RegisterShaderNoMip(i->errorpic) : id3R_RegisterShaderNoMip(i->focuspic);
   }
-  if (b->focuspic && !b->focusshader) { b->focusshader = id3R_RegisterShaderNoMip(b->focuspic); }
+  if (i->focuspic && !i->focusshader) { i->focusshader = id3R_RegisterShaderNoMip(i->focuspic); }
   float* color;
   vec4_t tempcolor;
-  if (b->generic.flags & MFL_GRAYED && b->shader) {
+  if (i->generic.flags & MFL_GRAYED && i->shader) {
     id3R_SetColor(colorMdGrey);
-    uiDrawHandlePicPix(x, y, w, h, b->shader);
+    uiDrawHandlePicPix(x, y, w, h, i->shader);
     id3R_SetColor(NULL);
   } else {
-    if (b->shader) { uiDrawHandlePicPix(x, y, w, h, b->shader); }
-    if (((b->generic.flags & MFL_PULSE) || (b->generic.flags & MFL_PULSEIFFOCUS)) && (cursorGetItem(b->generic.parent) == b)) {
-      if (b->focuscolor) {
-        tempcolor[0] = b->focuscolor[0];
-        tempcolor[1] = b->focuscolor[1];
-        tempcolor[2] = b->focuscolor[2];
+    if (i->shader) { uiDrawHandlePicPix(x, y, w, h, i->shader); }
+    if (((i->generic.flags & MFL_PULSE) || (i->generic.flags & MFL_PULSEIFFOCUS)) && (cursorGetItem(i->generic.parent) == i)) {
+      if (i->focuscolor) {
+        tempcolor[0] = i->focuscolor[0];
+        tempcolor[1] = i->focuscolor[1];
+        tempcolor[2] = i->focuscolor[2];
         color        = tempcolor;
       } else {
         color = (vec_t*)q3color.pulse;
       }
       color[3] = 0.5 + 0.5 * sin((double)uis.realtime / PULSE_DIVISOR);
       id3R_SetColor(color);
-      uiDrawHandlePicPix(x, y, w, h, b->focusshader);
+      uiDrawHandlePicPix(x, y, w, h, i->focusshader);
       id3R_SetColor(NULL);
-    } else if ((b->generic.flags & MFL_HIGHLIGHT) || ((b->generic.flags & MFL_HIGHLIGHT_IF_FOCUS) && (cursorGetItem(b->generic.parent) == b))) {
-      if (b->focuscolor) {
-        id3R_SetColor(b->focuscolor);
-        uiDrawHandlePicPix(x, y, w, h, b->focusshader);
+    } else if ((i->generic.flags & MFL_HIGHLIGHT) || ((i->generic.flags & MFL_HIGHLIGHT_IF_FOCUS) && (cursorGetItem(i->generic.parent) == i))) {
+      if (i->focuscolor) {
+        id3R_SetColor(i->focuscolor);
+        uiDrawHandlePicPix(x, y, w, h, i->focusshader);
         id3R_SetColor(NULL);
       } else {
-        uiDrawHandlePicPix(x, y, w, h, b->focusshader);
+        uiDrawHandlePicPix(x, y, w, h, i->focusshader);
       }
     }
   }

@@ -8,7 +8,7 @@
 
 //::::::::::::::::::
 // Menu Data types
-typedef struct menuframework_s {
+typedef struct MenuFw_s {
   int   cursor;
   int   cursor_prev;
   int   nitems;
@@ -20,7 +20,7 @@ typedef struct menuframework_s {
   sfxHandle_t (*key)(int key);
 } MenuFw;
 //::::::::::::::::::
-typedef struct menucommon_s {
+typedef struct MenuCommon_s {
   int          type;      // MITEM type id
   const char*  name;      // Name of the item (also drawn for labeled text)
   int          id;        // Menu id. Used for navigation and actions
@@ -37,7 +37,7 @@ typedef struct menucommon_s {
   void (*ownerdraw)(void* self);
 } MenuCommon;  // Properties common between items
 //::::::::::::::::::
-typedef struct mfield_s {
+typedef struct Field_s {
   int  cursor;
   int  scroll;
   int  widthInChars;
@@ -45,12 +45,12 @@ typedef struct mfield_s {
   int  maxchars;
 } Field;
 //::::::::::::::::::
-typedef struct menufield_s {
+typedef struct MenuField_s {
   MenuCommon generic;  // Properties common between items
   Field      field;
 } MenuField;
 //::::::::::::::::::
-typedef struct menuslider_s {
+typedef struct MenuSlider_s {
   MenuCommon generic;  // Properties common between items
   float      minvalue;
   float      maxvalue;
@@ -58,29 +58,34 @@ typedef struct menuslider_s {
   float      range;
 } MenuSlider;
 //::::::::::::::::::
-typedef struct menulist_s {
+typedef struct MenuList_s {
   MenuCommon   generic;  // Properties common between items
   int          oldvalue;
   int          curvalue;
-  int          numitems;
-  int          top;
-  const char** itemnames;
-  int          width;
-  int          height;
-  int          columns;
-  int          separation;
+  int          topId;       // Item id that we are currently drawing at the top
+  const char** itemNames;   // Array of null terminated strings, containing all the list items
+  int          itemCount;   // Total number of items (can be used as size of the names array)
+  int          columns;     // Total number of columns that we want to draw
+  int          rows;        // Current number of items that we are vertically drawing. Also initializes the max desired count.
+  float        width;       // Max horizontal span of the list (percentage). Was per column, now total.
+  float        height;      // Max vertical   span of the list (percentage). Was item count (rows) now measures dimension.
+  vec2_t       separation;  // Desired horizontal+vertical separation between items (percentage)
+  vec2_t       itemSize;    // Max horizontal+vertical size of the items in the list (pixels)
+  int          style;       // Formatting flags
+  fontInfo_t   font;        // Font data
+  int          align;       // Text alignment enum id
 } MenuList;
 //::::::::::::::::::
-typedef struct menuaction_s {
+typedef struct MenuAction_s {
   MenuCommon generic;  // Properties common between items
 } MenuAction;
 //::::::::::::::::::
-typedef struct menuradiobutton_s {
+typedef struct MenuSwitch_s {
   MenuCommon generic;  // Properties common between items
   int        curvalue;
 } MenuSwitch;
 //::::::::::::::::::
-typedef struct menubitmap_s {
+typedef struct MenuImage_s {
   MenuCommon generic;  // Properties common between items
   char*      focuspic;
   char*      errorpic;
@@ -91,7 +96,7 @@ typedef struct menubitmap_s {
   float*     focuscolor;
 } MenuImage;
 //::::::::::::::::::
-typedef struct {
+typedef struct MenuText_s {
   MenuCommon generic;  // Properties common between items
   char*      string;   // Text to draw
   int        style;    // UI styling flags
@@ -115,7 +120,8 @@ typedef struct Fonts_s {
 
 //::::::::::::::::::
 typedef struct Icons_s {
-  qhandle_t  cancel;
+  qhandle_t cancel;
+  qhandle_t accept;
 } Icons;
 //::::::::::::::::::
 typedef struct {
@@ -137,7 +143,7 @@ typedef struct {
   qhandle_t  charsetPropB;
   qhandle_t  logoQ3;  // TODO: Remove, and change to Kua logo
   qhandle_t  cursor;
-  Icons      icon;   // Icon handles
+  Icons      icon;  // Icon handles
   qhandle_t  rb_on;
   qhandle_t  rb_off;
   float      xscale;
@@ -157,7 +163,7 @@ typedef struct q3sound_s {
   sfxHandle_t weaponChange;
 } Q3sound;
 //..................
-typedef struct sounds_s {
+typedef struct Sounds_s {
   sfxHandle_t move;
   sfxHandle_t select;
   sfxHandle_t error;
@@ -166,7 +172,7 @@ typedef struct sounds_s {
   sfxHandle_t notification;
 } Sounds;
 //::::::::::::::::::
-typedef struct songs_s {
+typedef struct Songs_s {
   sfxHandle_t chronos;   // Alexander Nakarada - Chronos
   sfxHandle_t succubus;  // Alexander Nakarada - Succubus
 } Songs;

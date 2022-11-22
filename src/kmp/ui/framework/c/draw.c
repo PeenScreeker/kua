@@ -409,24 +409,33 @@ void uiDrawHandlePicPix(float x, float y, float w, float h, qhandle_t hShader) {
   float t0 = (flipH) ? 1 : 0;
   float t1 = (flipH) ? 0 : 1;
 
-  // uiAdjustFrom640(&x, &y, &w, &h);
   id3R_DrawStretchPic(x, y, w, h, s0, t0, s1, t1, hShader);
 }
 void uiDrawHandlePic(float x, float y, float w, float h, qhandle_t hShader) {
   x *= GL_W;
   y *= GL_H;
+  // uiAdjustFrom640(&x, &y, &w, &h);
   uiDrawHandlePicPix(x, y, w, h, hShader);
 }
 
 //:::::::::::::::::::
-// uiFillRect
-//   Coordinates are 640*480 virtual values
+// uiFillRecPixt
+//   Draw a rectangle. Measures are in pixels
 //:::::::::::::::::::
-void uiFillRect(float x, float y, float width, float height, const float* color) {
+void uiFillRectPix(float x, float y, float width, float height, const float* color) {
   id3R_SetColor(color);
-  uiAdjustFrom640(&x, &y, &width, &height);
+  // uiAdjustFrom640(&x, &y, &width, &height);
   id3R_DrawStretchPic(x, y, width, height, 0, 0, 0, 0, uis.whiteShader);
   id3R_SetColor(NULL);
+}
+//:::::::::::::::::::
+// uiFillRecPixt
+//   Draw a rectangle. Measures are in screen percentages
+//:::::::::::::::::::
+void uiFillRect(float x, float y, float width, float height, const float* color) {
+  x *= GL_W;
+  y *= GL_H;
+  uiFillRectPix(x, y, width, height, color);
 }
 
 static void drawString2(int x, int y, const char* str, vec4_t color, int charw, int charh) {

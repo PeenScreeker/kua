@@ -156,8 +156,6 @@ FT_Bitmap* R_GetGlyphBitmap(FT_GlyphSlot glyph, glyphInfo_t* glyphOut) {
   return NULL;
 }
 
-typedef enum { R, G, B, A } Colors;
-typedef enum { GRAY, GA, RGB, RGBA } ColorChannels;
 typedef struct {
   char  idlength;  // length of a string located after the header.
   char  colormaptype;

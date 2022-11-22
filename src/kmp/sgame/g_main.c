@@ -224,38 +224,18 @@ This must be the very first function compiled into the .q3vm file
 */
 Q_EXPORT intptr_t vmMain( int command, int arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9, int arg10, int arg11  ) {
 	switch ( command ) {
-	case GAME_INIT:
-		G_InitGame( arg0, arg1, arg2 );
-		return 0;
-	case GAME_SHUTDOWN:
-		G_ShutdownGame( arg0 );
-		return 0;
-	case GAME_CLIENT_CONNECT:
-		return (intptr_t)ClientConnect( arg0, arg1, arg2 );
-	case GAME_CLIENT_THINK:
-		ClientThink( arg0 );
-		return 0;
-	case GAME_CLIENT_USERINFO_CHANGED:
-		ClientUserinfoChanged( arg0 );
-		return 0;
-	case GAME_CLIENT_DISCONNECT:
-		ClientDisconnect( arg0 );
-		return 0;
-	case GAME_CLIENT_BEGIN:
-		ClientBegin( arg0 );
-		return 0;
-	case GAME_CLIENT_COMMAND:
-		ClientCommand( arg0 );
-		return 0;
-	case GAME_RUN_FRAME:
-		G_RunFrame( arg0 );
-		return 0;
-	case GAME_CONSOLE_COMMAND:
-		return ConsoleCommand();
-	case BOTAI_START_FRAME:
-		return BotAIStartFrame( arg0 );
+		case GAME_INIT:  G_InitGame( arg0, arg1, arg2 );	return 0;
+		case GAME_SHUTDOWN:  G_ShutdownGame( arg0 );	return 0;
+		case GAME_CLIENT_CONNECT: return (intptr_t)ClientConnect( arg0, arg1, arg2 );
+		case GAME_CLIENT_THINK:  ClientThink( arg0 ); return 0;
+		case GAME_CLIENT_USERINFO_CHANGED:  ClientUserinfoChanged( arg0 ); return 0;
+		case GAME_CLIENT_DISCONNECT:  ClientDisconnect( arg0 ); return 0;
+		case GAME_CLIENT_BEGIN:  ClientBegin( arg0 ); return 0;
+		case GAME_CLIENT_COMMAND:  ClientCommand( arg0 ); return 0;
+		case GAME_RUN_FRAME:  G_RunFrame( arg0 ); return 0;
+		case GAME_CONSOLE_COMMAND:  return ConsoleCommand();
+		case BOTAI_START_FRAME:  return BotAIStartFrame( arg0 );
 	}
-
 	return -1;
 }
 
@@ -429,8 +409,6 @@ G_InitGame
 ============
 */
 void G_InitGame( int levelTime, int randomSeed, int restart ) {
-	int					i;
-
 	G_Printf ("------- Game Initialization -------\n");
 	G_Printf ("gamename: %s\n", GAMEVERSION);
 	G_Printf ("gamedate: %s\n", PRODUCT_DATE);
@@ -482,7 +460,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	level.clients = g_clients;
 
 	// set client fields on player ents
-	for ( i=0 ; i<level.maxclients ; i++ ) {
+	for (int i=0 ; i<level.maxclients ; i++ ) {
 		g_entities[i].client = level.clients + i;
 	}
 
@@ -491,7 +469,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	// range are NEVER anything but clients
 	level.num_entities = MAX_CLIENTS;
 
-	for ( i=0 ; i<MAX_CLIENTS ; i++ ) {
+	for (int i=0 ; i<MAX_CLIENTS ; i++ ) {
 		g_entities[i].classname = "clientslot";
 	}
 
@@ -506,7 +484,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 
 	// parse the key/value pairs and spawn gentities
 	G_SpawnEntitiesFromString();
-  //::KUA TEMP hack
+  //::KUA.tmp -> hack. shouldn't exist
   //::::::::::::::::
   // Search for trigger_multiple in the map, with wait -1, and hardcode its wait to 0.5
   //FIXME: This shouldn't exist. Needs to be changed to reset wait time individually per client on ClientRespawn()
@@ -514,7 +492,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
     gentity_t *ent;
     qboolean isTriggerOnce;
     // Loop through all gentities
-    for ( i=0; i<MAX_GENTITIES; i++){
+    for (int i=0; i<MAX_GENTITIES; i++){
       ent = &g_entities[i];
       isTriggerOnce = (!Q_stricmp(ent->classname, "trigger_multiple") && ent->wait < 0) ? qtrue : qfalse;
       if (isTriggerOnce) {ent->wait = 0.5;}

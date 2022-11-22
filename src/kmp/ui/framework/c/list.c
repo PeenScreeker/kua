@@ -1,55 +1,90 @@
 #include "../elements.h"
 
+
+//:::::::::::::::::::::::
+// menuList_getMaxHeight
+//   Return the max possible text height (percentage) for all items in the list
+//:::::::::::::::::::::::
+float menuList_getMaxHeight(MenuList* l) {
+  char tmp[MAX_QPATH * l->itemCount];
+  StrArrayCat(l->itemNames, l->itemCount, tmp);
+  return uiTextGetHeight(tmp, &l->font, 1, strlen(tmp));
+}
+
 //:::::::::::::::::::::::
 // ScrollList_Init
 //:::::::::::::::::::::::
 void menuList_init(MenuList* l) {
-  l->oldvalue = 0;
-  l->curvalue = 0;
-  l->top      = 0;
-  if (!l->columns) {
-    l->columns    = 1;
-    l->separation = 0;
-  } else if (!l->separation) {
-    l->separation = 3;
+  l->topId    = 0;  // Start topId as the first item (id 0) in the list  (top item we are drawing)
+  l->curvalue = 0;  // Make first item in the list (id 0) the selected one
+  l->oldvalue = 0;  // Make the previously selected item to be id 0
+  // Horizontal measurements
+  if (l->columns <= 1) {  // If columns is negative, 1 or not defined
+    l->columns       = 1;
+    l->separation[X] = 0;
+  } else if (!l->separation[X]) {  // Set some default X separation between columns, for when sep[X] is not defined
+    l->separation[X] = l->width * 0.01;
   }
-  int w             = ((l->width + l->separation) * l->columns - l->separation) * SMALLCHAR_WIDTH;
-  l->generic.left   = l->generic.x;
-  l->generic.top    = l->generic.y;
-  l->generic.right  = l->generic.x + w;
-  l->generic.bottom = l->generic.y + l->height * SMALLCHAR_HEIGHT;
+  float w          = l->width;  // ((l->width + l->separation[X]) * l->columns - l->separation[X]) * SMALLCHAR_WIDTH;
+  l->generic.left  = l->generic.x;
+  l->generic.right = l->generic.x + w;
   if (l->generic.flags & MFL_CENTER_JUSTIFY) {
-    l->generic.left -= w / 2;
-    l->generic.right -= w / 2;
+    l->generic.left -= (w / 2);
+    l->generic.right += (w / 2);
+  } else if (l->generic.flags & MFL_RIGHT_JUSTIFY) {
+    l->generic.left -= w;
+    l->generic.right = l->generic.x;
   }
+  l->itemSize[X] = (l->width / l->columns) * GL_W;
+
+  // Vertical measurements
+  if (l->rows <= 1) {  // If rows is negative, 1 or not defined
+    l->rows          = 1;
+    l->separation[Y] = 0;
+  } else if (!l->separation[Y]) {  // Set some default Y separation between columns, for when sep[Y] is not defined
+    l->separation[Y] = l->height * 0.01;
+  }
+
+  l->generic.top      = l->generic.y;
+  l->generic.bottom   = (l->generic.y + l->height);
+
+  float maxItemHeight = (l->height / l->rows);
+  float itemHeight    = menuList_getMaxHeight(l) + l->separation[Y];
+  if (itemHeight > maxItemHeight) {  // Total height will overflow, so reduce the number of rows
+    // Find the max row count that would fit the max height
+    for (int maxRows = l->rows; maxRows > 0; maxRows--) {   // For every row, reducing the maximum by one each time
+      bool overflows = (itemHeight * maxRows > l->height);  // Still overflows when current count height exceeds total height
+      if (overflows) { continue; }                          // Reduce maxRows (aka go to next loop iteration) if we still overflow
+      l->rows = maxRows;                                    // This row count will fit, so assign it
+      break;                                                // Stop searching here (aka only remove as few items as required)
+    }
+  }
+
+  l->itemSize[Y] = itemHeight * GL_H;
 }
 
 //:::::::::::::::::::::::
 // ScrollList_Key
 //:::::::::::::::::::::::
 sfxHandle_t menuList_key(MenuList* l, int key) {
-  int x, y, w;
-  int i, j, c;
-  int cursorx, cursory;
-  int index, column, scroll;
   switch (key) {
     case K_MOUSE1:
       if (!(l->generic.flags & MFL_HASMOUSEFOCUS)) { break; }
       // check scroll region
-      x = l->generic.x;
-      y = l->generic.y;
-      w = ((l->width + l->separation) * l->columns - l->separation) * SMALLCHAR_WIDTH;
+      float x = l->generic.x;
+      float y = l->generic.y;
+      float w = l->width; //((l->width + l->separation[X]) * l->columns - l->separation[X]) * SMALLCHAR_WIDTH;
       if (l->generic.flags & MFL_CENTER_JUSTIFY) { x -= w / 2; }
-      if (!cursorInRect(x, y, w, l->height * SMALLCHAR_HEIGHT)) { return (q3sound.menu_null); }  // absorbed, silent sound effect
-      cursorx = (uis.cursorx - x) / SMALLCHAR_WIDTH;
-      column  = cursorx / (l->width + l->separation);
-      cursory = (uis.cursory - y) / SMALLCHAR_HEIGHT;
-      index   = column * l->height + cursory;
-      if (l->top + index < l->numitems) {
+      if (!cursorInRect(x, y, w, l->height)) { return (uiSound.silence); }  // absorbed, silent sound effect
+      int cursorx = (uis.cursorx - x) / SMALLCHAR_WIDTH;
+      int column  = cursorx / (l->width + l->separation[X]);
+      int cursory = (uis.cursory - y) / SMALLCHAR_HEIGHT;
+      int index   = column * l->rows + cursory;
+      if (l->topId + index < l->itemCount) {
         l->oldvalue = l->curvalue;
-        l->curvalue = l->top + index;
+        l->curvalue = l->topId + index;
         if (l->oldvalue != l->curvalue && l->generic.callback) {
-          l->generic.callback(l, MS_GOTFOCUS);
+          l->generic.callback(l, MST_FOCUS);
           return (uiSound.move);
         }
       }
@@ -58,24 +93,24 @@ sfxHandle_t menuList_key(MenuList* l, int key) {
     case K_HOME:
       l->oldvalue = l->curvalue;
       l->curvalue = 0;
-      l->top      = 0;
+      l->topId    = 0;
       if (!(l->oldvalue != l->curvalue && l->generic.callback)) { return (uiSound.error); }
-      l->generic.callback(l, MS_GOTFOCUS);
+      l->generic.callback(l, MST_FOCUS);
       return (uiSound.move);
 
     case K_KP_END:
     case K_END:
       l->oldvalue = l->curvalue;
-      l->curvalue = l->numitems - 1;
+      l->curvalue = l->itemCount - 1;
       if (l->columns > 1) {
-        c      = (l->curvalue / l->height + 1) * l->height;
-        l->top = c - (l->columns * l->height);
+        int c    = (l->curvalue / l->rows + 1) * l->rows;
+        l->topId = c - (l->columns * l->rows);
       } else {
-        l->top = l->curvalue - (l->height - 1);
+        l->topId = l->curvalue - (l->rows - 1);
       }
-      if (l->top < 0) l->top = 0;
+      if (l->topId < 0) l->topId = 0;
       if (l->oldvalue != l->curvalue && l->generic.callback) {
-        l->generic.callback(l, MS_GOTFOCUS);
+        l->generic.callback(l, MST_FOCUS);
         return (uiSound.move);
       }
       return (uiSound.error);
@@ -85,43 +120,43 @@ sfxHandle_t menuList_key(MenuList* l, int key) {
       if (l->columns > 1) { return q3sound.menu_null; }
       if (!(l->curvalue > 0)) { return (uiSound.error); }
       l->oldvalue = l->curvalue;
-      l->curvalue -= l->height - 1;
+      l->curvalue -= l->rows - 1;
       if (l->curvalue < 0) l->curvalue = 0;
-      l->top = l->curvalue;
-      if (l->top < 0) l->top = 0;
-      if (l->generic.callback) l->generic.callback(l, MS_GOTFOCUS);
+      l->topId = l->curvalue;
+      if (l->topId < 0) l->topId = 0;
+      if (l->generic.callback) l->generic.callback(l, MST_FOCUS);
       return (uiSound.move);
 
     case K_PGDN:
     case K_KP_PGDN:
       if (l->columns > 1) { return q3sound.menu_null; }
-      if (!(l->curvalue < l->numitems - 1)) { return (uiSound.error); }
+      if (!(l->curvalue < l->itemCount - 1)) { return (uiSound.error); }
       l->oldvalue = l->curvalue;
-      l->curvalue += l->height - 1;
-      if (l->curvalue > l->numitems - 1) l->curvalue = l->numitems - 1;
-      l->top = l->curvalue - (l->height - 1);
-      if (l->top < 0) l->top = 0;
-      if (l->generic.callback) l->generic.callback(l, MS_GOTFOCUS);
+      l->curvalue += l->rows - 1;
+      if (l->curvalue > l->itemCount - 1) l->curvalue = l->itemCount - 1;
+      l->topId = l->curvalue - (l->rows - 1);
+      if (l->topId < 0) l->topId = 0;
+      if (l->generic.callback) l->generic.callback(l, MST_FOCUS);
       return (uiSound.move);
 
     case K_MWHEELUP:
       if (l->columns > 1) { return q3sound.menu_null; }
-      if (!(l->top > 0)) { return (uiSound.error); }
+      if (!(l->topId > 0)) { return (uiSound.error); }
       // if scrolling 3 lines would replace over half of the displayed items, only scroll 1 item at a time.
-      scroll = l->height < 6 ? 1 : 3;
-      l->top -= scroll;
-      if (l->top < 0) l->top = 0;
-      if (l->generic.callback) l->generic.callback(l, MS_GOTFOCUS);
+      int scroll = l->rows < 6 ? 1 : 3;
+      l->topId -= scroll;
+      if (l->topId < 0) l->topId = 0;
+      if (l->generic.callback) l->generic.callback(l, MST_FOCUS);
       return (q3sound.menu_null);  // make scrolling silent
 
     case K_MWHEELDOWN:
       if (l->columns > 1) { return q3sound.menu_null; }
-      if (!(l->top < l->numitems - l->height)) { return (uiSound.error); }
+      if (!(l->topId < l->itemCount - l->rows)) { return (uiSound.error); }
       // if scrolling 3 items would replace over half of the displayed items, only scroll 1 item at a time.
-      scroll = l->height < 6 ? 1 : 3;
-      l->top += scroll;
-      if (l->top > l->numitems - l->height) l->top = l->numitems - l->height;
-      if (l->generic.callback) l->generic.callback(l, MS_GOTFOCUS);
+      scroll = l->rows < 6 ? 1 : 3;
+      l->topId += scroll;
+      if (l->topId > l->itemCount - l->rows) l->topId = l->itemCount - l->rows;
+      if (l->generic.callback) l->generic.callback(l, MST_FOCUS);
       return (q3sound.menu_null);  // make scrolling silent
 
     case K_KP_UPARROW:
@@ -129,74 +164,69 @@ sfxHandle_t menuList_key(MenuList* l, int key) {
       if (l->curvalue == 0) { return uiSound.error; }
       l->oldvalue = l->curvalue;
       l->curvalue--;
-      if (l->curvalue < l->top) {
+      if (l->curvalue < l->topId) {
         if (l->columns == 1) {  // TODO: Untangle this
-          l->top--;
+          l->topId--;
         } else {
-          l->top -= l->height;
+          l->topId -= l->rows;
         }
       }
-      if (l->generic.callback) { l->generic.callback(l, MS_GOTFOCUS); }
+      if (l->generic.callback) { l->generic.callback(l, MST_FOCUS); }
       return (uiSound.move);
 
     case K_KP_DOWNARROW:
     case K_DOWNARROW:
-      if (l->curvalue == l->numitems - 1) { return uiSound.error; }
+      if (l->curvalue == l->itemCount - 1) { return uiSound.error; }
       l->oldvalue = l->curvalue;
       l->curvalue++;
-      if (l->curvalue >= l->top + l->columns * l->height) {
+      if (l->curvalue >= l->topId + l->columns * l->rows) {
         if (l->columns == 1) {
-          l->top++;
+          l->topId++;
         } else {
-          l->top += l->height;
+          l->topId += l->rows;
         }
       }
-      if (l->generic.callback) { l->generic.callback(l, MS_GOTFOCUS); }
+      if (l->generic.callback) { l->generic.callback(l, MST_FOCUS); }
       return uiSound.move;
 
     case K_KP_LEFTARROW:
     case K_LEFTARROW:
       if (l->columns == 1) { return q3sound.menu_null; }
-      if (l->curvalue < l->height) { return uiSound.error; }
+      if (l->curvalue < l->rows) { return uiSound.error; }
       l->oldvalue = l->curvalue;
-      l->curvalue -= l->height;
-      if (l->curvalue < l->top) { l->top -= l->height; }
-      if (l->generic.callback) { l->generic.callback(l, MS_GOTFOCUS); }
+      l->curvalue -= l->rows;
+      if (l->curvalue < l->topId) { l->topId -= l->rows; }
+      if (l->generic.callback) { l->generic.callback(l, MST_FOCUS); }
       return uiSound.move;
 
     case K_KP_RIGHTARROW:
     case K_RIGHTARROW:
       if (l->columns == 1) { return q3sound.menu_null; }
-      c = l->curvalue + l->height;
-      if (c >= l->numitems) { return uiSound.error; }
+      int c = l->curvalue + l->rows;
+      if (c >= l->itemCount) { return uiSound.error; }
       l->oldvalue = l->curvalue;
       l->curvalue = c;
-      if (l->curvalue > l->top + l->columns * l->height - 1) { l->top += l->height; }
-      if (l->generic.callback) { l->generic.callback(l, MS_GOTFOCUS); }
+      if (l->curvalue > l->topId + l->columns * l->rows - 1) { l->topId += l->rows; }
+      if (l->generic.callback) { l->generic.callback(l, MST_FOCUS); }
       return uiSound.move;
   }
   // cycle look for ascii key inside list items
   if (!Q_isprint(key)) { return (0); }
   // force to lower for case insensitive compare
   if (Q_isupper(key)) { key -= 'A' - 'a'; }
-  // iterate list items
-  for (i = 1; i <= l->numitems; i++) {
-    j = (l->curvalue + i) % l->numitems;
-    c = l->itemnames[j][0];
-    if (Q_isupper(c)) { c -= 'A' - 'a'; }
-    if (c == key) {
+  // For every item in the list
+  for (int item = 1; item <= l->itemCount; item++) {
+    int id = (l->curvalue + item) % l->itemCount;
+    int ch = l->itemNames[id][0];
+    if (Q_isupper(ch)) { ch -= 'A' - 'a'; }
+    if (ch == key) {
       // set current item, mimic windows listbox scroll behavior
-      if (j < l->top) {
-        // behind top most item, set this as new top
-        l->top = j;
-      } else if (j > l->top + l->height - 1) {
-        // past end of list box, do page down
-        l->top = (j + 1) - l->height;
-      }
-      if (l->curvalue != j) {
+      if (id < l->topId) l->topId = id;                                     // behind top most item, set this as new top
+      else if (id > l->topId + l->rows - 1) l->topId = (id + 1) - l->rows;  // past end of list box, do page down
+      if (l->curvalue != id) {
         l->oldvalue = l->curvalue;
-        l->curvalue = j;
-        if (l->generic.callback) l->generic.callback(l, MS_GOTFOCUS);
+        l->curvalue = id;
+        if (l->generic.callback) l->generic.callback(l, MST_FOCUS);
         return (uiSound.move);
       }
       return (uiSound.error);
@@ -207,28 +237,44 @@ sfxHandle_t menuList_key(MenuList* l, int key) {
 
 // ScrollList_Draw
 void menuList_draw(MenuList* l) {
-  float* color;
-  bool   hasfocus = (l->generic.parent->cursor == l->generic.activeId);
-  int    x        = l->generic.x;
+  // Define a max width (instead of a width per column)
+  // Cap each column to not go over its max width
+  // Divide width by the number of columns when we draw
+  float x    = l->generic.left;  // Always draw starting from the top-left
+  float xAdj = l->separation[X] * 0.5;
+  float yAdj = l->separation[Y] * 0.5;
   for (int column = 0; column < l->columns; column++) {
-    int style = UI_LEFT | UI_SMALLFONT;
-    int y     = l->generic.y;
-    int base  = l->top + column * l->height;
-    for (int i = base; i < base + l->height; i++) {
-      if (i >= l->numitems) { break; }
-      if (i == l->curvalue) {
-        int u = x - 2;
-        if (l->generic.flags & MFL_CENTER_JUSTIFY) { u -= (l->width * SMALLCHAR_WIDTH) / 2 + 1; }
-        uiFillRect(u, y, l->width * SMALLCHAR_WIDTH, SMALLCHAR_HEIGHT + 2, (vec_t*)q3color.listbar);
-        color = (vec_t*)q3color.text_highlight;
-        if (hasfocus) { style |= UI_PULSE; }
+    float y       = l->generic.top;  // Always draw starting from the top-left
+    int   currTop = l->topId + column * l->rows;
+    for (int row = currTop; row < currTop + l->rows; row++) {  // For every row that we are drawing
+      if (row >= l->itemCount) { break; }                      // If we are at the end of the list
+      vec4_t color;
+      char* itemName  = l->itemNames[row];
+      int   maxChars  = strlen(itemName);
+      int   nameWidth = uiTextGetWidthPix(itemName, &l->font, 1, maxChars);
+      if (row == l->curvalue) {  // Draw active item
+        // if (l->generic.flags & MFL_CENTER_JUSTIFY) { u -= (l->width * SMALLCHAR_WIDTH) / 2 + 1; }
+        ColorSetA(color, *mColor.key, 0.5);
+        float yBoxAdj = (l->itemSize[Y] / GL_H) * 0.5 + l->separation[Y];  // Adjust the box to draw from top-left, instead of bottom left
+        uiFillRect(x, y - yBoxAdj, nameWidth, l->itemSize[Y], color);
+        ColorSet(color, *mColor.fg);
+        // If the item has focus
+        bool shouldPulse = l->generic.parent->cursor == l->generic.activeId && l->generic.flags & MFL_PULSEIFFOCUS;
+        if (shouldPulse) { l->style |= UI_PULSE; }
       } else {
-        color = (vec_t*)q3color.text_normal;
+        if (l->style & UI_PULSE) l->style &= ~UI_PULSE;  // Remove pulse, since item is not active
+        ColorSet(color, *mColor.neutral);
       }
-      if (l->generic.flags & MFL_CENTER_JUSTIFY) { style |= UI_CENTER; }
-      uiDrawString(x, y, l->itemnames[i], style, color);
-      y += SMALLCHAR_HEIGHT;
+      if (l->generic.flags & MFL_CENTER_JUSTIFY) { l->style |= UI_CENTER; }  // Not using this atm. Font alignment property covers it
+      if (nameWidth > (int)l->itemSize[X]) {                    // Name would overflow the allowed width for this column
+        for (int currMax = 0; currMax < maxChars; currMax++) {  // Cap the maximum number of characters we can draw
+          // If the text width overflows the bounds, reduce the maxChars allowed to be drawn
+          if (uiTextGetWidthPix(itemName, &l->font, 1, maxChars) >= l->itemSize[X]) { maxChars--; }
+        }
+      }
+      uiTextDraw(itemName, &l->font, x + xAdj, y + yAdj, 1, color, 0, l->style, maxChars, l->align);
+      y += (l->itemSize[Y] / GL_H) + l->separation[Y];
     }
-    x += (l->width + l->separation) * SMALLCHAR_WIDTH;
+    x += (l->itemSize[X] / GL_W) + l->separation[X];  // (l->width + l->separation) * SMALLCHAR_WIDTH;
   }
 }

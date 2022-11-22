@@ -129,7 +129,7 @@ static void menuStart_exit(bool result) {
 // Main_MenuEvent
 //:::::::::::::::::::
 void menuStart_event(void* ptr, int event) {
-  if (event != MS_ACTIVATED) { return; }
+  if (event != MST_ACTIVE) { return; }
   switch (((MenuCommon*)ptr)->id) {
     case MID_PLAY: menuPlay(); break;
     // case MID_MULTIPLAYER: menuArenaServers(); break;
@@ -239,8 +239,8 @@ void menuStart_init(void) {
   sm->exit.generic.flags    = justify | MFL_PULSEIFFOCUS;
   sm->exit.generic.x        = x;
   sm->exit.generic.y        = y;
-  // sm->exit.generic.id       = MID_EXIT;
-  // sm->exit.generic.callback = menuStart_event;
+  sm->exit.generic.id       = MID_EXIT;
+  sm->exit.generic.callback = menuStart_event;
 
   menuAddItem(&sm->menu, &sm->play);
   menuAddItem(&sm->menu, &sm->setup);

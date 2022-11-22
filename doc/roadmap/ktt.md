@@ -1,6 +1,6 @@
 <!--................................-->
           - [x] Font support unlock
-        - [ ] UI Font support
+        - [x] UI Font support
       - [ ] UI
     - [ ] Talent system (deps: ui)
     - [ ] Default SP physics (WW)

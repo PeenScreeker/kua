@@ -16,18 +16,47 @@ chg : Text drawing: Vertical alignment support
 new : Kua logo
 chg : UI color scheme, not Q3 based
 new : JSON based Settings menu
-new : SQlite based Play menu
 new : Move credits to its own menu item (lower right corner)
 chg : Credits menu goes back to StartMenu
+new : SQlite based Play menu
 new : Basic Settings menu
 new : UI asset palette (debug mode)
+bld : Reduced release download filesize (curl and other deprecated libs/binaries are no longer packed)
+fmt : Removed qboolean
+fmt : Formatted the whole project with clang-format
 bld : Freetype2 windows compiling
+new : List items can be double clicked
+```
+
+```
+chg : Map Loading screen
+... : Aspect correct image
+... : Unknown map shader
+... : Check weapon icons
+... : Font drawing
+... : Gametype struct
+
 new : Basic Play menu
+... : Fixed ugly Roboto aliasing
+... : Font color non-selected
+... : List Item mouse selection boundaries
+... : Image Item mouse selection boundaries
+... : Map thumbnail
 ```
 
 ---
 # Unreleased
 ## 0.35a
+2022.11.22  
+```
+new : UI Accept icon
+```
+
+2022.11.18  
+```
+new : Image menu items now draw with the new UI coordinate system
+```
+
 2022.11.17  
 ```
 new : New Assets licensing notice
@@ -37,6 +66,7 @@ new : New Assets licensing notice
 ```
 new : Random song on loading (TODO: fix big files crashing the engine)
 chg : New UI feedback sounds (move, cancel, error, silence)
+new : UI Cancel icon
 new : Entering the game for the first time now plays a song.
 fix : Menu item mouse selection (core.c/uiEvent_mouse)
 ```

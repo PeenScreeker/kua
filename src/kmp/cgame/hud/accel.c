@@ -49,12 +49,12 @@ static cvarTable_t accel_cvartable[] = {
 };
 
 static help_t accel_help[] = {
-  { accel_cvartable + 0, BINARY_LITERAL, 
+  { accel_cvartable + 0, BINARY_LITERAL_FL, 
     { "hud_accel 0bX",
       "           |",
       "           +- draw hud", }, },
 #define ACCEL_DRAW 1
-  { accel_cvartable + 1, BINARY_LITERAL,
+  { accel_cvartable + 1, BINARY_LITERAL_FL,
     { "hud_accel_trueness 0bXXX",
       "                    |||",
       "                    ||+- show true jump/crouch zones",
@@ -63,11 +63,11 @@ static help_t accel_help[] = {
 #define ACCEL_JUMPCROUCH 1
 #define ACCEL_CPM        2
 #define ACCEL_GROUND     4
-  { accel_cvartable + 3, Y | H, {"hud_accel_yh X X",}, },
-  { accel_cvartable + 4,  RGBA, {"hud_accel_rgbaNoAccel X X X X",}, },
-  { accel_cvartable + 5,  RGBA, {"hud_accel_rgbaPartialAccel X X X X",}, },
-  { accel_cvartable + 6,  RGBA, {"hud_accel_rgbaFullAccel X X X X",}, },
-  { accel_cvartable + 7,  RGBA, {"hud_accel_rgbaTurnZone X X X X",}, },
+  { accel_cvartable + 3, Y_FL | H_FL, {"hud_accel_yh X X",}, },
+  { accel_cvartable + 4,  RGBA_FL, {"hud_accel_rgbaNoAccel X X X X",}, },
+  { accel_cvartable + 5,  RGBA_FL, {"hud_accel_rgbaPartialAccel X X X X",}, },
+  { accel_cvartable + 6,  RGBA_FL, {"hud_accel_rgbaFullAccel X X X X",}, },
+  { accel_cvartable + 7,  RGBA_FL, {"hud_accel_rgbaTurnZone X X X X",}, },
 };
 //:::::::::::::::::
 // hud_accel_init

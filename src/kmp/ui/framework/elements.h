@@ -7,6 +7,7 @@
 #include "../shared.h"
 // Ui dependencies
 #include "../color/schemes.h"
+#include "../color/tools.h"
 #include "tools.h"
 #include "../types.h"
 #include "../config.h"
@@ -41,7 +42,7 @@ extern uiStatic_t uis;
 // Menu Item Indexes
 #define MITEM_NULL 0
 #define MITEM_SLIDER 1    // Slideable item that controls a range of values
-#define MITEM_ACTION 2    // Executes an action (?when?). eg. Animating the player model in the settinsg menu
+#define MITEM_ACTION 2    // Executes an action (?when?). eg. Animating the player model in the settings menu
 #define MITEM_MULTIOPT 3  // Multi Option list: Will cycle through the given list
 #define MITEM_FIELD 4     // Input Field: Text item that can be changed by the user
 #define MITEM_SWITCH 5    // Boolean option (checkbox style). User can mark it on/off
@@ -49,7 +50,7 @@ extern uiStatic_t uis;
 #define MITEM_LTEXT 7     // Non-clickable item ??
 #define MITEM_LIST 8      // Item list (like mods menu): Drawn all at once on screen
 #define MITEM_TEXT 9      // Proportional text, with the default font
-#define MITEM_BTEXT 10    // Banner title text
+// #define MITEM_BTEXT 10    // Banner title text
 //:::::::::::::::::
 // Menu Item Flags
 #define MFL_BLINK ((unsigned int)0x00000001)
@@ -76,9 +77,10 @@ extern uiStatic_t uis;
 //:::::::::::::::::
 // Menu State flags
 //   Engine callback notifications of menu states
-#define MS_GOTFOCUS 1
-#define MS_LOSTFOCUS 2
-#define MS_ACTIVATED 3
+typedef enum MenuState_e { MST_FOCUS = 1, MST_FOCUSLOST, MST_ACTIVE } MenuState;
+// #define MST_FOCUS 1
+// #define MST_FOCUSLOST 2
+// #define MST_ACTIVE 3
 //:::::::::::::::::
 
 //:::::::::::::::::
@@ -127,7 +129,8 @@ void OText_draw(MenuText*);
 // void BText_init(MenuText*);
 // void BText_draw(MenuText*);
 // elements/cursor.c
-bool  cursorInRect(int, int, int, int);
+bool  cursorInRect(float, float, float, float);
+bool  cursorInRectPix(int, int, int, int);
 void* cursorGetItem(MenuFw*);
 void  cursorMoved(MenuFw*);
 void  cursorSet(MenuFw*, int);

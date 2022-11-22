@@ -9,11 +9,11 @@ void menuMOpt_init(MenuList* s) {
   s->generic.left = s->generic.x - SMALLCHAR_WIDTH - len;
   int         l;
   const char* str;
-  len = s->numitems = 0;
-  while ((str = s->itemnames[s->numitems]) != 0) {
+  len = s->itemCount = 0;
+  while ((str = s->itemNames[s->itemCount]) != 0) {
     l = strlen(str);
     if (l > len) { len = l; }
-    s->numitems++;
+    s->itemCount++;
   }
   s->generic.top    = s->generic.y;
   s->generic.right  = s->generic.x + (len + 1) * SMALLCHAR_WIDTH;
@@ -30,17 +30,17 @@ sfxHandle_t menuMOpt_key(MenuList* s, int key) {
     case K_RIGHTARROW:
     case K_MOUSE1:
       s->curvalue++;
-      if (s->curvalue >= s->numitems) s->curvalue = 0;
+      if (s->curvalue >= s->itemCount) s->curvalue = 0;
       sound = uiSound.move;
       break;
     case K_KP_LEFTARROW:
     case K_LEFTARROW:
       s->curvalue--;
-      if (s->curvalue < 0) s->curvalue = s->numitems - 1;
+      if (s->curvalue < 0) s->curvalue = s->itemCount - 1;
       sound = uiSound.move;
       break;
   }
-  if (sound && s->generic.callback) s->generic.callback(s, MS_ACTIVATED);
+  if (sound && s->generic.callback) s->generic.callback(s, MST_ACTIVE);
   return (sound);
 }
 
@@ -74,5 +74,5 @@ void menuMOpt_draw(MenuList* s) {
   }
 
   uiDrawString(x - SMALLCHAR_WIDTH, y, s->generic.name, style | UI_RIGHT, color);
-  uiDrawString(x + SMALLCHAR_WIDTH, y, s->itemnames[s->curvalue], style | UI_LEFT, color);
+  uiDrawString(x + SMALLCHAR_WIDTH, y, s->itemNames[s->curvalue], style | UI_LEFT, color);
 }

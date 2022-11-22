@@ -123,27 +123,27 @@ static void cvar_help_prep(cvarKind_t kind, char const* defaultString) {
 
     float const x = cgs.glconfig.vidWidth / cgs.screenXScale;
     float const y = cgs.glconfig.vidHeight / cgs.screenXScale;
-    if (kind & X) trap_Print(vaf("  ^3x^2-coordinate [0,%.0f]^7\n", x));
-    if (kind & Y) trap_Print(vaf("  ^3y^2-coordinate [0,%.0f]^7\n", y));
-    if (kind & W) trap_Print(vaf("  ^3w^2idth        [0,%.0f]^7\n", x));
-    if (kind & H) trap_Print(vaf("  ^3h^2eight       [0,%.0f]^7\n", y));
+    if (kind & X_FL) trap_Print(vaf("  ^3x^2-coordinate [0,%.0f]^7\n", x));
+    if (kind & Y_FL) trap_Print(vaf("  ^3y^2-coordinate [0,%.0f]^7\n", y));
+    if (kind & W_FL) trap_Print(vaf("  ^3w^2idth        [0,%.0f]^7\n", x));
+    if (kind & H_FL) trap_Print(vaf("  ^3h^2eight       [0,%.0f]^7\n", y));
     return;
   }
   ASSERT_GE(kind, 16);
   switch (kind) {
-  case BINARY_LITERAL:
+  case BINARY_LITERAL_FL:
     trap_Print("^2This cvar can accept binary-literals - a sequence starting^7\n");
     trap_Print(vaf("^2with ^30b^2 followed by ^31^2's and ^30^2's (e.g. ^3%s^2).^7\n", defaultString));
     trap_Print("^2Enable/disable items by replacing ^3X^2's with ^31^2/^30^2 resp.\n");
     return;
-  case RGBA:
+  case RGBA_FL:
     trap_Print("^2This cvar accepts a set of 4 numbers:^7\n");
     trap_Print("  ^3r^2ed   [0,1]^7\n");
     trap_Print("  ^3g^2reen [0,1]^7\n");
     trap_Print("  ^3b^2lue  [0,1]^7\n");
     trap_Print("  ^3a^2lpha [0,1]^7\n");
     return;
-  case RGBAS:
+  case RGBAS_FL:
     trap_Print("^2This cvar accepts sets of 4 numbers:^7\n");
     trap_Print("  ^3r^2ed   [0,1]^7\n");
     trap_Print("  ^3g^2reen [0,1]^7\n");
@@ -161,9 +161,9 @@ static void cvar_help_post(cvarKind_t kind) {
   if (kind < 16) { return; }
   ASSERT_GE(kind, 16);
   switch (kind) {
-  case BINARY_LITERAL: return;// trap_Print("^2Examples: github.com/Jelvan1/cgame_proxymod#examples^7\n"); return;
-  case RGBA:
-  case RGBAS: return;
+  case BINARY_LITERAL_FL: return;// trap_Print("^2Examples: github.com/Jelvan1/cgame_proxymod#examples^7\n"); return;
+  case RGBA_FL:
+  case RGBAS_FL: return;
   default: assert(0); return;
   }
 }

@@ -289,6 +289,7 @@ def Pk3(list, trg, rel=None):
   mv(z,p)
 #.....................................
 def ZipDir(src,trg,rel=None):
+  # TODO: Exclude option, like Pk3CreateAll
   if isPath(src): src = str(src)
   if isPath(trg): trg = str(trg)
   if isPath(rel): rel = str(rel)
@@ -313,6 +314,7 @@ def Pk3Dir(src, trg, rel=None):
   mv(z, join(dirname(trg), p))
 #.....................................
 def Pk3CreateAll(src, trg, prefix=None, exclude=None):
+  #TODO: Incremental packing. How?
   if isPath(src): src = str(src)
   if isPath(trg): trg = str(trg)
   from os.path import join, basename, isdir 

@@ -29,7 +29,7 @@ sfxHandle_t menuSwitch_key(MenuSwitch* rb, int key) {
     case K_KP_RIGHTARROW:
     case K_RIGHTARROW:
       rb->curvalue = !rb->curvalue;
-      if (rb->generic.callback) rb->generic.callback(rb, MS_ACTIVATED);
+      if (rb->generic.callback) rb->generic.callback(rb, MST_ACTIVE);
       return (uiSound.move);
   }
   return 0; // key not handled

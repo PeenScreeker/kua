@@ -1771,13 +1771,13 @@ playerState_t const* getPs(void);
 // cg_cvar.c
 typedef enum {
   // X, Y, W and H can be combined, hence the spacing.
-  X              = 1,
-  Y              = 2,
-  W              = 4,
-  H              = 8,
-  BINARY_LITERAL = 16,
-  RGBA,
-  RGBAS
+  X_FL              = 1,
+  Y_FL              = 2,
+  W_FL              = 4,
+  H_FL              = 8,
+  BINARY_LITERAL_FL = 16,
+  RGBA_FL,
+  RGBAS_FL
 } cvarKind_t;
 
 typedef struct {

@@ -39,7 +39,7 @@ static MenuConfirm s_confirm;
 // menuConfirm_Event
 //:::::::::::::::::::
 static void menuConfirm_event(void* ptr, int event) {
-  if (event != MS_ACTIVATED) { return; }
+  if (event != MST_ACTIVE) { return; }
   menuPop();
   bool result = (((MenuCommon*)ptr)->id == MID_CONFIRM_YES);
   if (s_confirm.action) { s_confirm.action(result); }
@@ -54,9 +54,9 @@ static sfxHandle_t menuConfirm_key(int key) {
     case K_KP_RIGHTARROW:
     case K_RIGHTARROW: key = K_TAB; break;
     case 'n':
-    case 'N': menuConfirm_event(&s_confirm.no, MS_ACTIVATED); break;
+    case 'N': menuConfirm_event(&s_confirm.no, MST_ACTIVE); break;
     case 'y':
-    case 'Y': menuConfirm_event(&s_confirm.yes, MS_ACTIVATED); break;
+    case 'Y': menuConfirm_event(&s_confirm.yes, MST_ACTIVE); break;
   }
   return menuDefaultKey(&s_confirm.menu, key);
 }
