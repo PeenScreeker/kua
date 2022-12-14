@@ -448,30 +448,27 @@ float core_CmdScale(usercmd_t *cmd, qboolean fix) {
 
 // Changed from q3a-gpl behavior to include basespeed.
 void core_Accelerate(vec3_t wishdir, float wishspeed, float accel, float basespeed) {
-  float  addspeed, accelspeed, currentspeed;
-  float  wishspeed_c;
-  vec3_t accelVelocity;
-
   // Clamp wishpeed to a maximum of basespeed
-  wishspeed_c = wishspeed; // Initialize clamped wishspeed
+  float wishspeed_c = wishspeed; // Initialize clamped wishspeed
   if (wishspeed_c > basespeed) { wishspeed_c = basespeed; }
   // Determine veer amount
-  currentspeed = DotProduct(pm->ps->velocity, wishdir);
+  float currentspeed = DotProduct(pm->ps->velocity, wishdir);
   // See how much to add
-  addspeed = wishspeed_c - currentspeed;
+  float addspeed = wishspeed_c - currentspeed;
   // If not adding any, done.
   if (addspeed <= 0) {return;}
   // Acceleration speed to add after accel
-  accelspeed = accel * wishspeed_c * pml.frametime;
+  float accelspeed = accel * wishspeed_c * pml.frametime;
   // Cap it
   if (accelspeed > addspeed) { accelspeed = addspeed; }
   // Adjust player velocity
+  vec3_t accelVelocity;
   for (int i = 0; i < 3; i++) {
     accelVelocity[i] = accelspeed * wishdir[i]; // dir*speed = velocity
     pm->ps->velocity[i] += accelVelocity[i];    // Vector addition, the typical visualization explained in videos of strafing math theory
   }
   // Store (internal) pmoveData
-  pm->pmd.wishspeed  = wishspeed_c;  // Wishspeed, as calculated in pmove
+  pm->pmd.wishspeed = wishspeed_c;  // Wishspeed, as calculated in pmove
 }
 
 void core_Friction(void) {

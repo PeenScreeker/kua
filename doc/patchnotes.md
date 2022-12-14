@@ -15,7 +15,7 @@ new : Menu items use a scale property (was hardcoded to scale = 1)
 chg : Text drawing: Vertical alignment support
 new : Kua logo
 chg : UI color scheme, not Q3 based
-new : JSON based Settings menu
+new : YAML based Settings menu (libcyaml)
 new : Move credits to its own menu item (lower right corner)
 chg : Credits menu goes back to StartMenu
 new : SQlite based Play menu
@@ -24,11 +24,7 @@ new : UI asset palette (debug mode)
 bld : Reduced release download filesize (curl and other deprecated libs/binaries are no longer packed)
 fmt : Removed qboolean
 fmt : Formatted the whole project with clang-format
-bld : Freetype2 windows compiling
-new : List items can be double clicked
-```
 
-```
 chg : Map Loading screen
 ... : Aspect correct image
 ... : Unknown map shader
@@ -36,12 +32,18 @@ chg : Map Loading screen
 ... : Font drawing
 ... : Gametype struct
 
+bld : Freetype2 windows compiling
+new : List items can be double clicked
+```
+
+```
 new : Basic Play menu
 ... : Fixed ugly Roboto aliasing
+... : Maplist background (? maybe ?)
 ... : Font color non-selected
+... : Map thumbnail
 ... : List Item mouse selection boundaries
 ... : Image Item mouse selection boundaries
-... : Map thumbnail
 ```
 
 ---

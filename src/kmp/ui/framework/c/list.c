@@ -10,6 +10,21 @@ float menuList_getMaxHeight(MenuList* l) {
   StrArrayCat(l->itemNames, l->itemCount, tmp);
   return uiTextGetHeight(tmp, &l->font, 1, strlen(tmp));
 }
+//:::::::::::::::::::::::
+// menuList_getMaxCharWidth
+//   Return the max possible character width (percentage), for all items in the list
+float menuList_getMaxCharWidth(MenuList* l) {
+  int  size = MAX_QPATH * l->itemCount;
+  char tmp[size];
+  StrArrayCat(l->itemNames, l->itemCount, tmp);
+  float max = 0;
+  for (int it = 0; it < size - 1; it++) {  // For every character, excluding the last one (null)
+    char  ch[2]  = { tmp[it], '\0' };
+    float chsize = uiTextGetWidth(ch, &l->font, 1, 1);
+    if (chsize > max) { max = chsize; }  // Store this char size as max if bigger, else keep the same
+  }
+  return max;
+}
 
 //:::::::::::::::::::::::
 // ScrollList_Init
@@ -73,18 +88,24 @@ sfxHandle_t menuList_key(MenuList* l, int key) {
       // check scroll region
       float x = l->generic.x;
       float y = l->generic.y;
-      float w = l->width; //((l->width + l->separation[X]) * l->columns - l->separation[X]) * SMALLCHAR_WIDTH;
+      float w = l->width;
       if (l->generic.flags & MFL_CENTER_JUSTIFY) { x -= w / 2; }
-      if (!cursorInRect(x, y, w, l->height)) { return (uiSound.silence); }  // absorbed, silent sound effect
-      int cursorx = (uis.cursorx - x) / SMALLCHAR_WIDTH;
-      int column  = cursorx / (l->width + l->separation[X]);
-      int cursory = (uis.cursory - y) / SMALLCHAR_HEIGHT;
-      int index   = column * l->rows + cursory;
-      if (l->topId + index < l->itemCount) {
-        l->oldvalue = l->curvalue;
-        l->curvalue = l->topId + index;
-        if (l->oldvalue != l->curvalue && l->generic.callback) {
-          l->generic.callback(l, MST_FOCUS);
+      printf("Checking    : x:%f y:%f w:%f h:%f\n", x, y, w, l->height);
+      if (!cursorInRect(x, y, w, l->height)) { return (uiSound.silence); }
+      float gridw = l->width / l->columns;                        // Get maximum possible width for any of the columns
+      float gridh = menuList_getMaxHeight(l) + l->separation[Y];  // Get maximum possible char height for all items in the list
+      // Convert screen-space to list-space, and find int position id in a grid of maxWidth by maxHeight
+      int cursorx = ((float)uis.cursorx / GL_W - x) / gridw;  // (xpos-adj)/grid
+      int column  = cursorx / (l->width + l->separation[X]);  // Find the hovered column id, from the grid (char-width divided x)
+      int cursory = ((float)uis.cursory / GL_H - y) / gridh;  // (ypos-adj)/grid
+      int index   = column * l->rows + cursory;               // Find the absolute id in the grid
+
+      printf("Clicking at : x:%i y:%i col:%i id:%i\n", cursorx, cursory, column, index);
+      if (l->topId + index < l->itemCount) {                      // Check that relative id is within the list itemCount bounds
+        l->oldvalue = l->curvalue;                                // Store current value in prev
+        l->curvalue = l->topId + index;                           // Store relative value as current
+        if (l->oldvalue != l->curvalue && l->generic.callback) {  // If they are different, and there is a callback, do movement
+          l->generic.callback(l, MST_FOCUS);                      // Callback will process with the cur/old values updated right above this
           return (uiSound.move);
         }
       }
@@ -249,9 +270,9 @@ void menuList_draw(MenuList* l) {
     for (int row = currTop; row < currTop + l->rows; row++) {  // For every row that we are drawing
       if (row >= l->itemCount) { break; }                      // If we are at the end of the list
       vec4_t color;
-      char* itemName  = l->itemNames[row];
-      int   maxChars  = strlen(itemName);
-      int   nameWidth = uiTextGetWidthPix(itemName, &l->font, 1, maxChars);
+      char*  itemName  = l->itemNames[row];
+      int    maxChars  = strlen(itemName);
+      int    nameWidth = uiTextGetWidthPix(itemName, &l->font, 1, maxChars);
       if (row == l->curvalue) {  // Draw active item
         // if (l->generic.flags & MFL_CENTER_JUSTIFY) { u -= (l->width * SMALLCHAR_WIDTH) / 2 + 1; }
         ColorSetA(color, *mColor.key, 0.5);
@@ -266,8 +287,8 @@ void menuList_draw(MenuList* l) {
         ColorSet(color, *mColor.neutral);
       }
       if (l->generic.flags & MFL_CENTER_JUSTIFY) { l->style |= UI_CENTER; }  // Not using this atm. Font alignment property covers it
-      if (nameWidth > (int)l->itemSize[X]) {                    // Name would overflow the allowed width for this column
-        for (int currMax = 0; currMax < maxChars; currMax++) {  // Cap the maximum number of characters we can draw
+      if (nameWidth > (int)l->itemSize[X]) {                                 // Name would overflow the allowed width for this column
+        for (int currMax = 0; currMax < maxChars; currMax++) {               // Cap the maximum number of characters we can draw
           // If the text width overflows the bounds, reduce the maxChars allowed to be drawn
           if (uiTextGetWidthPix(itemName, &l->font, 1, maxChars) >= l->itemSize[X]) { maxChars--; }
         }

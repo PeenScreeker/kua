@@ -592,7 +592,7 @@ uiLnx_rls.setup()
 uiLnx_dbg.setup()
 uiWin_rls.setup()
 uiWin_dbg.setup()
-## Ui New
+## Ui Old
 uiOld.setup()
 
 

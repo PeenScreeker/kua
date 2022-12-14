@@ -42,20 +42,20 @@ dbgLnx    = binDir/"debug-posix-x86_64"  # TODO generate based on keywords
 # Files
 #.............
 # Config files
-dscFile   = cfgDir/"description.txt"
-cfgFiles  = glob(cfgDir, "*.cfg")
+dscFile     = cfgDir/"description.txt"
+cfgFiles    = glob(cfgDir, "*.cfg")
 # Assets:
-pk3Files  = glob(resDir, "*.pk3")  # Every pk3 file in the root asset folder
+pk3Files    = glob(resDir, "*.pk3")  # Every pk3 file in the root asset folder
 # Binaries
 rlsLibs_w   = glob(rlsWin, "*.dll")
 rlsLibs_l   = glob(rlsLnx, "*.so")
 rlsEngine_w = glob(rlsWin, "*.exe")
 rlsEngine_l = glob(rlsLnx, "*.x64")
 # Source Code
-srcFiles  = glob(srcDir, "*")
-srcZip    = rlsBase/"sourceCode.zip"
+srcFiles    = glob(srcDir, "*")
+srcZip      = rlsBase/"sourceCode.zip"
 # Final zip
-rlsZip    = rlsDir/f"{fullName}-{modVers}.zip"
+rlsZip      = rlsDir/f"{fullName}-{modVers}.zip"
 
 # Debug binaries
 dbgLibs_w   = glob(dbgWin, "*.dll")
